@@ -1,0 +1,2 @@
+serviceClass: com.szar.szarhf_umlweb.client.GreetingService
+path: 39E62CF6B979AADFA80E34C2591A97CD.gwt.rpc

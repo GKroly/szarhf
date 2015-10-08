@@ -1,0 +1,2 @@
+# Module szarhf_umlweb
+# RPC service class, partial path of RPC policy file
