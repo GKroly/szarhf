@@ -44,6 +44,7 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.Tree.Resources;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.VerticalScrollbar;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -73,10 +74,7 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		VerticalPanel mainVerticalPanel = new VerticalPanel();
 		mainVerticalPanel.setTitle("VPanel");
-//		mainVerticalPanel.setPixelSize(1200, 500);
-//		mainVerticalPanel.setBorderWidth(3);
-		mainVerticalPanel.setStylePrimaryName("my-MainPanel");
-		// mainVerticalPanel.setStyleName("center");
+//		mainVerticalPanel.setStylePrimaryName("my-MainPanel");
 
 		Command cmd = new Command() {
 			public void execute() {
@@ -94,11 +92,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		mainVerticalPanel.add(mainMenu);
 
 		HorizontalPanel horPan = new HorizontalPanel();
-//		horPan.setHeight("465px");
 		VerticalPanel leftVerticalPanel = new VerticalPanel();
-//		leftVerticalPanel.setBorderWidth(1);
-//		leftVerticalPanel.setPixelSize(300, 465);
-
 		VerticalPanel rightVerticalPanel = new VerticalPanel();
 		horPan.add(leftVerticalPanel);
 		horPan.add(rightVerticalPanel);
@@ -112,30 +106,37 @@ public class SzarHF_umlweb implements EntryPoint {
 		
 		
 
-	    // Create a new stack layout panel.
 	    StackLayoutPanel stackPanel = new StackLayoutPanel(Unit.EM);
 	    stackPanel.setPixelSize(200, 600);
-//	    stackPanel.setWidth("200px");
 
-	    // Add the Mail folders.
-//	    Widget mailHeader = createHeaderWidget(
-//	        constants.cwStackLayoutPanelMailHeader(), images.mailgroup());
-	    stackPanel.add(new Button("1Szia"), new Button("1111"), 2);
-
-	    // Add a list of filters.
-//	    Widget filtersHeader = createHeaderWidget(
-//	        constants.cwStackLayoutPanelFiltersHeader(), images.filtersgroup());
-	    stackPanel.add(new Button("2Szia"), new Button("2222"), 2);
-	    stackPanel.add(new Button("3Szia"), new Button("3333"), 2);
-
-//	    // Add a list of contacts.
-//	    Widget contactsHeader = createHeaderWidget(
-//	        constants.cwStackLayoutPanelContactsHeader(), images.contactsgroup());
-//	    stackPanel.add(createContactsItem(images), contactsHeader, 4);
-
-	    // Return the stack panel.
-//	    stackPanel.ensureDebugId("cwStackLayoutPanel");
-		
+//	    VerticalScrollbar
+	    VerticalPanel w1_1=new VerticalPanel();
+//	    w1_1.set
+//	    w1_1.setBorderWidth(1);
+	    Button w1_2=new Button("Diagram Types");    
+	    Button lbl1=new Button("new \"Class Diagram\"");
+	    Button lbl2=new Button("new \"Activity Diagram\"");
+	    w1_1.add(lbl1);
+	    w1_1.add(lbl2);
+	    stackPanel.add(w1_1, w1_2, 2);
+	    
+	    VerticalPanel w2_1=new VerticalPanel();
+	    Button w2_2=new Button("1Szia");    
+	    TextBox lbl2_1=new TextBox();
+	    TextBox lbl2_2=new TextBox();
+	    w2_1.add(lbl2_1);
+	    w2_1.add(lbl2_2);
+	    stackPanel.add(w2_1, w2_2, 2);
+	    
+	    VerticalPanel w3_1=new VerticalPanel();
+	    Button w3_2=new Button("1Szia");    
+	    TextBox lbl3_1=new TextBox();
+	    TextBox lbl3_2=new TextBox();
+	    w3_1.add(lbl3_1);
+	    w3_1.add(lbl3_2);
+	    stackPanel.add(w3_1, w3_2, 2);
+	    
+	    
 		leftVerticalPanel.add(stackPanel);
 		
 		RootPanel.get("MainWindow").add(mainVerticalPanel);
