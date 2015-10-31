@@ -15,6 +15,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -36,6 +37,7 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
@@ -100,20 +102,16 @@ public class SzarHF_umlweb implements EntryPoint {
 		rightVerticalPanel.setPixelSize(900, 600);
 		rightVerticalPanel.setWidth("800px");
 		mainVerticalPanel.add(horPan);
-
-		
-		
-		
 		
 
 	    StackLayoutPanel stackPanel = new StackLayoutPanel(Unit.EM);
 	    stackPanel.setPixelSize(200, 600);
-
 //	    VerticalScrollbar
 	    VerticalPanel w1_1=new VerticalPanel();
 //	    w1_1.set
 //	    w1_1.setBorderWidth(1);
-	    Button w1_2=new Button("Diagram Types");    
+	    Button w1_2=new Button("Diagram Types"); 
+	    
 	    Button lbl1=new Button("new \"Class Diagram\"");
 	    Button lbl2=new Button("new \"Activity Diagram\"");
 	    w1_1.add(lbl1);
@@ -126,8 +124,8 @@ public class SzarHF_umlweb implements EntryPoint {
 	    TextBox lbl2_2=new TextBox();
 	    w2_1.add(lbl2_1);
 	    w2_1.add(lbl2_2);
-	    stackPanel.add(w2_1, w2_2, 2);
-	    
+	    stackPanel.add(w2_1, w2_2, 2);   
+ 	    
 	    VerticalPanel w3_1=new VerticalPanel();
 	    Button w3_2=new Button("1Szia");    
 	    TextBox lbl3_1=new TextBox();
@@ -135,8 +133,6 @@ public class SzarHF_umlweb implements EntryPoint {
 	    w3_1.add(lbl3_1);
 	    w3_1.add(lbl3_2);
 	    stackPanel.add(w3_1, w3_2, 2);
-	    
-	    
 		leftVerticalPanel.add(stackPanel);
 		
 		RootPanel.get("MainWindow").add(mainVerticalPanel);
