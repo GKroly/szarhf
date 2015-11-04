@@ -31,9 +31,19 @@ h1 {
 	margin: 15px 6px 6px;
 }
 
+.gwt-StackLayoutHeader {
+  padding-left: 7px;
+  font-weight: bold;
+  font-size: 1.4em;
+}
+
 /** sajat **/
 /* .my-MainPanel { */
 /* 	font-size: 20pt; */
 /* 	border-radius: 10px; */
+
+.gwt-MenuItem{
+	text-align: center;
+}
 
 /* } */

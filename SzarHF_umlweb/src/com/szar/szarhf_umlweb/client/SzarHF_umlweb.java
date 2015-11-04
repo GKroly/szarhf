@@ -69,59 +69,102 @@ public class SzarHF_umlweb implements EntryPoint {
 			.create(GreetingService.class);
 
 	/**
+	 * Global Values
+	 */
+	int leftMenuSize = 200;
+	int maxHeight = 450;
+	String projectName = "Unknown project";
+	boolean isProjectLoaded;
+	/**
 	 * This is the entry point method.
 	 */
 	
 	public void onModuleLoad() {
 
+		isProjectLoaded = false;
 		VerticalPanel mainVerticalPanel = new VerticalPanel();
 		mainVerticalPanel.setTitle("VPanel");
 //		mainVerticalPanel.setStylePrimaryName("my-MainPanel");
 
-		Command cmd = new Command() {
-			public void execute() {
-				Window.alert("You selected...");
-			}
-		};
-
 		MenuBar mainMenu = new MenuBar();
 		mainMenu.setHeight("35px");
-		MenuItem menuItem1 = new MenuItem("1", cmd);
-		MenuItem menuItem2 = new MenuItem("2", cmd);
-		mainMenu.addItem(menuItem1);
-		mainMenu.addItem(menuItem2);
-
+		
+		createMainMenu(mainMenu);
 		mainVerticalPanel.add(mainMenu);
-
+		
 		HorizontalPanel horPan = new HorizontalPanel();
 		VerticalPanel leftVerticalPanel = new VerticalPanel();
 		VerticalPanel rightVerticalPanel = new VerticalPanel();
 		horPan.add(leftVerticalPanel);
 		horPan.add(rightVerticalPanel);
 		rightVerticalPanel.setBorderWidth(1);
-		rightVerticalPanel.setPixelSize(900, 600);
+		rightVerticalPanel.setPixelSize(900, maxHeight);
 		rightVerticalPanel.setWidth("800px");
 		mainVerticalPanel.add(horPan);
 		
 
 	    StackLayoutPanel stackPanel = new StackLayoutPanel(Unit.EM);
-	    stackPanel.setPixelSize(200, 600);
-//	    VerticalScrollbar
-	    VerticalPanel w1_1=new VerticalPanel();
-//	    w1_1.set
-//	    w1_1.setBorderWidth(1);
-	    Button w1_2=new Button("Diagram Types"); 
+	    stackPanel.setPixelSize(leftMenuSize, maxHeight);
+	    createLeftMenu(stackPanel);
+	    leftVerticalPanel.add(stackPanel);
 	    
+		RootPanel.get("MainWindow").add(mainVerticalPanel);
+
+	}
+	Command cmd = new Command() {
+		public void execute() {
+			Window.alert("You selected...");
+		}
+	};
+	
+	Command cmd2 = new Command() {
+		public void execute() {
+			
+		}
+	};
+	public void createMainMenu(MenuBar mainMenu)
+	{
+		MenuBar fileMenu = new MenuBar(true);
+		
+		MenuItem projectNameMenuItem = new MenuItem(projectName,cmd2);
+		projectNameMenuItem.setWidth(Integer.toString(leftMenuSize-25)+"px");
+		
+		MenuItem createProjectMenuItem = new MenuItem("Create new Project",cmd);
+		MenuItem loadProjectMenuItem = new MenuItem("Load existing project",cmd);
+		MenuItem saveProjectMenuItem = new MenuItem("Save current project",cmd);
+		saveProjectMenuItem.setEnabled(isProjectLoaded);
+		
+		fileMenu.addItem(createProjectMenuItem);
+		fileMenu.addItem(loadProjectMenuItem);
+		fileMenu.addItem(saveProjectMenuItem);
+		
+		MenuBar helpMenu = new MenuBar(true);
+		
+		
+		mainMenu.addItem(projectNameMenuItem);
+		mainMenu.addItem("File",fileMenu);
+		mainMenu.addItem("Help",helpMenu);
+	}
+	
+	public void createLeftMenu(StackLayoutPanel stackPanel)
+	{
+		VerticalPanel w1_1=new VerticalPanel();
+	    Button w1_2=new Button("Diagram Types"); 
+	    w1_2.setWidth(Integer.toString(leftMenuSize)+"px");
 	    Button lbl1=new Button("new \"Class Diagram\"");
 	    Button lbl2=new Button("new \"Activity Diagram\"");
-	    w1_1.add(lbl1);
+	    lbl1.setWidth(Integer.toString(leftMenuSize-10)+"px");
+	    lbl2.setWidth(Integer.toString(leftMenuSize-10)+"px");
+	    w1_1.add(lbl1);	    
 	    w1_1.add(lbl2);
 	    stackPanel.add(w1_1, w1_2, 2);
 	    
 	    VerticalPanel w2_1=new VerticalPanel();
 	    Button w2_2=new Button("1Szia");    
 	    TextBox lbl2_1=new TextBox();
+	    lbl2_1.setWidth(Integer.toString(leftMenuSize-10)+"px");
 	    TextBox lbl2_2=new TextBox();
+	    lbl2_2.setWidth(Integer.toString(leftMenuSize-10)+"px");
 	    w2_1.add(lbl2_1);
 	    w2_1.add(lbl2_2);
 	    stackPanel.add(w2_1, w2_2, 2);   
@@ -129,17 +172,14 @@ public class SzarHF_umlweb implements EntryPoint {
 	    VerticalPanel w3_1=new VerticalPanel();
 	    Button w3_2=new Button("1Szia");    
 	    TextBox lbl3_1=new TextBox();
+	    lbl3_1.setWidth(Integer.toString(leftMenuSize-15)+"px");
 	    TextBox lbl3_2=new TextBox();
+	    lbl3_2.setWidth(Integer.toString(leftMenuSize-15)+"px");
 	    w3_1.add(lbl3_1);
 	    w3_1.add(lbl3_2);
 	    stackPanel.add(w3_1, w3_2, 2);
-		leftVerticalPanel.add(stackPanel);
 		
-		RootPanel.get("MainWindow").add(mainVerticalPanel);
-
 	}
-	
-	
 	
 	/**
 	   * Add a {@link TreeItem} to a root item.
