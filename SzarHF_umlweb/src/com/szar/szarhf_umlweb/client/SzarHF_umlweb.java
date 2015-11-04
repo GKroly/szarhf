@@ -72,7 +72,7 @@ public class SzarHF_umlweb implements EntryPoint {
 	 * Global Values
 	 */
 	int leftMenuSize = 200;
-	int maxHeight = 450;
+	int maxHeight = 455;
 	String projectName = "Unknown project";
 	boolean isProjectLoaded;
 	/**
