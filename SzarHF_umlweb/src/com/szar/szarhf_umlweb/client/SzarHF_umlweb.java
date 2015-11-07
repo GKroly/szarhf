@@ -1,8 +1,22 @@
 package com.szar.szarhf_umlweb.client;
 
+import java.util.ArrayList;
+
+import com.szar.gwt.connectors.client.CornerPoint;
+import com.szar.gwt.connectors.client.Diagram;
+import com.szar.gwt.connectors.client.elements.Connector;
+import com.szar.gwt.connectors.client.elements.SectionDecoration;
+import com.szar.gwt.connectors.client.elements.SectionDecoration.DecorationType;
+import com.szar.gwt.connectors.client.elements.Shape;
+import com.szar.gwt.connectors.client.elements.Shape.CPShapeType;
+import com.szar.gwt.connectors.client.images.ConnectorsBundle;
+import com.szar.gwt.connectors.client.util.ConnectorStyle;
 import com.szar.szarhf_umlweb.shared.FieldVerifier;
+import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -16,6 +30,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
@@ -25,6 +40,7 @@ import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HTML;
@@ -102,15 +118,16 @@ public class SzarHF_umlweb implements EntryPoint {
 		rightVerticalPanel.setWidth("800px");
 		mainVerticalPanel.add(horPan);
 		
-
+		test(rightVerticalPanel);
+		
 	    StackLayoutPanel stackPanel = new StackLayoutPanel(Unit.EM);
 	    stackPanel.setPixelSize(leftMenuSize, maxHeight);
 	    createLeftMenu(stackPanel);
-	    leftVerticalPanel.add(stackPanel);
-	    
+	    leftVerticalPanel.add(stackPanel);    
 		RootPanel.get("MainWindow").add(mainVerticalPanel);
 
 	}
+	
 	Command cmd = new Command() {
 		public void execute() {
 			Window.alert("You selected...");
@@ -122,6 +139,96 @@ public class SzarHF_umlweb implements EntryPoint {
 			
 		}
 	};
+	
+	private void test(VerticalPanel viewPanel)
+	{
+		AbsolutePanel boundaryPanel = new AbsolutePanel();
+        boundaryPanel.setSize("800px", "450px");
+        viewPanel.add(boundaryPanel); 
+        
+        final Diagram diagram = new Diagram(boundaryPanel);
+
+        boundaryPanel.add(new Label("Connectors example for GWT 2.4"), 10, 2);
+        Connector connector1 = new Connector(50, 80, 150, 200, new SectionDecoration(DecorationType.ARROW_SOLID), new SectionDecoration(DecorationType.ARROW_SOLID));
+        connector1.showOnDiagram(diagram);
+
+        ArrayList<CornerPoint> cp = new ArrayList<CornerPoint>();
+        cp.add(new CornerPoint(370, 200));
+        cp.add(new CornerPoint(370, 120));
+        cp.add(new CornerPoint(270, 120));
+        SectionDecoration startDecoration = new SectionDecoration(DecorationType.ARROW_LINE);
+        SectionDecoration endDecoration = new SectionDecoration(
+                        new Image("http://code.google.com/images/ph-logo.png"), 
+                        new Image("http://code.google.com/images/ph-logo.png"));
+        Connector connector2 = new Connector(350, 200, 270, 80, cp, startDecoration, endDecoration);
+        connector2.style = ConnectorStyle.DASHED;
+        connector2.showOnDiagram(diagram);
+
+        Connector connector3 = new Connector(450, 120, 500, 80, new SectionDecoration(DecorationType.ARROW_SOLID), new SectionDecoration(DecorationType.ARROW_SOLID));
+        connector3.style = ConnectorStyle.DOTTED;
+        connector3.showOnDiagram(diagram);
+
+        FocusPanel diamond = new FocusPanel();
+        Image img = AbstractImagePrototype.create(ConnectorsBundle.INSTANCE.diamondImg()).createImage();
+        img.getElement().getStyle().setDisplay(Display.BLOCK);
+        diamond.setWidget(img);
+        boundaryPanel.add(diamond, 700, 400);
+
+        // Add some elements that can be connected
+        final Label label = new Label("LABEL");     
+        final Label label2 = new Label("LABEL_2");
+        final Image image = new Image("http://code.google.com/images/ph-logo.png");
+
+        final Label label3 = new Label("LABEL_3 Test Longer Label with rectangle connection points");
+
+        image.setPixelSize(153, 55);  
+        
+        BPMNTask task = new BPMNTask();
+        boundaryPanel.add(task, 20, 20);
+        
+        boundaryPanel.add(label, 50, 250);
+        boundaryPanel.add(label2, 450, 200);
+        boundaryPanel.add(label3, 700, 500);
+
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand()
+        {
+            public void execute()
+            {
+            	Shape shapeForLabel = new Shape(label, CPShapeType.DIAMOND);                
+                shapeForLabel.showOnDiagram(diagram);
+                shapeForLabel.setTitle("shapeForLabel");
+                shapeForLabel.enableConnectionCreate(true);
+                
+                Shape shapeForLabel2 = new Shape(label2, CPShapeType.OVAL);
+                shapeForLabel2.showOnDiagram(diagram);
+                shapeForLabel2.setTitle("shapeForLabel2");
+                
+                Shape shapeForLabel3 = new Shape(label3, CPShapeType.RECTANGLE);
+                shapeForLabel3.showOnDiagram(diagram);
+                shapeForLabel3.setTitle("shapeForLabel");
+                shapeForLabel3.enableConnectionCreate(true);
+            }
+        });
+        
+
+       /* 
+        
+        
+
+        Shape shapeForDiamond = new Shape(diamond, CPShapeType.DIAMOND);
+        shapeForDiamond.showOnDiagram(diagram);
+        shapeForDiamond.enableConnectionCreate(true);
+        shapeForDiamond.setTitle("shapeForDiamond");
+        
+        Shape shapeForTask = new Shape(task, CPShapeType.RECTANGLE);
+        shapeForTask.connectorsStyle = ConnectorStyle.DASHED;
+        shapeForTask.showOnDiagram(diagram);
+        shapeForTask.enableConnectionCreate(true);
+        shapeForTask.setTitle("Shape for task");   */     
+
+	}
+	
+	
 	public void createMainMenu(MenuBar mainMenu)
 	{
 		MenuBar fileMenu = new MenuBar(true);

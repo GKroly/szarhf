@@ -18,6 +18,7 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
   <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
 
+  <inherits name='com.szar.gwt.connectors.connectors'/>
   <!-- Other module inherits                                      -->
 
   <!-- Specify the app entry point class.                         -->
