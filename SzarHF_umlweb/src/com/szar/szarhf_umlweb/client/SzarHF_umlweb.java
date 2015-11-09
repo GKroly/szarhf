@@ -97,6 +97,8 @@ public class SzarHF_umlweb implements EntryPoint {
 	
 	public void onModuleLoad() {
 
+		
+		
 		isProjectLoaded = false;
 		VerticalPanel mainVerticalPanel = new VerticalPanel();
 		mainVerticalPanel.setTitle("VPanel");
@@ -118,7 +120,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		rightVerticalPanel.setWidth("800px");
 		mainVerticalPanel.add(horPan);
 		
-		test(rightVerticalPanel);
+		//test(rightVerticalPanel);
 		
 	    StackLayoutPanel stackPanel = new StackLayoutPanel(Unit.EM);
 	    stackPanel.setPixelSize(leftMenuSize, maxHeight);
@@ -139,6 +141,8 @@ public class SzarHF_umlweb implements EntryPoint {
 			
 		}
 	};
+	
+	
 	
 	private void test(VerticalPanel viewPanel)
 	{
@@ -231,15 +235,38 @@ public class SzarHF_umlweb implements EntryPoint {
 	
 	public void createMainMenu(MenuBar mainMenu)
 	{
+				
+		
 		MenuBar fileMenu = new MenuBar(true);
 		
-		MenuItem projectNameMenuItem = new MenuItem(projectName,cmd2);
+		final MenuItem projectNameMenuItem = new MenuItem(projectName,(Command) null);
+		
+		Command editProjectName = new Command(){
+			public void execute(){
+				if(isProjectLoaded)
+				{
+				String newTitle = Window.prompt("New name of the project:", projectNameMenuItem.getText());
+				projectNameMenuItem.setText(newTitle);
+				}
+			}
+		};
+		projectNameMenuItem.setScheduledCommand(editProjectName);
 		projectNameMenuItem.setWidth(Integer.toString(leftMenuSize-25)+"px");
 		
-		MenuItem createProjectMenuItem = new MenuItem("Create new Project",cmd);
+		final MenuItem saveProjectMenuItem = new MenuItem("Save current project",cmd);
+		
+		saveProjectMenuItem.setEnabled(isProjectLoaded);				
+		Command createProject = new Command(){
+			public void execute() {
+				isProjectLoaded = true;
+				projectName = "New Project";
+				saveProjectMenuItem.setEnabled(true);
+				Window.alert("Click to New Project to give it a name.");
+			}		
+		};			
+		MenuItem createProjectMenuItem = new MenuItem("Create new Project",createProject);
 		MenuItem loadProjectMenuItem = new MenuItem("Load existing project",cmd);
-		MenuItem saveProjectMenuItem = new MenuItem("Save current project",cmd);
-		saveProjectMenuItem.setEnabled(isProjectLoaded);
+
 		
 		fileMenu.addItem(createProjectMenuItem);
 		fileMenu.addItem(loadProjectMenuItem);
