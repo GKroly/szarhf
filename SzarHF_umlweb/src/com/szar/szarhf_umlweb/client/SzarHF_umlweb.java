@@ -1,6 +1,11 @@
 package com.szar.szarhf_umlweb.client;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 
 import com.szar.gwt.connectors.client.CornerPoint;
 import com.szar.gwt.connectors.client.Diagram;
@@ -20,6 +25,8 @@ import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
@@ -64,6 +71,7 @@ import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.VerticalScrollbar;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.SingleSelectionModel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -91,20 +99,25 @@ public class SzarHF_umlweb implements EntryPoint {
 	int maxHeight = 455;
 	String projectName = "Unknown project";
 	boolean isProjectLoaded;
+	LinkedHashMap<String, Diagram> models;
+	AbsolutePanel boundaryPanel;
+	Diagram diagram;
+	MenuBar mainMenu;
+	StackLayoutPanel stackPanel;
 	/**
 	 * This is the entry point method.
 	 */
 	
 	public void onModuleLoad() {
 
-		
+		models = new LinkedHashMap<String,Diagram>();
 		
 		isProjectLoaded = false;
 		VerticalPanel mainVerticalPanel = new VerticalPanel();
 		mainVerticalPanel.setTitle("VPanel");
 //		mainVerticalPanel.setStylePrimaryName("my-MainPanel");
 
-		MenuBar mainMenu = new MenuBar();
+		mainMenu = new MenuBar();
 		mainMenu.setHeight("35px");
 		
 		createMainMenu(mainMenu);
@@ -121,8 +134,13 @@ public class SzarHF_umlweb implements EntryPoint {
 		mainVerticalPanel.add(horPan);
 		
 		//test(rightVerticalPanel);
-		
-	    StackLayoutPanel stackPanel = new StackLayoutPanel(Unit.EM);
+		AbsolutePanel boundaryPanel = new AbsolutePanel();
+        boundaryPanel.setSize("800px", "450px");
+        rightVerticalPanel.add(boundaryPanel); 
+        
+        diagram = new Diagram(boundaryPanel);
+        
+	    stackPanel = new StackLayoutPanel(Unit.EM);
 	    stackPanel.setPixelSize(leftMenuSize, maxHeight);
 	    createLeftMenu(stackPanel);
 	    leftVerticalPanel.add(stackPanel);    
@@ -272,46 +290,85 @@ public class SzarHF_umlweb implements EntryPoint {
 		fileMenu.addItem(loadProjectMenuItem);
 		fileMenu.addItem(saveProjectMenuItem);
 		
+		MenuBar editMenu = new MenuBar(true);
+		Command createModel = new Command(){
+			public void execute() {
+				models.put("New Model", diagram);
+				refresMainMenu(stackPanel);
+				stackPanel.forceLayout();
+			}		
+		};
+		MenuItem createModelMenuItem = new MenuItem("Create new Model",createModel);
+		editMenu.addItem(createModelMenuItem);
+		
 		MenuBar helpMenu = new MenuBar(true);
-		
-		
+	
+			
 		mainMenu.addItem(projectNameMenuItem);
 		mainMenu.addItem("File",fileMenu);
+		mainMenu.addItem("Edit",editMenu);
 		mainMenu.addItem("Help",helpMenu);
 	}
 	
 	public void createLeftMenu(StackLayoutPanel stackPanel)
 	{
 		VerticalPanel w1_1=new VerticalPanel();
-	    Button w1_2=new Button("Diagram Types"); 
+	    Button w1_2=new Button("Models"); 
 	    w1_2.setWidth(Integer.toString(leftMenuSize)+"px");
-	    Button lbl1=new Button("new \"Class Diagram\"");
-	    Button lbl2=new Button("new \"Activity Diagram\"");
-	    lbl1.setWidth(Integer.toString(leftMenuSize-10)+"px");
-	    lbl2.setWidth(Integer.toString(leftMenuSize-10)+"px");
-	    w1_1.add(lbl1);	    
-	    w1_1.add(lbl2);
+	    Set<String> names = models.keySet();
+	    Iterator<String> nameIterator = names.iterator();
+	    while(nameIterator.hasNext()) {
+	    	Button lb12 = new Button(nameIterator.next());
+	    	lb12.setWidth(Integer.toString(leftMenuSize-10)+"px");
+	    	w1_1.add(lb12);
+	    }	       
 	    stackPanel.add(w1_1, w1_2, 2);
 	    
 	    VerticalPanel w2_1=new VerticalPanel();
-	    Button w2_2=new Button("1Szia");    
+	    Button w2_2=new Button("Diagram elements");    
 	    TextBox lbl2_1=new TextBox();
 	    lbl2_1.setWidth(Integer.toString(leftMenuSize-10)+"px");
 	    TextBox lbl2_2=new TextBox();
 	    lbl2_2.setWidth(Integer.toString(leftMenuSize-10)+"px");
 	    w2_1.add(lbl2_1);
 	    w2_1.add(lbl2_2);
-	    stackPanel.add(w2_1, w2_2, 2);   
- 	    
-	    VerticalPanel w3_1=new VerticalPanel();
-	    Button w3_2=new Button("1Szia");    
-	    TextBox lbl3_1=new TextBox();
-	    lbl3_1.setWidth(Integer.toString(leftMenuSize-15)+"px");
-	    TextBox lbl3_2=new TextBox();
-	    lbl3_2.setWidth(Integer.toString(leftMenuSize-15)+"px");
-	    w3_1.add(lbl3_1);
-	    w3_1.add(lbl3_2);
-	    stackPanel.add(w3_1, w3_2, 2);
+	    stackPanel.add(w2_1, w2_2, 2);    	
+	}
+	
+	public void refresMainMenu(StackLayoutPanel stackPanel)
+	{
+		VerticalPanel w1_1 = (VerticalPanel) stackPanel.getWidget(0);
+
+	    int widgetCount = w1_1.getWidgetCount();
+	    for(int i = 0; i<widgetCount; i++)
+	    {
+	    	w1_1.remove(0);
+	    }
+	    Set<String> names = models.keySet();
+	   
+	    DoubleClickHandler rename = new DoubleClickHandler() {	        
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				Button b = (Button)event.getSource();
+				renameModule(b);
+			}
+	    };
+	    Iterator<String> nameIterator = names.iterator();
+	    while(nameIterator.hasNext()) {
+	    	Button lb12 = new Button(nameIterator.next());
+	    	lb12.setWidth(Integer.toString(leftMenuSize-10)+"px");
+	    	lb12.addDoubleClickHandler(rename);
+	    	w1_1.add(lb12);
+	    	
+	    }     
+	}
+	
+	private void renameModule(Button b)
+	{
+		Diagram currentDiagram = models.remove(b.getText());
+		String newTitle = Window.prompt("New name of the model:", b.getText());
+		models.put(newTitle, currentDiagram);
+		b.setText(newTitle);	
 		
 	}
 	
