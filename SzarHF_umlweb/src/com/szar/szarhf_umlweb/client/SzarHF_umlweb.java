@@ -1,11 +1,9 @@
 package com.szar.szarhf_umlweb.client;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 
 import com.szar.gwt.connectors.client.CornerPoint;
 import com.szar.gwt.connectors.client.Diagram;
@@ -16,62 +14,32 @@ import com.szar.gwt.connectors.client.elements.Shape;
 import com.szar.gwt.connectors.client.elements.Shape.CPShapeType;
 import com.szar.gwt.connectors.client.images.ConnectorsBundle;
 import com.szar.gwt.connectors.client.util.ConnectorStyle;
-import com.szar.szarhf_umlweb.shared.FieldVerifier;
-import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.DecoratedStackPanel;
-import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.FocusPanel;
-import com.google.gwt.user.client.ui.FormPanel;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Tree;
-import com.google.gwt.user.client.ui.Tree.Resources;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.VerticalScrollbar;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -99,7 +67,7 @@ public class SzarHF_umlweb implements EntryPoint {
 	int maxHeight = 455;
 	String projectName = "Unknown project";
 	boolean isProjectLoaded;
-	LinkedHashMap<String, Diagram> models;
+	TreeMap<String, Diagram> models;
 	AbsolutePanel boundaryPanel;
 	Diagram diagram;
 	MenuBar mainMenu;
@@ -110,7 +78,7 @@ public class SzarHF_umlweb implements EntryPoint {
 	
 	public void onModuleLoad() {
 
-		models = new LinkedHashMap<String,Diagram>();
+		models = new TreeMap<String,Diagram>();
 		
 		isProjectLoaded = false;
 		VerticalPanel mainVerticalPanel = new VerticalPanel();
@@ -353,6 +321,7 @@ public class SzarHF_umlweb implements EntryPoint {
 				renameModule(b);
 			}
 	    };
+
 	    Iterator<String> nameIterator = names.iterator();
 	    while(nameIterator.hasNext()) {
 	    	Button lb12 = new Button(nameIterator.next());
@@ -369,6 +338,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		String newTitle = Window.prompt("New name of the model:", b.getText());
 		models.put(newTitle, currentDiagram);
 		b.setText(newTitle);	
+		refresMainMenu(this.stackPanel);
 		
 	}
 	
