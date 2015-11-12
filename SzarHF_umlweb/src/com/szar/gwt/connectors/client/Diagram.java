@@ -320,12 +320,18 @@ public class Diagram {
   }
 
   public String saveXML() {
-    String xmlString = "connectors:\n";
+    String xmlString = "shapes:\n";
     // TODO Save diagram to xml
     // Save Shapes
+    for (int i = 0; i < shapes.size(); i++) {
+        xmlString +=
+            "(" + shapes.get(i).getAbsoluteLeft() + "," + shapes.get(i).getAbsoluteTop() + ")";
+        
+      }
 
     // Save Connectors
     // TODO Change to StringBuilder
+    xmlString += "connectors:\n";
     for (int i = 0; i < connectors.size(); i++) {
       xmlString +=
           "(" + connectors.get(i).startEndPoint.getLeft() + "," + connectors.get(i).startEndPoint.getTop() + ")";
@@ -341,6 +347,10 @@ public class Diagram {
 
     return xmlString;
   }
+  public void loadXML(String XML) {
+	  
+  }
+  
 
   public Shape getStartShapeForConnector(Connector connector) {
     try {
