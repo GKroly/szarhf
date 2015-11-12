@@ -251,11 +251,23 @@ public class SzarHF_umlweb implements EntryPoint {
 		saveProjectMenuItem.setEnabled(isProjectLoaded);
 		Command createProject = new Command() {
 			public void execute() {
-				isProjectLoaded = true;
-				projectName = "New Project";
-				projectNameMenuItem.setText(projectName);
-				saveProjectMenuItem.setEnabled(true);
-				Window.alert("Click to New Project to give it a name.");
+				
+				if(isProjectLoaded){
+					//Ha van betoltott projekt, akkor figyelmeztessen
+					isProjectLoaded = true;
+					projectName = "New Project";
+					projectNameMenuItem.setText(projectName);
+					saveProjectMenuItem.setEnabled(true);
+					Window.alert("Previous Project replaced with a new project");
+				}else{
+					//Ha nincs betoltott projekt akkor hozzon letre egy ujat
+					isProjectLoaded = true;
+					projectName = "New Project";
+					projectNameMenuItem.setText(projectName);
+					saveProjectMenuItem.setEnabled(true);
+					Window.alert("Click to New Project to give it a name.");
+				}
+				
 			}
 		};
 		MenuItem createProjectMenuItem = new MenuItem("Create new project",
