@@ -227,9 +227,17 @@ public class SzarHF_umlweb implements EntryPoint {
 		Command editProjectName = new Command() {
 			public void execute() {
 				if (isProjectLoaded) {
+					
 					String newTitle = Window.prompt("New name of the project:",
 							projectNameMenuItem.getText());
-					projectNameMenuItem.setText(newTitle);
+					if(newTitle==null){
+						projectNameMenuItem.setText(projectName);
+						
+					}else{
+						projectNameMenuItem.setText(newTitle);
+						projectName=newTitle;
+					}
+					
 				}
 			}
 		};
@@ -245,6 +253,7 @@ public class SzarHF_umlweb implements EntryPoint {
 			public void execute() {
 				isProjectLoaded = true;
 				projectName = "New Project";
+				projectNameMenuItem.setText(projectName);
 				saveProjectMenuItem.setEnabled(true);
 				Window.alert("Click to New Project to give it a name.");
 			}
