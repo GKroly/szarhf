@@ -249,6 +249,20 @@ public class SzarHF_umlweb implements EntryPoint {
 		final MenuItem saveProjectMenuItem = new MenuItem(
 				"Save current project", cmd);
 
+		Command createModel = new Command() {
+			public void execute() {
+				models.put("New Model", diagram);
+				refreshModelsOrder(stackPanel);
+				stackPanel.forceLayout();
+			}
+		};
+		
+		MenuBar editMenu = new MenuBar(true);
+		final MenuItem createModelMenuItem = new MenuItem("Create new Model",
+				createModel);
+		createModelMenuItem.setEnabled(isProjectLoaded);
+		editMenu.addItem(createModelMenuItem);
+		
 		saveProjectMenuItem.setEnabled(isProjectLoaded);
 		Command createProject = new Command() {
 			public void execute() {
@@ -268,6 +282,7 @@ public class SzarHF_umlweb implements EntryPoint {
 					saveProjectMenuItem.setEnabled(true);
 					Window.alert("Click to New Project to give it a name.");
 				}
+				createModelMenuItem.setEnabled(isProjectLoaded);
 				
 			}
 		};
@@ -278,19 +293,8 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		fileMenu.addItem(createProjectMenuItem);
 		fileMenu.addItem(loadProjectMenuItem);
-		fileMenu.addItem(saveProjectMenuItem);
-
-		MenuBar editMenu = new MenuBar(true);
-		Command createModel = new Command() {
-			public void execute() {
-				models.put("New Model", diagram);
-				refreshModelsOrder(stackPanel);
-				stackPanel.forceLayout();
-			}
-		};
-		MenuItem createModelMenuItem = new MenuItem("Create new Model",
-				createModel);
-		editMenu.addItem(createModelMenuItem);
+		fileMenu.addItem(saveProjectMenuItem);		
+		
 
 		MenuBar helpMenu = new MenuBar(true);
 
