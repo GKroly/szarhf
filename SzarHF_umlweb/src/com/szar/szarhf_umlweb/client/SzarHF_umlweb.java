@@ -179,8 +179,7 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		boundaryPanel.add(label, 50, 250);
 		boundaryPanel.add(label2, 450, 200);
-		boundaryPanel.add(label3, 650, 200);
-		boundaryPanel.add(label3, 700, 500);
+		boundaryPanel.add(label3, 50, 200);
 
 		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
 			public void execute() {
