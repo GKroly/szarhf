@@ -101,7 +101,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		rightVerticalPanel.setWidth("800px");
 		mainVerticalPanel.add(horPan);
 		
-		//test(rightVerticalPanel);
+		test(rightVerticalPanel);
 		boundaryPanel = new AbsolutePanel();
         boundaryPanel.setSize("800px", "450px");
         rightVerticalPanel.add(boundaryPanel); 
@@ -132,10 +132,7 @@ public class SzarHF_umlweb implements EntryPoint {
 	
 	private void test(VerticalPanel viewPanel)
 	{
-		boundaryPanel = new AbsolutePanel();
-        boundaryPanel.setSize("800px", "450px");
-        viewPanel.add(boundaryPanel); 
-        
+       
         final Diagram diagram = new Diagram(boundaryPanel);
 
         boundaryPanel.add(new Label("Connectors example for GWT 2.4"), 10, 2);
@@ -173,11 +170,10 @@ public class SzarHF_umlweb implements EntryPoint {
 
         image.setPixelSize(153, 55);  
         
-        BPMNTask task = new BPMNTask();
-        boundaryPanel.add(task, 20, 20);
-        
+       
         boundaryPanel.add(label, 50, 250);
         boundaryPanel.add(label2, 450, 200);
+        boundaryPanel.add(label3,650,200);
         boundaryPanel.add(label3, 700, 500);
 
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand()
@@ -189,11 +185,11 @@ public class SzarHF_umlweb implements EntryPoint {
                 shapeForLabel.setTitle("shapeForLabel");
                 shapeForLabel.enableConnectionCreate(true);
                 
-                Shape shapeForLabel2 = new Shape(label2, CPShapeType.OVAL);
+                Shape shapeForLabel2 = new Shape(label2, CPShapeType.RECTANGLE);
                 shapeForLabel2.showOnDiagram(diagram);
                 shapeForLabel2.setTitle("shapeForLabel2");
                 
-                Shape shapeForLabel3 = new Shape(label3, CPShapeType.RECTANGLE);
+                Shape shapeForLabel3 = new Shape(label3, CPShapeType.DIAMOND);
                 shapeForLabel3.showOnDiagram(diagram);
                 shapeForLabel3.setTitle("shapeForLabel");
                 shapeForLabel3.enableConnectionCreate(true);
