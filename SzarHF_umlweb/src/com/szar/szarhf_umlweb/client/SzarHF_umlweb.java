@@ -283,7 +283,8 @@ public class SzarHF_umlweb implements EntryPoint {
 					Window.alert("Click to New Project to give it a name.");
 				}
 				createModelMenuItem.setEnabled(isProjectLoaded);
-				
+				models.clear();
+				refreshModelsOrder(stackPanel);
 			}
 		};
 		MenuItem createProjectMenuItem = new MenuItem("Create new project",
