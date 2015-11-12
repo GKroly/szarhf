@@ -389,11 +389,11 @@ function szarhf_umlweb(){
     }
     var strongName;
     try {
-      unflattenKeylistIntoAnswers(['gecko1_8'], '141EB4125AA27CCCDDEB9343D1CA0AE8');
-      unflattenKeylistIntoAnswers(['ie10'], '3E50ACF82173123AED2599E8F5DE0FEA');
-      unflattenKeylistIntoAnswers(['safari'], '484A0EBC76AC87975223C618C0C81E70');
-      unflattenKeylistIntoAnswers(['ie8'], '9F963C84E16376A8FC0874DEB884A49E');
-      unflattenKeylistIntoAnswers(['ie9'], 'D691A77122527012CE2C1365A6B8BA9B');
+      unflattenKeylistIntoAnswers(['ie10'], '4A1BC8BFB830DCDE3D91BAC9DAAC1208');
+      unflattenKeylistIntoAnswers(['ie8'], '681583DE3377CEE8BC307712782DD0A2');
+      unflattenKeylistIntoAnswers(['safari'], '98E787AEA39FE56504A922C9AF194D90');
+      unflattenKeylistIntoAnswers(['ie9'], 'B2E5C32BF99EBD8B9ED1F5ABEE35107F');
+      unflattenKeylistIntoAnswers(['gecko1_8'], 'C519F752602867A3ECDFE97A18C95A64');
       strongName = answers[computePropValue('user.agent')];
       var idx = strongName.indexOf(':');
       if (idx != -1) {

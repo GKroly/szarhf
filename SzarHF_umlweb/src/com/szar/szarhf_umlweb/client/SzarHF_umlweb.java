@@ -102,7 +102,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		mainVerticalPanel.add(horPan);
 		
 		//test(rightVerticalPanel);
-		AbsolutePanel boundaryPanel = new AbsolutePanel();
+		boundaryPanel = new AbsolutePanel();
         boundaryPanel.setSize("800px", "450px");
         rightVerticalPanel.add(boundaryPanel); 
         
@@ -132,7 +132,7 @@ public class SzarHF_umlweb implements EntryPoint {
 	
 	private void test(VerticalPanel viewPanel)
 	{
-		AbsolutePanel boundaryPanel = new AbsolutePanel();
+		boundaryPanel = new AbsolutePanel();
         boundaryPanel.setSize("800px", "450px");
         viewPanel.add(boundaryPanel); 
         
