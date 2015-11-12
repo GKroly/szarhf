@@ -102,10 +102,10 @@ public class SzarHF_umlweb implements EntryPoint {
 		rightVerticalPanel.setWidth("800px");
 		mainVerticalPanel.add(horPan);
 
-		test(rightVerticalPanel);
 		boundaryPanel = new AbsolutePanel();
 		boundaryPanel.setSize("800px", "450px");
 		rightVerticalPanel.add(boundaryPanel);
+		test(rightVerticalPanel);		
 
 		diagram = new Diagram(boundaryPanel);
 
@@ -189,7 +189,7 @@ public class SzarHF_umlweb implements EntryPoint {
 				shapeForLabel.setTitle("shapeForLabel");
 				shapeForLabel.enableConnectionCreate(true);
 
-				Shape shapeForLabel2 = new Shape(label2, CPShapeType.RECTANGLE);
+				Shape shapeForLabel2 = new Shape(label2, CPShapeType.DIAMOND);
 				shapeForLabel2.showOnDiagram(diagram);
 				shapeForLabel2.setTitle("shapeForLabel2");
 
