@@ -188,11 +188,12 @@ public class SzarHF_umlweb implements EntryPoint {
 				shapeForLabel.setTitle("shapeForLabel");
 				shapeForLabel.enableConnectionCreate(true);
 
-				Shape shapeForLabel2 = new Shape(label2, CPShapeType.DIAMOND);
+				Shape shapeForLabel2 = new Shape(label2, CPShapeType.OVAL);
 				shapeForLabel2.showOnDiagram(diagram);
 				shapeForLabel2.setTitle("shapeForLabel2");
+				shapeForLabel2.enableConnectionCreate(true);
 
-				Shape shapeForLabel3 = new Shape(label3, CPShapeType.DIAMOND);
+				Shape shapeForLabel3 = new Shape(label3, CPShapeType.RECTANGLE);
 				shapeForLabel3.showOnDiagram(diagram);
 				shapeForLabel3.setTitle("shapeForLabel");
 				shapeForLabel3.enableConnectionCreate(true);
