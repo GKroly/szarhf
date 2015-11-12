@@ -65,7 +65,7 @@ public class SzarHF_umlweb implements EntryPoint {
 	 */
 	int leftMenuSize = 200;
 	int maxHeight = 455;
-	String projectName = "Unknown project";
+	String projectName = "No loaded project yet";
 	boolean isProjectLoaded;
 	TreeMap<String, Diagram> models;
 	AbsolutePanel boundaryPanel;
@@ -350,12 +350,18 @@ public class SzarHF_umlweb implements EntryPoint {
 		}
 	}
 
-	private void renameModule(Button b) {
-		Diagram currentDiagram = models.remove(b.getText());
-		String newTitle = Window.prompt("New name of the model:", b.getText());
-		models.put(newTitle, currentDiagram);
-		b.setText(newTitle);
-		refresMainMenu(this.stackPanel);
+	private void renameModule(Button modelButton) {
+		String newTitle = Window.prompt("New name of the model:", modelButton.getText());
+		if(newTitle==null){
+			
+		}else{
+			Diagram currentDiagram = models.remove(modelButton.getText());
+			models.put(newTitle, currentDiagram);
+			modelButton.setText(newTitle);
+			refresMainMenu(this.stackPanel);
+		}
+		
+		
 
 	}
 
