@@ -283,7 +283,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		Command createModel = new Command() {
 			public void execute() {
 				models.put("New Model", diagram);
-				refresMainMenu(stackPanel);
+				refreshModelsOrder(stackPanel);
 				stackPanel.forceLayout();
 			}
 		};
@@ -323,12 +323,12 @@ public class SzarHF_umlweb implements EntryPoint {
 		stackPanel.add(w2_1, w2_2, 2);
 	}
 
-	public void refresMainMenu(StackLayoutPanel stackPanel) {
-		VerticalPanel w1_1 = (VerticalPanel) stackPanel.getWidget(0);
+	public void refreshModelsOrder(StackLayoutPanel stackPanel) {
+		VerticalPanel modelsPanel = (VerticalPanel) stackPanel.getWidget(0);
 
-		int widgetCount = w1_1.getWidgetCount();
-		for (int i = 0; i < widgetCount; i++) {
-			w1_1.remove(0);
+		int modelNumber = modelsPanel.getWidgetCount();
+		for (int i = 0; i < modelNumber; i++) {
+			modelsPanel.remove(0);
 		}
 		Set<String> names = models.keySet();
 
@@ -345,24 +345,38 @@ public class SzarHF_umlweb implements EntryPoint {
 			Button lb12 = new Button(nameIterator.next());
 			lb12.setWidth(Integer.toString(leftMenuSize - 10) + "px");
 			lb12.addDoubleClickHandler(rename);
-			w1_1.add(lb12);
+			modelsPanel.add(lb12);
 
 		}
 	}
 
 	private void renameModule(Button modelButton) {
 		String newTitle = Window.prompt("New name of the model:", modelButton.getText());
+		
+		
+		
 		if(newTitle==null){
 			
 		}else{
+			//Nezze meg, hogy van-e mar ilyen nev
+			VerticalPanel modelsPanel = (VerticalPanel) stackPanel.getWidget(0);
+			int modelNumber = modelsPanel.getWidgetCount();
+			
+			for (int i = 0; i < modelNumber; i++) {
+				//modelsPanel.getT(0);
+			}
+			Set<String> names = models.keySet();
+			//FOLYTATNI KELL
+			
+			//Ha megadtak egy uj nevet, modositson ra
 			Diagram currentDiagram = models.remove(modelButton.getText());
 			models.put(newTitle, currentDiagram);
 			modelButton.setText(newTitle);
-			refresMainMenu(this.stackPanel);
+			refreshModelsOrder(this.stackPanel);
 		}
 		
 		
-
+		
 	}
 
 	/**
