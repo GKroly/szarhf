@@ -19,6 +19,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.resources.client.ImageResource;
@@ -72,6 +74,7 @@ public class SzarHF_umlweb implements EntryPoint {
 	Diagram diagram;
 	MenuBar mainMenu;
 	StackLayoutPanel stackPanel;
+	String activeModelName;
 
 	/**
 	 * This is the entry point method.
@@ -255,13 +258,13 @@ public class SzarHF_umlweb implements EntryPoint {
 				refreshModelsOrder(stackPanel);
 				stackPanel.forceLayout();
 			}
-		};
+		};		
 		
 		MenuBar editMenu = new MenuBar(true);
 		final MenuItem createModelMenuItem = new MenuItem("Create new Model",
 				createModel);
 		createModelMenuItem.setEnabled(isProjectLoaded);
-		editMenu.addItem(createModelMenuItem);
+		editMenu.addItem(createModelMenuItem);		
 		
 		saveProjectMenuItem.setEnabled(isProjectLoaded);
 		Command createProject = new Command() {
@@ -344,13 +347,23 @@ public class SzarHF_umlweb implements EntryPoint {
 				Button b = (Button) event.getSource();
 				renameModule(b);
 			}
-		};
-
+		};	
+		
+		ClickHandler loadDiagram = new ClickHandler() {
+		      public void onClick(ClickEvent event) {
+		    	  String moduleName = ((Button)event.getSource()).getText();		    	  
+		    	  Diagram newdiagram = models.get(moduleName);
+		    	  diagram = newdiagram;
+		    	  boundaryPanel.setVisible(true);
+		        }
+		      };
+		
 		Iterator<String> nameIterator = names.iterator();
 		while (nameIterator.hasNext()) {
 			Button lb12 = new Button(nameIterator.next());
 			lb12.setWidth(Integer.toString(leftMenuSize - 10) + "px");
 			lb12.addDoubleClickHandler(rename);
+			lb12.addClickHandler(loadDiagram);
 			modelsPanel.add(lb12);
 
 		}
