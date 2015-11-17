@@ -1359,5 +1359,22 @@ public class Connector implements Element {
       listener.onConnectorDoubleClick(event);
     }
   }
+  
+  public Connector cloneConnector(Diagram newDiagram)
+  {
+	  int startLeft = this.startEndPoint.getLeft();
+	  int startTop = this.startEndPoint.getTop();
+	  int endLeft = this.endEndPoint.getLeft();
+	  int endTop = this.endEndPoint.getTop();
+	  SectionDecoration startDecoration = this.startPointDecoration;
+      SectionDecoration endDecoration = this.endPointDecoration;
+      EndPoint endEndPoint = new EndPoint(endLeft,endTop);
+      Diagram diagram = newDiagram;
+      ConnectorStyle style = ConnectorStyle.valueOf(this.style.name());      
+	  Connector clone = new Connector(startLeft,startTop, endTop, endTop, startDecoration, endDecoration, endEndPoint, diagram, style); 
+	  
+	  return clone;
+	    
+  }
 
 }

@@ -134,7 +134,7 @@ public class SzarHF_umlweb implements EntryPoint {
 
 	private void test(VerticalPanel viewPanel) {
 
-		final Diagram diagram = new Diagram(boundaryPanel);
+		diagram = new Diagram(boundaryPanel);
 
 		boundaryPanel.add(new Label("Connectors example for GWT 2.4"), 10, 2);
 		Connector connector1 = new Connector(50, 80, 150, 200,
@@ -255,16 +255,35 @@ public class SzarHF_umlweb implements EntryPoint {
 		Command createModel = new Command() {
 			public void execute() {
 				models.put("New Model", new Diagram(boundaryPanel));
+				activeModelName = "New Model";
 				refreshModelsOrder(stackPanel);
 				stackPanel.forceLayout();
 			}
 		};		
+		Command saveModel = new Command(){
+			public void execute(){	
+				Diagram currentDiagram = new Diagram(boundaryPanel);
+				for(Connector currentConnector : diagram.connectors)
+				{
+					
+				}
+				currentDiagram.connectors.addAll(diagram.connectors);
+				currentDiagram.shapes.addAll(diagram.shapes);
+				currentDiagram.boundarySelectionHandler = diagram.boundarySelectionHandler;
+				currentDiagram.endPointDragController = diagram.endPointDragController;
+				models.put(activeModelName, currentDiagram);	
+				GWT.log(activeModelName+ " saved: "+ currentDiagram.saveXML());
+			}
+		};
 		
 		MenuBar editMenu = new MenuBar(true);
 		final MenuItem createModelMenuItem = new MenuItem("Create new Model",
 				createModel);
 		createModelMenuItem.setEnabled(isProjectLoaded);
-		editMenu.addItem(createModelMenuItem);		
+		editMenu.addItem(createModelMenuItem);
+		final MenuItem saveModelMenuItem = new MenuItem("Save current model",saveModel);
+		saveModelMenuItem.setEnabled(isProjectLoaded);
+		editMenu.addItem(saveModelMenuItem);
 		
 		saveProjectMenuItem.setEnabled(isProjectLoaded);
 		Command createProject = new Command() {
@@ -276,6 +295,7 @@ public class SzarHF_umlweb implements EntryPoint {
 					projectName = "New Project";
 					projectNameMenuItem.setText(projectName);
 					saveProjectMenuItem.setEnabled(true);
+					saveModelMenuItem.setEnabled(true);
 					Window.alert("Previous Project replaced with a new project");
 				}else{
 					//Ha nincs betoltott projekt akkor hozzon letre egy ujat
@@ -283,6 +303,7 @@ public class SzarHF_umlweb implements EntryPoint {
 					projectName = "New Project";
 					projectNameMenuItem.setText(projectName);
 					saveProjectMenuItem.setEnabled(true);
+					saveModelMenuItem.setEnabled(true);
 					Window.alert("Click to New Project to give it a name.");
 				}
 				createModelMenuItem.setEnabled(isProjectLoaded);
@@ -351,7 +372,8 @@ public class SzarHF_umlweb implements EntryPoint {
 		
 		ClickHandler loadDiagram = new ClickHandler() {
 		      public void onClick(ClickEvent event) {
-		    	  String moduleName = ((Button)event.getSource()).getText();		    	  
+		    	  String moduleName = ((Button)event.getSource()).getText();	
+		    	  activeModelName = moduleName;
 		    	  Diagram newdiagram = models.get(moduleName);
 		    	  boundaryPanel.clear();
 		    	  diagram = new Diagram(boundaryPanel);
@@ -363,6 +385,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		    	  {
 		    		  currentConnector.showOnDiagram(diagram);
 		    	  }
+		    	  GWT.log("Diagram loaded: " + activeModelName + " ;" +newdiagram.saveXML());
 		    	  boundaryPanel.setVisible(true);
 		        }
 		      };
@@ -400,6 +423,7 @@ public class SzarHF_umlweb implements EntryPoint {
 			Diagram currentDiagram = models.remove(modelButton.getText());
 			models.put(newTitle, currentDiagram);
 			modelButton.setText(newTitle);
+			activeModelName = newTitle;
 			refreshModelsOrder(this.stackPanel);
 		}
 		
