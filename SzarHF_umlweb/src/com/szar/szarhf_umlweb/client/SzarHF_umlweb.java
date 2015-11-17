@@ -254,7 +254,7 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		Command createModel = new Command() {
 			public void execute() {
-				models.put("New Model", diagram);
+				models.put("New Model", new Diagram(boundaryPanel));
 				refreshModelsOrder(stackPanel);
 				stackPanel.forceLayout();
 			}
@@ -353,7 +353,16 @@ public class SzarHF_umlweb implements EntryPoint {
 		      public void onClick(ClickEvent event) {
 		    	  String moduleName = ((Button)event.getSource()).getText();		    	  
 		    	  Diagram newdiagram = models.get(moduleName);
-		    	  diagram = newdiagram;
+		    	  boundaryPanel.clear();
+		    	  diagram = new Diagram(boundaryPanel);
+		    	  for(Shape currentShape : newdiagram.shapes)
+		    	  {
+		    		  currentShape.showOnDiagram(diagram);
+		    	  }
+		    	  for(Connector currentConnector : newdiagram.connectors)
+		    	  {
+		    		  currentConnector.showOnDiagram(diagram);
+		    	  }
 		    	  boundaryPanel.setVisible(true);
 		        }
 		      };
