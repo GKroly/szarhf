@@ -93,4 +93,16 @@ public interface ConnectorsBundle extends ClientBundle {
 
   @Source("shape_connector_start.png")
   ImageResource shapeConnectorStart();
+  
+  @Source("decision.png")
+  ImageResource decision();
+  
+  @Source("final.png")
+  ImageResource finalImage();
+  
+  @Source("Initial.png")
+  ImageResource initial();
+  
+  @Source("merge.png")
+  ImageResource merge();
 }

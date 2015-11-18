@@ -32,6 +32,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -351,12 +352,64 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		VerticalPanel w2_1 = new VerticalPanel();
 		Button w2_2 = new Button("Diagram elements");
-		TextBox lbl2_1 = new TextBox();
-		lbl2_1.setWidth(Integer.toString(leftMenuSize - 10) + "px");
-		TextBox lbl2_2 = new TextBox();
-		lbl2_2.setWidth(Integer.toString(leftMenuSize - 10) + "px");
-		w2_1.add(lbl2_1);
-		w2_1.add(lbl2_2);
+		w2_2.setWidth(Integer.toString(leftMenuSize) + "px");
+		
+		Grid g = new Grid(2, 3);
+		
+		ClickHandler addInitial = new ClickHandler() {
+		      public void onClick(ClickEvent event) {		    	  
+		    	FocusPanel initial = new FocusPanel();
+		  		Image img = AbstractImagePrototype.create(
+		  				ConnectorsBundle.INSTANCE.initial()).createImage();
+		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
+		  		img.setTitle("Initial");
+		  		initial.setWidget(img);
+		  		boundaryPanel.add(initial, 10, 10);
+		  		
+		  		Shape shapeForDiamond = new Shape(initial, CPShapeType.DIAMOND);
+				shapeForDiamond.showOnDiagram(diagram);
+				shapeForDiamond.enableConnectionCreate(true);
+				shapeForDiamond.setTitle("shapeForDiamond");
+		      }
+		};
+		
+		g.setWidth(Integer.toString(leftMenuSize) + "px");
+		FocusPanel initial = new FocusPanel();
+		Image img = AbstractImagePrototype.create(
+				ConnectorsBundle.INSTANCE.initial()).createImage();
+		img.getElement().getStyle().setDisplay(Display.BLOCK);
+		img.setTitle("Initial");
+		initial.setWidget(img);
+		initial.addClickHandler(addInitial);
+		
+		FocusPanel decision = new FocusPanel();
+		img = AbstractImagePrototype.create(
+				ConnectorsBundle.INSTANCE.decision()).createImage();
+		img.getElement().getStyle().setDisplay(Display.BLOCK);
+		decision.setWidget(img);
+		
+		FocusPanel finalImage = new FocusPanel();
+		img = AbstractImagePrototype.create(
+				ConnectorsBundle.INSTANCE.finalImage()).createImage();
+		img.getElement().getStyle().setDisplay(Display.BLOCK);
+		finalImage.setWidget(img);		
+		
+		FocusPanel merge = new FocusPanel();
+		img = AbstractImagePrototype.create(
+				ConnectorsBundle.INSTANCE.merge()).createImage();
+		img.getElement().getStyle().setDisplay(Display.BLOCK);
+		merge.setWidget(img);	
+		
+		Label state = new Label();
+		state.setText("State");
+		
+		g.setWidget(0, 0, initial);
+		g.setWidget(0, 1, finalImage);
+		g.setWidget(0, 2, decision);
+		g.setWidget(1, 0, merge);
+		g.setWidget(1, 1, state);
+		
+		w2_1.add(g);
 		stackPanel.add(w2_1, w2_2, 2);
 	}
 
@@ -385,6 +438,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		    	  rightVerticalPanel.remove(boundaryPanel);
 		    	  boundaryPanel = testModels.get(moduleName);
 		    	  rightVerticalPanel.add(boundaryPanel);	
+		    	  diagram = newdiagram;
 		    	  GWT.log("Diagram loaded: " + activeModelName + " ;" +newdiagram.saveXML());
 		    	  rightVerticalPanel.setVisible(true);
 		        }
