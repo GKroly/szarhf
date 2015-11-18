@@ -1372,7 +1372,10 @@ public class Connector implements Element {
       Diagram diagram = newDiagram;
       ConnectorStyle style = ConnectorStyle.valueOf(this.style.name());      
 	  Connector clone = new Connector(startLeft,startTop, endTop, endTop, startDecoration, endDecoration, endEndPoint, diagram, style); 
-	  
+	  for(CornerPoint cp : this.cornerPoints)
+	  {
+		  clone.cornerPoints.add(new CornerPoint(cp.getLeft(),cp.getTop()));
+	  }
 	  return clone;
 	    
   }

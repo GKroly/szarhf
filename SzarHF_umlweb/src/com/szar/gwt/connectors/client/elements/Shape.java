@@ -868,5 +868,13 @@ public class Shape extends FocusPanel implements Element {
 	      }
 	    }
 	  }
+	  
+	  public Shape cloneShape()
+	  {		  
+		  Shape clone = new Shape(this.getWidget(),this.cpShapeType);
+		  clone.setTitle(this.getTitle());
+		  return clone;
+	  }
 
 }
+

@@ -70,7 +70,9 @@ public class SzarHF_umlweb implements EntryPoint {
 	String projectName = "No loaded project yet";
 	boolean isProjectLoaded;
 	TreeMap<String, Diagram> models;
+	TreeMap<String, AbsolutePanel> testModels;
 	AbsolutePanel boundaryPanel;
+	VerticalPanel rightVerticalPanel;
 	Diagram diagram;
 	MenuBar mainMenu;
 	StackLayoutPanel stackPanel;
@@ -83,7 +85,7 @@ public class SzarHF_umlweb implements EntryPoint {
 	public void onModuleLoad() {
 
 		models = new TreeMap<String, Diagram>();
-
+		testModels = new TreeMap<String, AbsolutePanel>();
 		isProjectLoaded = false;
 		VerticalPanel mainVerticalPanel = new VerticalPanel();
 		mainVerticalPanel.setTitle("VPanel");
@@ -97,7 +99,7 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		HorizontalPanel horPan = new HorizontalPanel();
 		VerticalPanel leftVerticalPanel = new VerticalPanel();
-		VerticalPanel rightVerticalPanel = new VerticalPanel();
+		rightVerticalPanel = new VerticalPanel();
 		horPan.add(leftVerticalPanel);
 		horPan.add(rightVerticalPanel);
 		rightVerticalPanel.setBorderWidth(1);
@@ -255,6 +257,9 @@ public class SzarHF_umlweb implements EntryPoint {
 		Command createModel = new Command() {
 			public void execute() {
 				models.put("New Model", new Diagram(boundaryPanel));
+				AbsolutePanel boundaryPanel = new AbsolutePanel();
+				boundaryPanel.setSize("800px", "450px");
+				testModels.put("New Model", boundaryPanel);
 				activeModelName = "New Model";
 				refreshModelsOrder(stackPanel);
 				stackPanel.forceLayout();
@@ -265,13 +270,14 @@ public class SzarHF_umlweb implements EntryPoint {
 				Diagram currentDiagram = new Diagram(boundaryPanel);
 				for(Connector currentConnector : diagram.connectors)
 				{
-					
+					currentDiagram.connectors.add(currentConnector.cloneConnector(currentDiagram));
 				}
-				currentDiagram.connectors.addAll(diagram.connectors);
-				currentDiagram.shapes.addAll(diagram.shapes);
-				currentDiagram.boundarySelectionHandler = diagram.boundarySelectionHandler;
-				currentDiagram.endPointDragController = diagram.endPointDragController;
+				for(Shape currentShape : diagram.shapes)
+				{
+					currentDiagram.shapes.add(currentShape.cloneShape());
+				}
 				models.put(activeModelName, currentDiagram);	
+				testModels.put(activeModelName, boundaryPanel);
 				GWT.log(activeModelName+ " saved: "+ currentDiagram.saveXML());
 			}
 		};
@@ -308,6 +314,7 @@ public class SzarHF_umlweb implements EntryPoint {
 				}
 				createModelMenuItem.setEnabled(isProjectLoaded);
 				models.clear();
+				testModels.clear();
 				refreshModelsOrder(stackPanel);
 			}
 		};
@@ -375,18 +382,11 @@ public class SzarHF_umlweb implements EntryPoint {
 		    	  String moduleName = ((Button)event.getSource()).getText();	
 		    	  activeModelName = moduleName;
 		    	  Diagram newdiagram = models.get(moduleName);
-		    	  boundaryPanel.clear();
-		    	  diagram = new Diagram(boundaryPanel);
-		    	  for(Shape currentShape : newdiagram.shapes)
-		    	  {
-		    		  currentShape.showOnDiagram(diagram);
-		    	  }
-		    	  for(Connector currentConnector : newdiagram.connectors)
-		    	  {
-		    		  currentConnector.showOnDiagram(diagram);
-		    	  }
+		    	  rightVerticalPanel.remove(boundaryPanel);
+		    	  boundaryPanel = testModels.get(moduleName);
+		    	  rightVerticalPanel.add(boundaryPanel);	
 		    	  GWT.log("Diagram loaded: " + activeModelName + " ;" +newdiagram.saveXML());
-		    	  boundaryPanel.setVisible(true);
+		    	  rightVerticalPanel.setVisible(true);
 		        }
 		      };
 		
@@ -421,7 +421,9 @@ public class SzarHF_umlweb implements EntryPoint {
 			
 			//Ha megadtak egy uj nevet, modositson ra
 			Diagram currentDiagram = models.remove(modelButton.getText());
+			AbsolutePanel currentPanel = testModels.remove(modelButton.getText());
 			models.put(newTitle, currentDiagram);
+			testModels.put(newTitle, currentPanel);
 			modelButton.setText(newTitle);
 			activeModelName = newTitle;
 			refreshModelsOrder(this.stackPanel);
