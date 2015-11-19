@@ -72,12 +72,13 @@ public class SzarHF_umlweb implements EntryPoint {
 	boolean isProjectLoaded;
 	TreeMap<String, Diagram> models;
 	TreeMap<String, AbsolutePanel> testModels;
-	AbsolutePanel boundaryPanel;
+	AbsolutePanel diagramBoundaryPanel;
 	VerticalPanel rightVerticalPanel;
 	Diagram diagram;
 	MenuBar mainMenu;
 	StackLayoutPanel stackPanel;
 	String activeModelName;
+	Button diagramElementsButton;
 
 	/**
 	 * This is the entry point method.
@@ -98,22 +99,22 @@ public class SzarHF_umlweb implements EntryPoint {
 		createMainMenu(mainMenu);
 		mainVerticalPanel.add(mainMenu);
 
-		HorizontalPanel horPan = new HorizontalPanel();
+		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		VerticalPanel leftVerticalPanel = new VerticalPanel();
 		rightVerticalPanel = new VerticalPanel();
-		horPan.add(leftVerticalPanel);
-		horPan.add(rightVerticalPanel);
+		horizontalPanel.add(leftVerticalPanel);
+		horizontalPanel.add(rightVerticalPanel);
 		rightVerticalPanel.setBorderWidth(1);
 		rightVerticalPanel.setPixelSize(900, maxHeight);
 		rightVerticalPanel.setWidth("800px");
-		mainVerticalPanel.add(horPan);
+		mainVerticalPanel.add(horizontalPanel);
 
-		boundaryPanel = new AbsolutePanel();
-		boundaryPanel.setSize("800px", "450px");
-		rightVerticalPanel.add(boundaryPanel);
-		test(rightVerticalPanel);		
+		diagramBoundaryPanel = new AbsolutePanel();
+		diagramBoundaryPanel.setSize("800px", "450px");
+		rightVerticalPanel.add(diagramBoundaryPanel);
+		//test(rightVerticalPanel);		
 
-		diagram = new Diagram(boundaryPanel);
+		diagram = new Diagram(diagramBoundaryPanel);
 
 		stackPanel = new StackLayoutPanel(Unit.EM);
 		stackPanel.setPixelSize(leftMenuSize, maxHeight);
@@ -135,11 +136,12 @@ public class SzarHF_umlweb implements EntryPoint {
 		}
 	};
 
+	//Betolt egy probadiagrammot
 	private void test(VerticalPanel viewPanel) {
 
-		diagram = new Diagram(boundaryPanel);
+		diagram = new Diagram(diagramBoundaryPanel);
 
-		boundaryPanel.add(new Label("Connectors example for GWT 2.4"), 10, 2);
+		diagramBoundaryPanel.add(new Label("Connectors example for GWT 2.4"), 10, 2);
 		Connector connector1 = new Connector(50, 80, 150, 200,
 				new SectionDecoration(DecorationType.ARROW_SOLID),
 				new SectionDecoration(DecorationType.ARROW_SOLID));
@@ -170,7 +172,7 @@ public class SzarHF_umlweb implements EntryPoint {
 				ConnectorsBundle.INSTANCE.diamondImg()).createImage();
 		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		diamond.setWidget(img);
-		boundaryPanel.add(diamond, 700, 400);
+		diagramBoundaryPanel.add(diamond, 700, 400);
 
 		// Add some elements that can be connected
 		final Label label = new Label("LABEL");
@@ -183,9 +185,9 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		image.setPixelSize(153, 55);
 
-		boundaryPanel.add(label, 50, 250);
-		boundaryPanel.add(label2, 450, 200);
-		boundaryPanel.add(label3, 50, 200);
+		diagramBoundaryPanel.add(label, 50, 250);
+		diagramBoundaryPanel.add(label2, 450, 200);
+		diagramBoundaryPanel.add(label3, 50, 200);
 
 		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
 			public void execute() {
@@ -268,7 +270,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		};		
 		Command saveModel = new Command(){
 			public void execute(){	
-				Diagram currentDiagram = new Diagram(boundaryPanel);
+				Diagram currentDiagram = new Diagram(diagramBoundaryPanel);
 				for(Connector currentConnector : diagram.connectors)
 				{
 					currentDiagram.connectors.add(currentConnector.cloneConnector(currentDiagram));
@@ -278,7 +280,7 @@ public class SzarHF_umlweb implements EntryPoint {
 					currentDiagram.shapes.add(currentShape.cloneShape());
 				}
 				models.put(activeModelName, currentDiagram);	
-				testModels.put(activeModelName, boundaryPanel);
+				testModels.put(activeModelName, diagramBoundaryPanel);
 				GWT.log(activeModelName+ " saved: "+ currentDiagram.saveXML());
 			}
 		};
@@ -351,8 +353,9 @@ public class SzarHF_umlweb implements EntryPoint {
 		stackPanel.add(w1_1, w1_2, 2);
 
 		VerticalPanel w2_1 = new VerticalPanel();
-		Button w2_2 = new Button("Diagram elements");
-		w2_2.setWidth(Integer.toString(leftMenuSize) + "px");
+		diagramElementsButton = new Button("Diagram elements");
+		diagramElementsButton.setWidth(Integer.toString(leftMenuSize) + "px");
+		diagramElementsButton.setEnabled(false); //Alapbol ne lehessen rakattintani a diagram elementsre
 		
 		Grid g = new Grid(2, 3);
 		
@@ -364,7 +367,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		  		img.setTitle("Initial");
 		  		initial.setWidget(img);
-		  		boundaryPanel.add(initial, 10, 10);
+		  		diagramBoundaryPanel.add(initial, 10, 10);
 		  		
 		  		Shape shapeForInitial = new Shape(initial, CPShapeType.DIAMOND);
 		  		shapeForInitial.showOnDiagram(diagram);
@@ -390,7 +393,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		  		img.setTitle("Decision");
 		  		decision.setWidget(img);
-		  		boundaryPanel.add(decision, 10, 10);
+		  		diagramBoundaryPanel.add(decision, 10, 10);
 		  		
 		  		Shape shapeForDecision = new Shape(decision, CPShapeType.DIAMOND);
 		  		shapeForDecision.showOnDiagram(diagram);
@@ -414,7 +417,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		  		img.setTitle("Final");
 		  		finalImage.setWidget(img);
-		  		boundaryPanel.add(finalImage, 10, 10);
+		  		diagramBoundaryPanel.add(finalImage, 10, 10);
 		  		
 		  		Shape shapeForFinal = new Shape(finalImage, CPShapeType.DIAMOND);
 		  		shapeForFinal.showOnDiagram(diagram);
@@ -438,7 +441,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		  		img.setTitle("Merge");
 		  		merge.setWidget(img);
-		  		boundaryPanel.add(merge, 10, 10);
+		  		diagramBoundaryPanel.add(merge, 10, 10);
 		  		
 		  		Shape shapeForMerge = new Shape(merge, CPShapeType.DIAMOND);
 		  		shapeForMerge.showOnDiagram(diagram);
@@ -477,7 +480,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		    	if(newTitle != null)
 				{
 		    		StateLabel.setText(newTitle);
-		    		boundaryPanel.add(StateLabel, 10, 10);
+		    		diagramBoundaryPanel.add(StateLabel, 10, 10);
 			  		
 			  		Shape shapeForState = new Shape(StateLabel, CPShapeType.DIAMOND);
 			  		shapeForState.showOnDiagram(diagram);
@@ -499,7 +502,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		g.setWidget(1, 1, state);
 		
 		w2_1.add(g);
-		stackPanel.add(w2_1, w2_2, 2);
+		stackPanel.add(w2_1, diagramElementsButton, 2);
 	}
 
 	public void refreshModelsOrder(StackLayoutPanel stackPanel) {
@@ -524,12 +527,16 @@ public class SzarHF_umlweb implements EntryPoint {
 		    	  String moduleName = ((Button)event.getSource()).getText();	
 		    	  activeModelName = moduleName;
 		    	  Diagram newdiagram = models.get(moduleName);
-		    	  rightVerticalPanel.remove(boundaryPanel);
-		    	  boundaryPanel = testModels.get(moduleName);
-		    	  rightVerticalPanel.add(boundaryPanel);	
+		    	  rightVerticalPanel.remove(diagramBoundaryPanel);
+		    	  diagramBoundaryPanel = testModels.get(moduleName);
+		    	  rightVerticalPanel.add(diagramBoundaryPanel);	
 		    	  diagram = newdiagram;
 		    	  GWT.log("Diagram loaded: " + activeModelName + " ;" +newdiagram.saveXML());
 		    	  rightVerticalPanel.setVisible(true);
+		    	  
+		    	  //System.out.println("Eng click");
+		    	  //Engedelyezzuk a Diagram elements menut
+		    	  diagramElementsButton.setEnabled(true);
 		        }
 		      };
 		
