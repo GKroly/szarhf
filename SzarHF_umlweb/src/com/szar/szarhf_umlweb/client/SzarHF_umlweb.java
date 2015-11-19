@@ -256,10 +256,10 @@ public class SzarHF_umlweb implements EntryPoint {
 				"Save current project", cmd);
 
 		Command createModel = new Command() {
-			public void execute() {
-				models.put("New Model", new Diagram(boundaryPanel));
+			public void execute() {				
 				AbsolutePanel boundaryPanel = new AbsolutePanel();
 				boundaryPanel.setSize("800px", "450px");
+				models.put("New Model", new Diagram(boundaryPanel));
 				testModels.put("New Model", boundaryPanel);
 				activeModelName = "New Model";
 				refreshModelsOrder(stackPanel);
@@ -366,10 +366,10 @@ public class SzarHF_umlweb implements EntryPoint {
 		  		initial.setWidget(img);
 		  		boundaryPanel.add(initial, 10, 10);
 		  		
-		  		Shape shapeForDiamond = new Shape(initial, CPShapeType.DIAMOND);
-				shapeForDiamond.showOnDiagram(diagram);
-				shapeForDiamond.enableConnectionCreate(true);
-				shapeForDiamond.setTitle("shapeForDiamond");
+		  		Shape shapeForInitial = new Shape(initial, CPShapeType.DIAMOND);
+		  		shapeForInitial.showOnDiagram(diagram);
+		  		shapeForInitial.enableConnectionCreate(true);
+		  		shapeForInitial.setTitle("Initial");
 		      }
 		};
 		
@@ -382,26 +382,110 @@ public class SzarHF_umlweb implements EntryPoint {
 		initial.setWidget(img);
 		initial.addClickHandler(addInitial);
 		
+		ClickHandler addDecision = new ClickHandler() {
+		      public void onClick(ClickEvent event) {		    	  
+		    	FocusPanel decision = new FocusPanel();
+		  		Image img = AbstractImagePrototype.create(
+		  				ConnectorsBundle.INSTANCE.decision()).createImage();
+		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
+		  		img.setTitle("Decision");
+		  		decision.setWidget(img);
+		  		boundaryPanel.add(decision, 10, 10);
+		  		
+		  		Shape shapeForDecision = new Shape(decision, CPShapeType.DIAMOND);
+		  		shapeForDecision.showOnDiagram(diagram);
+		  		shapeForDecision.enableConnectionCreate(true);
+				shapeForDecision.setTitle("Decision");
+		      }
+		};
+		
 		FocusPanel decision = new FocusPanel();
 		img = AbstractImagePrototype.create(
 				ConnectorsBundle.INSTANCE.decision()).createImage();
 		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		decision.setWidget(img);
+		decision.addClickHandler(addDecision);
+		
+		ClickHandler addFinal = new ClickHandler() {
+		      public void onClick(ClickEvent event) {		    	  
+		    	FocusPanel finalImage = new FocusPanel();
+		  		Image img = AbstractImagePrototype.create(
+		  				ConnectorsBundle.INSTANCE.finalImage()).createImage();
+		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
+		  		img.setTitle("Final");
+		  		finalImage.setWidget(img);
+		  		boundaryPanel.add(finalImage, 10, 10);
+		  		
+		  		Shape shapeForFinal = new Shape(finalImage, CPShapeType.DIAMOND);
+		  		shapeForFinal.showOnDiagram(diagram);
+		  		shapeForFinal.enableConnectionCreate(true);
+				shapeForFinal.setTitle("Final");
+		      }
+		};
 		
 		FocusPanel finalImage = new FocusPanel();
 		img = AbstractImagePrototype.create(
 				ConnectorsBundle.INSTANCE.finalImage()).createImage();
 		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		finalImage.setWidget(img);		
+		finalImage.addClickHandler(addFinal);
+		
+		ClickHandler addMerge = new ClickHandler() {
+		      public void onClick(ClickEvent event) {		    	  
+		    	FocusPanel merge = new FocusPanel();
+		  		Image img = AbstractImagePrototype.create(
+		  				ConnectorsBundle.INSTANCE.merge()).createImage();
+		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
+		  		img.setTitle("Merge");
+		  		merge.setWidget(img);
+		  		boundaryPanel.add(merge, 10, 10);
+		  		
+		  		Shape shapeForMerge = new Shape(merge, CPShapeType.DIAMOND);
+		  		shapeForMerge.showOnDiagram(diagram);
+		  		shapeForMerge.enableConnectionCreate(true);
+		  		shapeForMerge.setTitle("Merge");
+		      }
+		};
 		
 		FocusPanel merge = new FocusPanel();
 		img = AbstractImagePrototype.create(
 				ConnectorsBundle.INSTANCE.merge()).createImage();
 		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		merge.setWidget(img);	
+		merge.addClickHandler(addMerge);
+		
+		final DoubleClickHandler renameState = new DoubleClickHandler() {
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				Label label = (Label) event.getSource();
+				String newTitle = Window.prompt("New name of the state:",
+						label.getText());
+				
+				if(newTitle != null)
+				{
+					label.setText(newTitle);
+					
+				}
+			}
+		};	
+		
+		ClickHandler addState = new ClickHandler() {
+		      public void onClick(ClickEvent event) {		    	  
+		    	Label StateLabel = new Label();
+		    	StateLabel.setText("New State");
+		    	StateLabel.addDoubleClickHandler(renameState);
+		  		boundaryPanel.add(StateLabel, 10, 10);
+		  		
+		  		Shape shapeForState = new Shape(StateLabel, CPShapeType.DIAMOND);
+		  		shapeForState.showOnDiagram(diagram);
+		  		shapeForState.enableConnectionCreate(true);
+		  		shapeForState.setTitle("State");		  		
+		      }
+		};
 		
 		Label state = new Label();
 		state.setText("State");
+		state.addClickHandler(addState);
 		
 		g.setWidget(0, 0, initial);
 		g.setWidget(0, 1, finalImage);

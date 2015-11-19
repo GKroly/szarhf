@@ -46,4 +46,9 @@ h1 {
 	text-align: left;
 }
 
+.gwt-Label
+{
+	text-align: center;
+	position: center;
+}
 /* } */
