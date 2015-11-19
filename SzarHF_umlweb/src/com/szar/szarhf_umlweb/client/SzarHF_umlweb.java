@@ -31,8 +31,10 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -303,6 +305,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		Command createProject = new Command() {
 			public void execute() {
 				
+				
 				if(isProjectLoaded){
 					//Ha van betoltott projekt, akkor figyelmeztessen
 					isProjectLoaded = true;
@@ -310,7 +313,9 @@ public class SzarHF_umlweb implements EntryPoint {
 					projectNameMenuItem.setText(projectName);
 					saveProjectMenuItem.setEnabled(true);
 					saveModelMenuItem.setEnabled(true);
-					Window.alert("Previous Project replaced with a new project");
+					makePopupDialogWindow("Previous Project replaced with a new project");
+					//Window.alert("Previous Project replaced with a new project");
+					
 				}else{
 					//Ha nincs betoltott projekt akkor hozzon letre egy ujat
 					isProjectLoaded = true;
@@ -318,7 +323,8 @@ public class SzarHF_umlweb implements EntryPoint {
 					projectNameMenuItem.setText(projectName);
 					saveProjectMenuItem.setEnabled(true);
 					saveModelMenuItem.setEnabled(true);
-					Window.alert("Click to New Project to give it a name.");
+					makePopupDialogWindow("Click to New Project to give it a name.");
+//					Window.alert("Click to New Project to give it a name.");
 				}
 				createModelMenuItem.setEnabled(isProjectLoaded);
 				models.clear();
@@ -342,6 +348,38 @@ public class SzarHF_umlweb implements EntryPoint {
 		mainMenu.addItem("File", fileMenu);
 		mainMenu.addItem("Edit", editMenu);
 		mainMenu.addItem("Help", helpMenu);
+	}
+	
+	
+	//Ez a Window.alert() hivashoz hasonlo. Csak szerintem szebben nez ki
+	//es nincs pittyeges a felugrasnal.
+	public void makePopupDialogWindow(String text){
+		
+		// Create the popup dialog box
+		final DialogBox dialogBox = new DialogBox();
+		dialogBox.setText("Warning");
+		dialogBox.setAnimationEnabled(true);
+		final Button closeButton = new Button("Close");
+		// We can set the id of a widget by accessing its Element
+		closeButton.getElement().setId("closeButton");
+		final HTML serverResponseLabel = new HTML();
+		VerticalPanel dialogVPanel = new VerticalPanel();
+		dialogVPanel.addStyleName("dialogVPanel");
+		dialogVPanel.add(new Label(text));
+		dialogVPanel.add(serverResponseLabel);
+		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+		dialogVPanel.add(closeButton);
+		dialogBox.setWidget(dialogVPanel);
+
+		// Add a handler to close the DialogBox
+		closeButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				dialogBox.hide();
+			}
+		});
+		
+		//Ez jeleniti meg
+		dialogBox.center();
 	}
 
 	public void createLeftMenu(StackLayoutPanel stackPanel) {
