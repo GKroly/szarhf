@@ -261,11 +261,15 @@ public class SzarHF_umlweb implements EntryPoint {
 			public void execute() {				
 				AbsolutePanel boundaryPanel = new AbsolutePanel();
 				boundaryPanel.setSize("800px", "450px");
-				models.put("New Model", new Diagram(boundaryPanel));
-				testModels.put("New Model", boundaryPanel);
-				activeModelName = "New Model";
+				String newModelName="New Model";
+				//System.out.println("New model letrehozva");
+				
+				models.put(newModelName, new Diagram(boundaryPanel));
+				testModels.put(newModelName, boundaryPanel);
+				activeModelName = newModelName;
 				refreshModelsOrder(stackPanel);
 				stackPanel.forceLayout();
+				
 			}
 		};		
 		Command saveModel = new Command(){
@@ -290,6 +294,7 @@ public class SzarHF_umlweb implements EntryPoint {
 				createModel);
 		createModelMenuItem.setEnabled(isProjectLoaded);
 		editMenu.addItem(createModelMenuItem);
+		
 		final MenuItem saveModelMenuItem = new MenuItem("Save current model",saveModel);
 		saveModelMenuItem.setEnabled(isProjectLoaded);
 		editMenu.addItem(saveModelMenuItem);
@@ -553,9 +558,7 @@ public class SzarHF_umlweb implements EntryPoint {
 
 	private void renameModule(Button modelButton) {
 		String newTitle = Window.prompt("New name of the model:", modelButton.getText());
-		
-		
-		
+				
 		if(newTitle==null){
 			
 		}else{
@@ -565,6 +568,7 @@ public class SzarHF_umlweb implements EntryPoint {
 			
 			for (int i = 0; i < modelNumber; i++) {
 				//modelsPanel.getT(0);
+//				modelsPanel.getWidget(i).asWidget().
 			}
 			Set<String> names = models.keySet();
 			//FOLYTATNI KELL

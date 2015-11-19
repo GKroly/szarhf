@@ -1,7 +1,7 @@
 package com.szar.szarhf_umlweb.server;
 
 import com.szar.szarhf_umlweb.client.GreetingService;
-import com.szar.szarhf_umlweb.shared.FieldVerifier;
+import com.szar.szarhf_umlweb.shared.old.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**

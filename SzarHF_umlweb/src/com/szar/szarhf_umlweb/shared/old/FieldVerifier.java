@@ -1,4 +1,4 @@
-package com.szar.szarhf_umlweb.shared;
+package com.szar.szarhf_umlweb.shared.old;
 
 /**
  * <p>
