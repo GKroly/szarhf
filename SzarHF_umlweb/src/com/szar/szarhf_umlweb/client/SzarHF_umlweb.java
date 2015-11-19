@@ -454,7 +454,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		merge.setWidget(img);	
 		merge.addClickHandler(addMerge);
 		
-		final DoubleClickHandler renameState = new DoubleClickHandler() {
+		/*final DoubleClickHandler renameState = new DoubleClickHandler() {
 			@Override
 			public void onDoubleClick(DoubleClickEvent event) {
 				Label label = (Label) event.getSource();
@@ -467,19 +467,24 @@ public class SzarHF_umlweb implements EntryPoint {
 					
 				}
 			}
-		};	
+		};*/	
 		
 		ClickHandler addState = new ClickHandler() {
 		      public void onClick(ClickEvent event) {		    	  
 		    	Label StateLabel = new Label();
-		    	StateLabel.setText("New State");
-		    	StateLabel.addDoubleClickHandler(renameState);
-		  		boundaryPanel.add(StateLabel, 10, 10);
+
+		    	String newTitle = Window.prompt("Name of the state:","New State");
+		    	if(newTitle != null)
+				{
+		    		StateLabel.setText(newTitle);
+		    		boundaryPanel.add(StateLabel, 10, 10);
+			  		
+			  		Shape shapeForState = new Shape(StateLabel, CPShapeType.DIAMOND);
+			  		shapeForState.showOnDiagram(diagram);
+			  		shapeForState.enableConnectionCreate(true);
+			  		shapeForState.setTitle("State");
+				}
 		  		
-		  		Shape shapeForState = new Shape(StateLabel, CPShapeType.DIAMOND);
-		  		shapeForState.showOnDiagram(diagram);
-		  		shapeForState.enableConnectionCreate(true);
-		  		shapeForState.setTitle("State");		  		
 		      }
 		};
 		
