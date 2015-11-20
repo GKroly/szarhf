@@ -58,7 +58,7 @@ public class SzarHF_umlweb implements EntryPoint {
 	int leftMenuWidt = 200;
 	int maxHeight = 455;
 	String projectName = "No loaded project yet";
-	boolean isProjectLoaded;
+//	boolean isProjectLoaded;
 	TreeMap<String, Diagram> modelsTreeMap_String_Diagram;
 	TreeMap<String, AbsolutePanel> testModels_String_AbsolutePanel;
 	AbsolutePanel diagramAbsolutePanel;
@@ -78,7 +78,7 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		modelsTreeMap_String_Diagram = new TreeMap<String, Diagram>();
 		testModels_String_AbsolutePanel = new TreeMap<String, AbsolutePanel>();
-		isProjectLoaded = false;
+//		isProjectLoaded = false;
 		VerticalPanel mainVerticalPanel = new VerticalPanel();
 		mainVerticalPanel.setTitle("VPanel");
 
@@ -94,8 +94,8 @@ public class SzarHF_umlweb implements EntryPoint {
 		horizontalPanel.add(leftVerticalPanel);
 		horizontalPanel.add(rightVerticalPanel);
 		rightVerticalPanel.setBorderWidth(1);
-		rightVerticalPanel.setPixelSize(900, maxHeight);
-		rightVerticalPanel.setWidth("800px");
+//		rightVerticalPanel.setPixelSize(900, maxHeight);
+//		rightVerticalPanel.setWidth("800px");
 		mainVerticalPanel.add(horizontalPanel);
 
 		diagramAbsolutePanel = new AbsolutePanel();
@@ -224,7 +224,7 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		Command editProjectName = new Command() {
 			public void execute() {
-				if (isProjectLoaded) {
+				if (currentProject!=null) {
 					
 					String newTitle = Window.prompt("New name of the project:",
 							projectNameMenuItem.getText());
@@ -281,22 +281,31 @@ public class SzarHF_umlweb implements EntryPoint {
 		MenuBar editMenu = new MenuBar(true);
 		final MenuItem createModelMenuItem = new MenuItem("Create new Model",
 				createModel);
-		createModelMenuItem.setEnabled(isProjectLoaded);
+		if(currentProject!=null){
+			createModelMenuItem.setEnabled(true);
+		}
 		editMenu.addItem(createModelMenuItem);
 		
+		
 		final MenuItem saveModelMenuItem = new MenuItem("Save current model",saveModel);
-		saveModelMenuItem.setEnabled(isProjectLoaded);
+		if(currentProject!=null){
+			saveModelMenuItem.setEnabled(true);
+		}
+		
 		editMenu.addItem(saveModelMenuItem);
 		
-		saveProjectMenuItem.setEnabled(isProjectLoaded);
+		if(currentProject!=null){
+			saveProjectMenuItem.setEnabled(true);
+		}
+		
 		Command createProject = new Command() {
 			public void execute() {
 				
 				Project project=new Project();
 				
-				if(isProjectLoaded){
+				if(currentProject!=null){
 					//Ha van betoltott projekt, akkor figyelmeztessen
-					isProjectLoaded = true;
+//					isProjectLoaded = true;
 					projectName = "New Project";
 					projectNameMenuItem.setText(projectName);
 					saveProjectMenuItem.setEnabled(true);
@@ -308,7 +317,7 @@ public class SzarHF_umlweb implements EntryPoint {
 					
 				}else{
 					//Ha nincs betoltott projekt akkor hozzon letre egy ujat
-					isProjectLoaded = true;
+//					isProjectLoaded = true;
 					projectName = "New Project";
 					projectNameMenuItem.setText(projectName);
 					saveProjectMenuItem.setEnabled(true);
@@ -317,7 +326,7 @@ public class SzarHF_umlweb implements EntryPoint {
 //					System.out.println(makeNamingDialogWindow);
 					//					Window.alert("Click to New Project to give it a name.");
 				}
-				createModelMenuItem.setEnabled(isProjectLoaded);
+				createModelMenuItem.setEnabled(true);
 				modelsTreeMap_String_Diagram.clear();
 				testModels_String_AbsolutePanel.clear();
 				refreshModelsOrder(stackPanel);
