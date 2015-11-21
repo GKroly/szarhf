@@ -14,6 +14,9 @@ import com.szar.gwt.connectors.client.elements.Shape;
 import com.szar.gwt.connectors.client.elements.Shape.CPShapeType;
 import com.szar.gwt.connectors.client.images.ConnectorsBundle;
 import com.szar.gwt.connectors.client.util.ConnectorStyle;
+import com.szar.szarhf_umlweb.shared.DiagramImage;
+import com.szar.szarhf_umlweb.shared.DiagramImage.ImageType;
+import com.szar.szarhf_umlweb.shared.DiagramState;
 import com.szar.szarhf_umlweb.shared.Project;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -32,10 +35,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -43,7 +44,6 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -73,7 +73,7 @@ public class SzarHF_umlweb implements EntryPoint {
 	/**
 	 * This is the entry point method.
 	 */
-
+	
 	public void onModuleLoad() {
 
 		modelsTreeMap_String_Diagram = new TreeMap<String, Diagram>();
@@ -115,7 +115,7 @@ public class SzarHF_umlweb implements EntryPoint {
 
 	Command cmd = new Command() {
 		public void execute() {
-			Window.alert("You selected...");
+			
 		}
 	};
 
@@ -376,8 +376,8 @@ public class SzarHF_umlweb implements EntryPoint {
 		ClickHandler addInitial = new ClickHandler() {
 		      public void onClick(ClickEvent event) {		    	  
 		    	FocusPanel initial = new FocusPanel();
-		  		Image img = AbstractImagePrototype.create(
-		  				ConnectorsBundle.INSTANCE.initial()).createImage();
+		    	ImageType currentType = ImageType.Initial;
+		    	DiagramImage img = new DiagramImage(currentType);		  		
 		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		  		img.setTitle("Initial");
 		  		initial.setWidget(img);
@@ -392,8 +392,8 @@ public class SzarHF_umlweb implements EntryPoint {
 		
 		g.setWidth(Integer.toString(leftMenuWidt) + "px");
 		FocusPanel initial = new FocusPanel();
-		Image img = AbstractImagePrototype.create(
-				ConnectorsBundle.INSTANCE.initial()).createImage();
+		ImageType currentType = ImageType.Initial;
+    	DiagramImage img = new DiagramImage(currentType);		  
 		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		img.setTitle("Initial");
 		initial.setWidget(img);
@@ -402,8 +402,8 @@ public class SzarHF_umlweb implements EntryPoint {
 		ClickHandler addDecision = new ClickHandler() {
 		      public void onClick(ClickEvent event) {		    	  
 		    	FocusPanel decision = new FocusPanel();
-		  		Image img = AbstractImagePrototype.create(
-		  				ConnectorsBundle.INSTANCE.decision()).createImage();
+		    	ImageType currentType = ImageType.decision;
+		    	DiagramImage img = new DiagramImage(currentType);		  
 		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		  		img.setTitle("Decision");
 		  		decision.setWidget(img);
@@ -417,8 +417,8 @@ public class SzarHF_umlweb implements EntryPoint {
 		};
 		
 		FocusPanel decision = new FocusPanel();
-		img = AbstractImagePrototype.create(
-				ConnectorsBundle.INSTANCE.decision()).createImage();
+		currentType = ImageType.decision;
+    	img = new DiagramImage(currentType);		  
 		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		decision.setWidget(img);
 		decision.addClickHandler(addDecision);
@@ -426,8 +426,8 @@ public class SzarHF_umlweb implements EntryPoint {
 		ClickHandler addFinal = new ClickHandler() {
 		      public void onClick(ClickEvent event) {		    	  
 		    	FocusPanel finalImage = new FocusPanel();
-		  		Image img = AbstractImagePrototype.create(
-		  				ConnectorsBundle.INSTANCE.finalImage()).createImage();
+		    	ImageType currentType = ImageType.Final;
+		    	DiagramImage img = new DiagramImage(currentType);		  
 		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		  		img.setTitle("Final");
 		  		finalImage.setWidget(img);
@@ -441,8 +441,8 @@ public class SzarHF_umlweb implements EntryPoint {
 		};
 		
 		FocusPanel finalImage = new FocusPanel();
-		img = AbstractImagePrototype.create(
-				ConnectorsBundle.INSTANCE.finalImage()).createImage();
+		 currentType = ImageType.Final;
+    	 img = new DiagramImage(currentType);		  
 		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		finalImage.setWidget(img);		
 		finalImage.addClickHandler(addFinal);
@@ -450,8 +450,8 @@ public class SzarHF_umlweb implements EntryPoint {
 		ClickHandler addMerge = new ClickHandler() {
 		      public void onClick(ClickEvent event) {		    	  
 		    	FocusPanel merge = new FocusPanel();
-		  		Image img = AbstractImagePrototype.create(
-		  				ConnectorsBundle.INSTANCE.merge()).createImage();
+		    	ImageType currentType = ImageType.merge;
+		    	DiagramImage img = new DiagramImage(currentType);		  
 		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		  		img.setTitle("Merge");
 		  		merge.setWidget(img);
@@ -465,8 +465,8 @@ public class SzarHF_umlweb implements EntryPoint {
 		};
 		
 		FocusPanel merge = new FocusPanel();
-		img = AbstractImagePrototype.create(
-				ConnectorsBundle.INSTANCE.merge()).createImage();
+		currentType = ImageType.merge;
+    	img = new DiagramImage(currentType);		  
 		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		merge.setWidget(img);	
 		merge.addClickHandler(addMerge);
@@ -487,13 +487,11 @@ public class SzarHF_umlweb implements EntryPoint {
 		};*/	
 		
 		ClickHandler addState = new ClickHandler() {
-		      public void onClick(ClickEvent event) {		    	  
-		    	Label StateLabel = new Label();
-
+		      public void onClick(ClickEvent event) {	
 		    	String newTitle = Window.prompt("Name of the state:","New State");
 		    	if(newTitle != null)
 				{
-		    		StateLabel.setText(newTitle);
+		    		DiagramState StateLabel = new DiagramState(newTitle);
 		    		diagramAbsolutePanel.add(StateLabel, 10, 10);
 			  		
 			  		Shape shapeForState = new Shape(StateLabel, CPShapeType.DIAMOND);
@@ -505,8 +503,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		      }
 		};
 		
-		Label state = new Label();
-		state.setText("State");
+		DiagramState state = new DiagramState("New State");
 		state.addClickHandler(addState);
 		
 		g.setWidget(0, 0, initial);
