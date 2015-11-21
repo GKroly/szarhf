@@ -7,4 +7,9 @@ public interface DiagramWidgetInterface{
 		IMAGE
 	}		
 	WidgetType getWidgetType();
+	public int getLeft();
+	public int getTop();
+	public void setLeft(int left);
+	public void setTop(int top);
+
 }

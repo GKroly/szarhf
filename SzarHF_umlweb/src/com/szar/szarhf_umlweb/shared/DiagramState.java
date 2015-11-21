@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 import com.google.gwt.user.client.ui.Label;
 
-public class DiagramState extends Label implements Serializable,DiagramWidgetInterface {
+public class DiagramState extends Label implements DiagramWidgetInterface {
 	private String name;
 	private int left;
 	private int top;
 	public WidgetType widgetType = WidgetType.LABEL;
 	
+	public DiagramState()
+	{	}
 	public DiagramState(String name)
 	{
 		super(name);

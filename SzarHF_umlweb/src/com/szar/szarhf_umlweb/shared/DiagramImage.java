@@ -6,7 +6,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Image;
 import com.szar.gwt.connectors.client.images.ConnectorsBundle;
 
-public class DiagramImage extends Image implements Serializable,DiagramWidgetInterface {
+public class DiagramImage extends Image implements DiagramWidgetInterface {
 	public enum ImageType
 	{
 		decision,
@@ -18,6 +18,9 @@ public class DiagramImage extends Image implements Serializable,DiagramWidgetInt
 	private int top;
 	private ImageType imageType;
 	WidgetType widgetType = WidgetType.IMAGE;
+	
+	public DiagramImage()
+	{}
 	
 	public DiagramImage(ImageType type)
 	{
@@ -46,9 +49,12 @@ public class DiagramImage extends Image implements Serializable,DiagramWidgetInt
 		return imgRes;
 	}	
 	
-	public void setType(ImageType type)
+	public ImageResource setType(ImageType type)
 	{
+		ImageResource retImage = getImageResource(type);
 		this.imageType = type;
+		return retImage;
+		
 	}
 	
 	public ImageType getType()

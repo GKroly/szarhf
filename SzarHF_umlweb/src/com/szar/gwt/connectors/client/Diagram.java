@@ -25,10 +25,14 @@ import com.szar.gwt.connectors.client.listeners.event.DiagramRemoveEvent;
 import com.szar.gwt.connectors.client.listeners.event.ElementConnectEvent;
 import com.szar.gwt.connectors.client.listeners.event.ElementDragEvent;
 import com.szar.gwt.connectors.client.util.ConnectorStyle;
-
+import com.szar.szarhf_umlweb.shared.DiagramImage;
+import com.szar.szarhf_umlweb.shared.DiagramState;
+import com.szar.szarhf_umlweb.shared.DiagramWidgetInterface;
+import com.szar.szarhf_umlweb.shared.DiagramWidgetInterface.WidgetType;
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandlerAdapter;
 import com.allen_sauer.gwt.dnd.client.DragStartEvent;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -42,6 +46,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
+
 
 public class Diagram {
 
@@ -776,5 +781,38 @@ public class Diagram {
       endDecoration = new SectionDecoration(DecorationType.ARROW_LINE);
     }
     return new Connector(startLeft, startTop, endLeft, endTop, null, endDecoration, endEndPoint, Diagram.this, style);
+  }
+  
+  public String toXML()
+  {
+	  String outXML = "<shapes>";
+	  for(Shape shape : this.shapes)
+	  {
+		  try{
+		  DiagramWidgetInterface interf = (DiagramWidgetInterface) shape.connectedWidget;
+		  if(interf.getWidgetType()== WidgetType.IMAGE)
+		  {
+			  outXML += "<Image>";
+			  DiagramImage img = (DiagramImage) shape.connectedWidget;
+			  outXML += "<left>"+img.getLeft()+"</left>";
+			  outXML += "<top>"+img.getTop()+"</top>";
+			  outXML += "<imageType>"+img.getType().name()+"</imageType>";
+			  outXML += "</Image>";
+
+		  }
+		  else
+		  {
+			  DiagramState state = (DiagramState)shape.connectedWidget;
+			  outXML += "<State>";
+			  outXML += "<left>"+state.getLeft()+"</left>";
+			  outXML += "<top>"+state.getTop()+"</top>";
+			  outXML += "<Name>"+state.getName()+"</Name>";
+			  outXML += "</Image>";
+		  }
+		  }
+		  catch(Exception e){}
+	  }
+	  outXML += "</shapes>";
+	  return outXML;
   }
 }

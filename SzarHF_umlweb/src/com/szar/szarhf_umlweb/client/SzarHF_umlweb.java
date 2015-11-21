@@ -46,6 +46,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.szar.szarhf_umlweb.shared.DiagramWidgetInterface;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -115,7 +116,16 @@ public class SzarHF_umlweb implements EntryPoint {
 
 	Command cmd = new Command() {
 		public void execute() {
-			
+			Set<String> names = modelsTreeMap_String_Diagram.keySet();
+			String XML = "";
+			for(String d : names)
+			{
+				Diagram current = modelsTreeMap_String_Diagram.get(d);
+				XML += "<projectname>"+d+"<projectname>";
+				XML += current.toXML();
+				XML += '\n';
+			}
+			GWT.log(XML);
 		}
 	};
 
@@ -156,7 +166,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		connector3.style = ConnectorStyle.DOTTED;
 		connector3.showOnDiagram(diagram);
 
-		FocusPanel diamond = new FocusPanel();
+		/*FocusPanel diamond = new FocusPanel();
 		Image img = AbstractImagePrototype.create(
 				ConnectorsBundle.INSTANCE.diamondImg()).createImage();
 		img.getElement().getStyle().setDisplay(Display.BLOCK);
@@ -263,18 +273,15 @@ public class SzarHF_umlweb implements EntryPoint {
 		};		
 		Command saveModel = new Command(){
 			public void execute(){	
-				Diagram currentDiagram = new Diagram(diagramAbsolutePanel);
-				for(Connector currentConnector : diagram.connectors)
+				modelsTreeMap_String_Diagram.put(activeModelName, diagram);	
+				for(Shape s : diagram.shapes)
 				{
-					currentDiagram.connectors.add(currentConnector.cloneConnector(currentDiagram));
+					DiagramWidgetInterface interf = (DiagramWidgetInterface) s.connectedWidget;
+					interf.setLeft(s.getConnectedWidgetLeft());
+					interf.setTop(s.getConnectedWidgetTop());
 				}
-				for(Shape currentShape : diagram.shapes)
-				{
-					currentDiagram.shapes.add(currentShape.cloneShape());
-				}
-				modelsTreeMap_String_Diagram.put(activeModelName, currentDiagram);	
 				testModels_String_AbsolutePanel.put(activeModelName, diagramAbsolutePanel);
-				GWT.log(activeModelName+ " saved: "+ currentDiagram.saveXML());
+				GWT.log(activeModelName+ " saved: "+ diagram.saveXML());
 			}
 		};
 		
@@ -375,15 +382,15 @@ public class SzarHF_umlweb implements EntryPoint {
 		
 		ClickHandler addInitial = new ClickHandler() {
 		      public void onClick(ClickEvent event) {		    	  
-		    	FocusPanel initial = new FocusPanel();
+		    	//FocusPanel initial = new FocusPanel();
 		    	ImageType currentType = ImageType.Initial;
 		    	DiagramImage img = new DiagramImage(currentType);		  		
 		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		  		img.setTitle("Initial");
-		  		initial.setWidget(img);
-		  		diagramAbsolutePanel.add(initial, 10, 10);
+		  		//initial.setWidget(img);
+		  		diagramAbsolutePanel.add(img, 10, 10);
 		  		
-		  		Shape shapeForInitial = new Shape(initial, CPShapeType.DIAMOND);
+		  		Shape shapeForInitial = new Shape(img, CPShapeType.DIAMOND);
 		  		shapeForInitial.showOnDiagram(diagram);
 		  		shapeForInitial.enableConnectionCreate(true);
 		  		shapeForInitial.setTitle("Initial");
@@ -391,84 +398,84 @@ public class SzarHF_umlweb implements EntryPoint {
 		};
 		
 		g.setWidth(Integer.toString(leftMenuWidt) + "px");
-		FocusPanel initial = new FocusPanel();
+		//FocusPanel initial = new FocusPanel();
 		ImageType currentType = ImageType.Initial;
-    	DiagramImage img = new DiagramImage(currentType);		  
-		img.getElement().getStyle().setDisplay(Display.BLOCK);
-		img.setTitle("Initial");
-		initial.setWidget(img);
+    	DiagramImage initial = new DiagramImage(currentType);		  
+    	initial.getElement().getStyle().setDisplay(Display.BLOCK);
+    	initial.setTitle("Initial");
+		//initial.setWidget(img);
 		initial.addClickHandler(addInitial);
 		
 		ClickHandler addDecision = new ClickHandler() {
 		      public void onClick(ClickEvent event) {		    	  
-		    	FocusPanel decision = new FocusPanel();
+		    	//FocusPanel decision = new FocusPanel();
 		    	ImageType currentType = ImageType.decision;
 		    	DiagramImage img = new DiagramImage(currentType);		  
 		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		  		img.setTitle("Decision");
-		  		decision.setWidget(img);
-		  		diagramAbsolutePanel.add(decision, 10, 10);
+		  		//decision.setWidget(img);
+		  		diagramAbsolutePanel.add(img, 10, 10);
 		  		
-		  		Shape shapeForDecision = new Shape(decision, CPShapeType.DIAMOND);
+		  		Shape shapeForDecision = new Shape(img, CPShapeType.DIAMOND);
 		  		shapeForDecision.showOnDiagram(diagram);
 		  		shapeForDecision.enableConnectionCreate(true);
 				shapeForDecision.setTitle("Decision");
 		      }
 		};
 		
-		FocusPanel decision = new FocusPanel();
+		//FocusPanel decision = new FocusPanel();
 		currentType = ImageType.decision;
-    	img = new DiagramImage(currentType);		  
-		img.getElement().getStyle().setDisplay(Display.BLOCK);
-		decision.setWidget(img);
+		DiagramImage decision = new DiagramImage(currentType);		  
+		decision.getElement().getStyle().setDisplay(Display.BLOCK);
+		//decision.setWidget(img);
 		decision.addClickHandler(addDecision);
 		
 		ClickHandler addFinal = new ClickHandler() {
 		      public void onClick(ClickEvent event) {		    	  
-		    	FocusPanel finalImage = new FocusPanel();
+		    	//FocusPanel finalImage = new FocusPanel();
 		    	ImageType currentType = ImageType.Final;
 		    	DiagramImage img = new DiagramImage(currentType);		  
 		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		  		img.setTitle("Final");
-		  		finalImage.setWidget(img);
-		  		diagramAbsolutePanel.add(finalImage, 10, 10);
+		  		//finalImage.setWidget(img);
+		  		diagramAbsolutePanel.add(img, 10, 10);
 		  		
-		  		Shape shapeForFinal = new Shape(finalImage, CPShapeType.DIAMOND);
+		  		Shape shapeForFinal = new Shape(img, CPShapeType.DIAMOND);
 		  		shapeForFinal.showOnDiagram(diagram);
 		  		shapeForFinal.enableConnectionCreate(true);
 				shapeForFinal.setTitle("Final");
 		      }
 		};
 		
-		FocusPanel finalImage = new FocusPanel();
+		//FocusPanel finalImage = new FocusPanel();
 		 currentType = ImageType.Final;
-    	 img = new DiagramImage(currentType);		  
-		img.getElement().getStyle().setDisplay(Display.BLOCK);
-		finalImage.setWidget(img);		
-		finalImage.addClickHandler(addFinal);
+		 DiagramImage finalImage = new DiagramImage(currentType);		  
+		 finalImage.getElement().getStyle().setDisplay(Display.BLOCK);
+		//finalImage.setWidget(img);		
+		 finalImage.addClickHandler(addFinal);
 		
 		ClickHandler addMerge = new ClickHandler() {
 		      public void onClick(ClickEvent event) {		    	  
-		    	FocusPanel merge = new FocusPanel();
+		    	//FocusPanel merge = new FocusPanel();
 		    	ImageType currentType = ImageType.merge;
 		    	DiagramImage img = new DiagramImage(currentType);		  
 		  		img.getElement().getStyle().setDisplay(Display.BLOCK);
 		  		img.setTitle("Merge");
-		  		merge.setWidget(img);
-		  		diagramAbsolutePanel.add(merge, 10, 10);
+		  		//merge.setWidget(img);
+		  		diagramAbsolutePanel.add(img, 10, 10);
 		  		
-		  		Shape shapeForMerge = new Shape(merge, CPShapeType.DIAMOND);
+		  		Shape shapeForMerge = new Shape(img, CPShapeType.DIAMOND);
 		  		shapeForMerge.showOnDiagram(diagram);
 		  		shapeForMerge.enableConnectionCreate(true);
 		  		shapeForMerge.setTitle("Merge");
 		      }
 		};
 		
-		FocusPanel merge = new FocusPanel();
+		//FocusPanel merge = new FocusPanel();
 		currentType = ImageType.merge;
-    	img = new DiagramImage(currentType);		  
-		img.getElement().getStyle().setDisplay(Display.BLOCK);
-		merge.setWidget(img);	
+		DiagramImage merge = new DiagramImage(currentType);		  
+		merge.getElement().getStyle().setDisplay(Display.BLOCK);
+		//merge.setWidget(img);	
 		merge.addClickHandler(addMerge);
 		
 		/*final DoubleClickHandler renameState = new DoubleClickHandler() {
