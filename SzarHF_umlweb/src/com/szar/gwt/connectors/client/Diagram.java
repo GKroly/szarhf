@@ -324,34 +324,34 @@ public class Diagram {
     }
   }
 
-  public String saveXML() {
-    String xmlString = "shapes:\n";
-    // TODO Save diagram to xml
-    // Save Shapes
-    for (int i = 0; i < shapes.size(); i++) {
-        xmlString +=
-            "(" + shapes.get(i).getAbsoluteLeft() + "," + shapes.get(i).getAbsoluteTop() + ")";
-        
-      }
-
-    // Save Connectors
-    // TODO Change to StringBuilder
-    xmlString += "connectors:\n";
-    for (int i = 0; i < connectors.size(); i++) {
-      xmlString +=
-          "(" + connectors.get(i).startEndPoint.getLeft() + "," + connectors.get(i).startEndPoint.getTop() + ")";
-
-      for (int k = 0; k < connectors.get(k).cornerPoints.size(); k++) {
-        xmlString +=
-            "(" + connectors.get(i).cornerPoints.get(k).getLeft() + ","
-                + connectors.get(i).cornerPoints.get(k).getTop() + ")";
-      }
-
-      xmlString += "(" + connectors.get(i).endEndPoint.getLeft() + "," + connectors.get(i).endEndPoint.getTop() + ")\n";
-    }
-
-    return xmlString;
-  }
+//  public String saveXML() {
+//    String xmlString = "shapes:\n";
+//    // TODO Save diagram to xml
+//    // Save Shapes
+//    for (int i = 0; i < shapes.size(); i++) {
+//        xmlString +=
+//            "(" + shapes.get(i).getAbsoluteLeft() + "," + shapes.get(i).getAbsoluteTop() + ")";
+//        
+//      }
+//
+//    // Save Connectors
+//    // TODO Change to StringBuilder
+//    xmlString += "connectors:\n";
+//    for (int i = 0; i < connectors.size(); i++) {
+//      xmlString +=
+//          "(" + connectors.get(i).startEndPoint.getLeft() + "," + connectors.get(i).startEndPoint.getTop() + ")";
+//
+//      for (int k = 0; k < connectors.get(k).cornerPoints.size(); k++) {
+//        xmlString +=
+//            "(" + connectors.get(i).cornerPoints.get(k).getLeft() + ","
+//                + connectors.get(i).cornerPoints.get(k).getTop() + ")";
+//      }
+//
+//      xmlString += "(" + connectors.get(i).endEndPoint.getLeft() + "," + connectors.get(i).endEndPoint.getTop() + ")\n";
+//    }
+//
+//    return xmlString;
+//  }
   public void loadXML(String XML) {
 	  
   }
