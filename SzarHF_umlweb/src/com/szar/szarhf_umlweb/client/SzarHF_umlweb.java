@@ -522,7 +522,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		stackPanel.add(verticalPanel, diagramElementsButton, 2);
 	}
 
-	public void refreshModelsOrder(StackLayoutPanel stackPanel, VerticalPanel modelsPanel) {
+	public void refreshModelsOrder(StackLayoutPanel stackPanel, final VerticalPanel modelsPanel) {
 //		VerticalPanel modelsPanel = (ScrollPanel) (stackPanel.get).get;
 
 		int modelNumber = modelsPanel.getWidgetCount();
@@ -541,9 +541,14 @@ public class SzarHF_umlweb implements EntryPoint {
 		
 		ClickHandler loadDiagram = new ClickHandler() {
 		      public void onClick(ClickEvent event) {
+		    	  int widgetCount = modelsPanel.getWidgetCount();
+		    	  for(int i=0; i<widgetCount; i++){
+		    		  modelsPanel.getWidget(i).removeStyleName("LoudText");
+		    	  }
 		    	  Button btn	= (Button)event.getSource();
 //		    	  btn.setFocus(true);
-		    	  btn.setStyleName("");
+		    	  btn.addStyleName("LoudText");
+//		    	  System.out.println(btn.getStyleName());
 		    	  String moduleName = ((Button)event.getSource()).getText();	
 		    	  activeModelName = moduleName;
 		    	  Diagram newdiagram = modelsTreeMap_String_Diagram.get(moduleName);

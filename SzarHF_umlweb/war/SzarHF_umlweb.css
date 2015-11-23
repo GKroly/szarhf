@@ -51,4 +51,9 @@ h1 {
 	text-align: center;
 	position: center;
 }
+
+.LoudText {
+  font-weight:  bold;
+}
+
 /* } */
