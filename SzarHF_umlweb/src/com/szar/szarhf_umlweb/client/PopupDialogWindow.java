@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.szar.szarhf_umlweb.shared.Project;
@@ -43,7 +44,7 @@ public class PopupDialogWindow {
 		dialogBox.center();
 	}
 
-	public static void makeNamingDialogWindow(String text, final Project project) {
+	public static void makeNamingDialogWindow(String text, String defaultPreferedName, final Project project, final MenuItem projectNameMenuItem) {
 
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
@@ -57,7 +58,7 @@ public class PopupDialogWindow {
 		dialogVPanel.addStyleName("dialogVPanel");
 		dialogVPanel.add(new Label(text));
 		final TextBox textBox = new TextBox();
-		textBox.setText("New Project");
+		textBox.setText(defaultPreferedName);
 		dialogVPanel.add(textBox);
 		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
 		dialogVPanel.add(closeButton);
@@ -68,6 +69,7 @@ public class PopupDialogWindow {
 			public void onClick(ClickEvent event) {
 //				System.out.println(tb.getValue());
 				project.setProjectName(textBox.getValue());
+				projectNameMenuItem.setText((project.getProjectName()));
 				dialogBox.hide();
 			}
 		});

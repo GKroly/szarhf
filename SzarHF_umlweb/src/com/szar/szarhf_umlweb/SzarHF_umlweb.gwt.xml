@@ -20,7 +20,6 @@
 
   <inherits name='com.szar.gwt.connectors.connectors'/>
   
-<inherits name="com.googlecode.gwtstreamer.GWTStreamer"/>
   <!-- Other module inherits                                      -->
 
   <!-- Specify the app entry point class.                         -->
