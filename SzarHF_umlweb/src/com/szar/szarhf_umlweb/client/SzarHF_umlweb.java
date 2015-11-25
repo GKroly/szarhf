@@ -118,13 +118,6 @@ public class SzarHF_umlweb implements EntryPoint {
 
 	}
 
-	
-
-	Command cmd2 = new Command() {
-		public void execute() {
-
-		}
-	};
 
 	// Betolt egy probadiagrammot
 	private void test(VerticalPanel viewPanel) {
@@ -303,7 +296,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		
 		Command loadProject = new Command() {
 			public void execute() {
-			
+				PopupDialogWindow.loadXMLDialogWindow("Copy the saved XML to the area");
 			}
 		};
 		
@@ -327,7 +320,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		
 		createProjectMenuItem.setScheduledCommand(createProject);
 		loadProjectMenuItem.setScheduledCommand(loadProject);
-		saveModelMenuItem.setScheduledCommand(saveProject);
+		saveProjectMenuItem.setScheduledCommand(saveProject);
 		projectNameMenuItem.setScheduledCommand(editProjectName);
 		projectNameMenuItem
 				.setWidth(Integer.toString(leftMenuWidt - 25) + "px");

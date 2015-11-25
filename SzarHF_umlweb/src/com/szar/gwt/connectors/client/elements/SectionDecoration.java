@@ -32,6 +32,8 @@ public class SectionDecoration extends FocusPanel {
 
   private boolean selected = false;
   private DecorationDirection direction;
+  
+  public DecorationType type;
 
   private Image[] decorationDirectedImages;
   private Image[] decorationDirectedSelectedImages;
@@ -68,6 +70,7 @@ public class SectionDecoration extends FocusPanel {
   public SectionDecoration(DecorationType type) {
 
     this();
+    this.type= type;
     switch (type) {
       case ARROW_SOLID: {
         decorationDirectedImages[DecorationDirection.VERTICAL_UP.getIndex()] =

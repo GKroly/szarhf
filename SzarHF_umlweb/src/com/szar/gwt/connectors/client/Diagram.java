@@ -352,9 +352,9 @@ public class Diagram {
 //
 //    return xmlString;
 //  }
-  public void loadXML(String XML) {
+  /*public void loadXML(String XML) {
 	  
-  }
+  }*/
   
 
   public Shape getStartShapeForConnector(Connector connector) {
@@ -807,12 +807,35 @@ public class Diagram {
 			  outXML += "<left>"+state.getLeft()+"</left>";
 			  outXML += "<top>"+state.getTop()+"</top>";
 			  outXML += "<Name>"+state.getName()+"</Name>";
-			  outXML += "</Image>";
+			  outXML += "</State>";
 		  }
 		  }
 		  catch(Exception e){}
 	  }
 	  outXML += "</shapes>";
+	  outXML += "<connectors>";
+	  for(Connector c : this.connectors)
+	  {
+		  outXML += "<connector>";
+		  outXML += "<startPoint>";
+		  outXML += "<left>" + c.startEndPoint.getLeft() + "</left>";
+		  outXML += "<top>"+c.startEndPoint.getTop()+"</top>";
+		  outXML += "</startPoint>";
+		  outXML += "<endPoint>";
+		  outXML += "<left>" + c.endEndPoint.getLeft() + "</left>";
+		  outXML += "<top>"+c.endEndPoint.getTop()+"</top>";
+		  outXML += "</endPoint>";
+		  if(c.startPointDecoration != null)
+		  {
+		  outXML += "<startPointDecoration>" + c.startPointDecoration.type + "</startPointDecoration>";
+		  }
+		  if(c.endPointDecoration != null)
+		  {
+		  outXML += "<endPointDecoration>" + c.endPointDecoration.type + "</endPointDecoration>";
+		  }
+		  outXML += "</connector>";
+	  }
+	  outXML += "</connectors>";
 	  return outXML;
   }
 }
