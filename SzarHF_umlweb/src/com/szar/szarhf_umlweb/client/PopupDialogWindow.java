@@ -1,5 +1,8 @@
 package com.szar.szarhf_umlweb.client;
 
+import java.util.TreeMap;
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -10,6 +13,7 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.szar.szarhf_umlweb.shared.Model;
 import com.szar.szarhf_umlweb.shared.Project;
 
 public class PopupDialogWindow {
@@ -45,7 +49,7 @@ public class PopupDialogWindow {
 		dialogBox.center();
 	}
 	
-	public static void loadXMLDialogWindow(String text)
+	public static void loadXMLDialogWindow(String text, final TreeMap<String, Model> modelsTreeMap_String_Model, final Project project)
 	{
 		// Create the popup dialog box
 				final DialogBox dialogBox = new DialogBox();
@@ -67,7 +71,21 @@ public class PopupDialogWindow {
 				// Add a handler to close the DialogBox
 				closeButton.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
-						
+						String XML = textArea.getText();
+						XML = XML.substring(XML.indexOf("<projectname>")+13);
+						GWT.log(XML);
+						project.setProjectName(XML.substring(0, XML.indexOf("</projectname>")));
+						GWT.log(project.getProjectName());
+						XML = XML.substring(14);
+						GWT.log(XML);
+						String[] models = XML.split("<model>");
+						modelsTreeMap_String_Model.clear();
+						for(String currentModelXmlString : models)
+						{
+							Model currentModel = new Model();
+							currentModel = currentModel.fromXML(currentModelXmlString);
+							modelsTreeMap_String_Model.put(currentModel.getModelName(), currentModel);
+						}
 					}
 				});
 
@@ -110,5 +128,8 @@ public class PopupDialogWindow {
 
 //		return tb.getValue();
 	}
+
+
+
 
 }

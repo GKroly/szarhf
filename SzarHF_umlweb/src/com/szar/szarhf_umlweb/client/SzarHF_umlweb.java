@@ -17,6 +17,7 @@ import com.szar.gwt.connectors.client.util.ConnectorStyle;
 import com.szar.szarhf_umlweb.shared.DiagramImage;
 import com.szar.szarhf_umlweb.shared.DiagramImage.ImageType;
 import com.szar.szarhf_umlweb.shared.DiagramState;
+import com.szar.szarhf_umlweb.shared.Model;
 import com.szar.szarhf_umlweb.shared.Project;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -62,8 +63,9 @@ public class SzarHF_umlweb implements EntryPoint {
 	int maxHeight = 455;
 	String projectName = "No loaded project yet";
 	// boolean isProjectLoaded;
-	TreeMap<String, Diagram> modelsTreeMap_String_Diagram;
-	TreeMap<String, AbsolutePanel> testModels_String_AbsolutePanel;
+	//TreeMap<String, Diagram> modelsTreeMap_String_Diagram;
+	//TreeMap<String, AbsolutePanel> testModels_String_AbsolutePanel;
+	TreeMap<String, Model> modelsTreeMap_String_Model;
 	AbsolutePanel diagramAbsolutePanel;
 	VerticalPanel rightVerticalPanel;
 	Diagram diagram;
@@ -81,8 +83,9 @@ public class SzarHF_umlweb implements EntryPoint {
 
 	public void onModuleLoad() {
 
-		modelsTreeMap_String_Diagram = new TreeMap<String, Diagram>();
-		testModels_String_AbsolutePanel = new TreeMap<String, AbsolutePanel>();
+		modelsTreeMap_String_Model = new TreeMap<String, Model>();
+		//modelsTreeMap_String_Diagram = new TreeMap<String, Diagram>();
+		//testModels_String_AbsolutePanel = new TreeMap<String, AbsolutePanel>();
 		// isProjectLoaded = false;
 		VerticalPanel mainVerticalPanel = new VerticalPanel();
 		mainVerticalPanel.setTitle("VPanel");
@@ -288,29 +291,34 @@ public class SzarHF_umlweb implements EntryPoint {
 					// Window.alert("Click to New Project to give it a name.");
 				}
 				createModelMenuItem.setEnabled(true);
-				modelsTreeMap_String_Diagram.clear();
-				testModels_String_AbsolutePanel.clear();
+				modelsTreeMap_String_Model.clear();
+				//modelsTreeMap_String_Diagram.clear();
+				//testModels_String_AbsolutePanel.clear();
 				refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
 			}
 		};
 		
 		Command loadProject = new Command() {
 			public void execute() {
-				PopupDialogWindow.loadXMLDialogWindow("Copy the saved XML to the area");
+				PopupDialogWindow.loadXMLDialogWindow("Copy the saved XML to the area",modelsTreeMap_String_Model,currentProject);
 			}
 		};
 		
 		Command saveProject = new Command() {
 			public void execute() {
-				Set<String> names = modelsTreeMap_String_Diagram.keySet();
+				//Set<String> names = modelsTreeMap_String_Diagram.keySet();
+				Set<String> names = modelsTreeMap_String_Model.keySet();
 				String XML = "";
 				XML += "<project>";
 				XML += "<projectname>" + currentProject.getProjectName()
 						+ "</projectname>";
 				for (String d : names) {
-					Diagram current = modelsTreeMap_String_Diagram.get(d);
+					XML += "<model>";
+					Model current = modelsTreeMap_String_Model.get(d);
+					//Diagram current = modelsTreeMap_String_Diagram.get(d);
 					XML += "<modelname>" + d + "</modelname>";
 					XML += current.toXML();
+					XML += "</model>";
 					XML += '\n';
 				}
 				XML += "</project>";
@@ -344,10 +352,12 @@ public class SzarHF_umlweb implements EntryPoint {
 					String newModelName = "New Model";
 					// System.out.println("New model letrehozva");
 
-					modelsTreeMap_String_Diagram.put(newModelName, new Diagram(
+					Model newModel = new Model(newModelName,new Diagram(boundaryPanel),boundaryPanel);
+					modelsTreeMap_String_Model.put(newModelName, newModel);
+					/*modelsTreeMap_String_Diagram.put(newModelName, new Diagram(
 							boundaryPanel));
 					testModels_String_AbsolutePanel.put(newModelName,
-							boundaryPanel);
+							boundaryPanel);*/
 					activeModelName = newModelName;
 					refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
 					stackLayouPanel.forceLayout();
@@ -360,14 +370,16 @@ public class SzarHF_umlweb implements EntryPoint {
 		
 		Command saveModel = new Command() {
 			public void execute() {
-				modelsTreeMap_String_Diagram.put(activeModelName, diagram);
+				Model currentModel = new Model(activeModelName,diagram,diagramAbsolutePanel);
+				modelsTreeMap_String_Model.put(activeModelName, currentModel);
+				//modelsTreeMap_String_Diagram.put(activeModelName, diagram);
 				for (Shape s : diagram.shapes) {
 					DiagramWidgetInterface interf = (DiagramWidgetInterface) s.connectedWidget;
 					interf.setLeft(s.getConnectedWidgetLeft());
 					interf.setTop(s.getConnectedWidgetTop());
 				}
-				testModels_String_AbsolutePanel.put(activeModelName,
-						diagramAbsolutePanel);
+				/*estModels_String_AbsolutePanel.put(activeModelName,
+						diagramAbsolutePanel);*/
 				// GWT.log(activeModelName + " saved: " + diagram.saveXML());
 			}
 		};
@@ -393,7 +405,8 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		Button modelsButton = new Button("Models");
 		modelsButton.setWidth(Integer.toString(leftMenuWidt) + "px");
-		Set<String> names = modelsTreeMap_String_Diagram.keySet();
+		//Set<String> names = modelsTreeMap_String_Diagram.keySet();
+		Set<String> names = modelsTreeMap_String_Model.keySet();
 		Iterator<String> nameIterator = names.iterator();
 		while (nameIterator.hasNext()) {
 			Button lb12 = new Button(nameIterator.next());
@@ -562,8 +575,8 @@ public class SzarHF_umlweb implements EntryPoint {
 		for (int i = 0; i < modelNumber; i++) {
 			modelsPanel.remove(0);
 		}
-		Set<String> names = modelsTreeMap_String_Diagram.keySet();
-
+		//Set<String> names = modelsTreeMap_String_Diagram.keySet();
+		Set<String> names = modelsTreeMap_String_Model.keySet();
 		DoubleClickHandler rename = new DoubleClickHandler() {
 			@Override
 			public void onDoubleClick(DoubleClickEvent event) {
@@ -623,10 +636,13 @@ public class SzarHF_umlweb implements EntryPoint {
 		// newModelName.addStyleName("LoudText");
 		// String moduleName = newModelName.getText();
 		activeModelName = newModelName;
-		Diagram newdiagram = modelsTreeMap_String_Diagram.get(newModelName);
+		//Diagram newdiagram = modelsTreeMap_String_Diagram.get(newModelName);
+		Model currentModel = modelsTreeMap_String_Model.get(newModelName);
+		Diagram newdiagram = currentModel.getDiagram();		
 		rightVerticalPanel.remove(diagramAbsolutePanel);
-		diagramAbsolutePanel = testModels_String_AbsolutePanel
-				.get(newModelName);
+		diagramAbsolutePanel = currentModel.getPanel();
+		/*diagramAbsolutePanel = testModels_String_AbsolutePanel
+				.get(newModelName);*/
 		rightVerticalPanel.add(diagramAbsolutePanel);
 		diagram = newdiagram;
 		// GWT.log("Diagram loaded: " + activeModelName + " ;"
@@ -649,12 +665,15 @@ public class SzarHF_umlweb implements EntryPoint {
 			int modelNumber = modelsPanel.getWidgetCount();
 
 			// Ha megadtak egy uj nevet, modositson ra
-			Diagram currentDiagram = modelsTreeMap_String_Diagram
+			Model currentModel = modelsTreeMap_String_Model.remove(modelButton.getText());
+			/*Diagram currentDiagram = modelsTreeMap_String_Diagram
 					.remove(modelButton.getText());
 			AbsolutePanel currentPanel = testModels_String_AbsolutePanel
-					.remove(modelButton.getText());
-			modelsTreeMap_String_Diagram.put(newTitle, currentDiagram);
-			testModels_String_AbsolutePanel.put(newTitle, currentPanel);
+					.remove(modelButton.getText());*/
+			currentModel.setModelName(newTitle);
+			modelsTreeMap_String_Model.put(newTitle, currentModel);
+			/*modelsTreeMap_String_Diagram.put(newTitle, currentDiagram);
+			testModels_String_AbsolutePanel.put(newTitle, currentPanel);*/
 			modelButton.setText(newTitle);
 			activeModelName = newTitle;
 			refreshModelsOrder(this.stackLayouPanel, modelsVerticalPanel);
