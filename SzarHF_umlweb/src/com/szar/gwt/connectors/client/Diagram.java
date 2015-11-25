@@ -780,6 +780,6 @@ public class Diagram {
     } else {
       endDecoration = new SectionDecoration(DecorationType.ARROW_LINE);
     }
-    return new Connector(startLeft, startTop, endLeft, endTop, null, endDecoration, endEndPoint, Diagram.this, style);
+    return new Connector(startLeft, startTop, endLeft, endTop, null, endDecoration, new EndPoint(startLeft,startTop),endEndPoint, Diagram.this, style);
   } 
 }

@@ -94,6 +94,8 @@ public class Connector implements Element {
     super();
     init(startLeft, startTop, endLeft, endTop, startDecoration, endDecoration, cornerPoints);
   }
+  
+  
 
   /**
    * Connector is a rectilinear connection that connects two {@link EndPoint}. Connector is made of
@@ -114,10 +116,10 @@ public class Connector implements Element {
   }
 
   public Connector(int startLeft, int startTop, int endLeft, int endTop, SectionDecoration startDecoration,
-      SectionDecoration endDecoration, EndPoint endEndPoint, Diagram diagram, ConnectorStyle style) {
+      SectionDecoration endDecoration, EndPoint startEndPoint, EndPoint endEndPoint, Diagram diagram, ConnectorStyle style) {
 
     this.style = style;
-    this.startEndPoint = new EndPoint(startLeft, startTop, this);
+    this.startEndPoint = startEndPoint;
     this.endEndPoint = endEndPoint;
     endEndPoint.setLeft(endLeft);
     endEndPoint.setTop(endTop);
@@ -1368,10 +1370,11 @@ public class Connector implements Element {
 	  int endTop = this.endEndPoint.getTop();
 	  SectionDecoration startDecoration = this.startPointDecoration;
       SectionDecoration endDecoration = this.endPointDecoration;
+      EndPoint startEndPoint = new EndPoint(startLeft,startTop);
       EndPoint endEndPoint = new EndPoint(endLeft,endTop);
       Diagram diagram = newDiagram;
       ConnectorStyle style = ConnectorStyle.valueOf(this.style.name());      
-	  Connector clone = new Connector(startLeft,startTop, endTop, endTop, startDecoration, endDecoration, endEndPoint, diagram, style); 
+	  Connector clone = new Connector(startLeft,startTop, endTop, endTop, startDecoration, endDecoration, startEndPoint,endEndPoint, diagram, style); 
 	  for(CornerPoint cp : this.cornerPoints)
 	  {
 		  clone.cornerPoints.add(new CornerPoint(cp.getLeft(),cp.getTop()));

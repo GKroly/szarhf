@@ -20,6 +20,8 @@
 
   <inherits name='com.szar.gwt.connectors.connectors'/>
   
+  <inherits name="com.google.gwt.xml.XML" />
+  
   <!-- Other module inherits                                      -->
 
   <!-- Specify the app entry point class.                         -->

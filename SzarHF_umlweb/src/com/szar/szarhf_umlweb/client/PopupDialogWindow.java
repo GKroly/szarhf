@@ -3,16 +3,24 @@ package com.szar.szarhf_umlweb.client;
 import java.util.TreeMap;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.xml.client.Node;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.xml.client.DOMException;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.XMLParser;
 import com.szar.szarhf_umlweb.shared.Model;
 import com.szar.szarhf_umlweb.shared.Project;
 
@@ -58,36 +66,53 @@ public class PopupDialogWindow {
 				final Button closeButton = new Button("Close");
 				// We can set the id of a widget by accessing its Element
 				closeButton.getElement().setId("closeButton");
+				final Button loadButton = new Button("Load");
+				loadButton.getElement().setId("loadButton");
 				final HTML serverResponseLabel = new HTML();
 				VerticalPanel dialogVPanel = new VerticalPanel();
 				dialogVPanel.addStyleName("dialogVPanel");
 				dialogVPanel.add(new Label(text));
 				final TextArea textArea = new TextArea();
 				dialogVPanel.add(textArea);
-				dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
-				dialogVPanel.add(closeButton);
+				//dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+				HorizontalPanel dialogHPanel = new HorizontalPanel();
+				dialogHPanel.add(loadButton);
+				dialogHPanel.add(closeButton);
+				dialogVPanel.add(dialogHPanel);
 				dialogBox.setWidget(dialogVPanel);
+				
+				loadButton.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						String XML = textArea.getText();						
+						try {
+						    // parse the XML document into a DOM
+						    Document messageDom = XMLParser.parse(XML);
 
+						    
+						    Node projectNode = messageDom.getElementsByTagName("projectname").item(0);
+						    NodeList models = ((Element)projectNode).getElementsByTagName("model");
+						    modelsTreeMap_String_Model.clear();
+						    for(int i = 0; i< models.getLength(); i++)						    	
+						    {
+						    	Node currentModelXMLNode = models.item(i);
+						    	Model currentModel = new Model();
+						    	currentModel = currentModel.fromXML(currentModelXMLNode);
+						    	modelsTreeMap_String_Model.put(currentModel.getModelName(), currentModel);
+						    	project.setProjectName(projectNode.getNodeValue());
+						    }						    						    
+						    
+
+						  } catch (DOMException e) {
+						    Window.alert("Could not parse XML document.");
+					}
+					}
+				});
 				// Add a handler to close the DialogBox
 				closeButton.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
-						String XML = textArea.getText();
-						XML = XML.substring(XML.indexOf("<projectname>")+13);
-						GWT.log(XML);
-						project.setProjectName(XML.substring(0, XML.indexOf("</projectname>")));
-						GWT.log(project.getProjectName());
-						XML = XML.substring(14);
-						GWT.log(XML);
-						String[] models = XML.split("<model>");
-						modelsTreeMap_String_Model.clear();
-						for(String currentModelXmlString : models)
-						{
-							Model currentModel = new Model();
-							currentModel = currentModel.fromXML(currentModelXmlString);
-							modelsTreeMap_String_Model.put(currentModel.getModelName(), currentModel);
-						}
-					}
-				});
+						dialogBox.hide();
+					}				
+					});
 
 				// Ez jeleniti meg
 				dialogBox.center();

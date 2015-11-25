@@ -49,6 +49,12 @@ import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.xml.client.DOMException;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.XMLParser;
 import com.szar.szarhf_umlweb.shared.DiagramWidgetInterface;
 
 /**
@@ -300,7 +306,56 @@ public class SzarHF_umlweb implements EntryPoint {
 		
 		Command loadProject = new Command() {
 			public void execute() {
-				PopupDialogWindow.loadXMLDialogWindow("Copy the saved XML to the area",modelsTreeMap_String_Model,currentProject);
+				
+				//PopupDialogWindow.loadXMLDialogWindow("Copy the saved XML to the area",modelsTreeMap_String_Model,currentProject);
+				String XML = Window.prompt("Copy the saved XML to the area",
+						"");
+				try {
+				    // parse the XML document into a DOM
+				    Document messageDom = XMLParser.parse(XML);
+				    
+				    if(currentProject == null)
+				    {
+				    	currentProject = new Project();
+				    }
+				    Node projectNode = messageDom.getElementsByTagName("project").item(0);
+				    Node projectNameNode =  ((Element)projectNode).getElementsByTagName("projectname").item(0);
+				    NodeList models = ((Element)projectNode).getElementsByTagName("model");
+				    if(modelsTreeMap_String_Model == null)
+				    {
+				    	modelsTreeMap_String_Model = new TreeMap<String, Model>();
+				    	GWT.log("Tree was null");
+				    }
+				    modelsTreeMap_String_Model.clear();
+				    Model currentModel = null;
+				    currentProject.setProjectName(projectNameNode.getFirstChild().getNodeValue());
+				    for(int i = 0; i< models.getLength(); i++)						    	
+				    {
+				    	Node currentModelXMLNode = models.item(i);
+				    	currentModel = new Model();
+				    	currentModel = currentModel.fromXML(currentModelXMLNode);
+				    	GWT.log(currentModel.getModelName());
+				    	modelsTreeMap_String_Model.put(currentModel.getModelName(), currentModel);				    	
+				    }	
+				    rightVerticalPanel.remove(diagramAbsolutePanel);
+				    Model last = modelsTreeMap_String_Model.get(currentModel.getModelName());
+				    diagramAbsolutePanel = last.getPanel();
+				    diagram =  last.getDiagram();
+				    
+					rightVerticalPanel.add(diagramAbsolutePanel);
+					rightVerticalPanel.setVisible(true);
+
+					// Engedelyezzuk a Diagram elements menut
+					diagramElementsButton.setEnabled(true);
+					
+					refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
+					stackLayouPanel.forceLayout();
+
+					loadASelectedDiagram(last.getModelName(), modelsVerticalPanel);
+
+				  } catch (DOMException e) {
+				    Window.alert("Could not parse XML document.");
+			}
 			}
 		};
 		
