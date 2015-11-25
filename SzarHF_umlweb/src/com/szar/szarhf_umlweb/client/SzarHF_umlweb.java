@@ -118,23 +118,7 @@ public class SzarHF_umlweb implements EntryPoint {
 
 	}
 
-	Command cmd = new Command() {
-		public void execute() {
-			Set<String> names = modelsTreeMap_String_Diagram.keySet();
-			String XML = "";
-			XML += "<project>";
-			XML += "<projectname>" + currentProject.getProjectName()
-					+ "</projectname>";
-			for (String d : names) {
-				Diagram current = modelsTreeMap_String_Diagram.get(d);
-				XML += "<modelname>" + d + "</modelname>";
-				XML += current.toXML();
-				XML += '\n';
-			}
-			XML += "</project>";
-			GWT.log(XML);
-		}
-	};
+	
 
 	Command cmd2 = new Command() {
 		public void execute() {
@@ -230,12 +214,39 @@ public class SzarHF_umlweb implements EntryPoint {
 	}
 
 	public void createMainMenu(MenuBar mainMenu) {
-
 		MenuBar fileMenu = new MenuBar(true);
+		
+		MenuItem createProjectMenuItem = new MenuItem("Create new project",
+				(Command)null);
+		MenuItem loadProjectMenuItem = new MenuItem("Load existing project",
+				(Command)null);
+		final MenuItem saveProjectMenuItem = new MenuItem(
+				"Save current project", (Command)null);
 
+		fileMenu.addItem(createProjectMenuItem);
+		fileMenu.addItem(loadProjectMenuItem);
+		fileMenu.addItem(saveProjectMenuItem);
+		
+		MenuBar editMenu = new MenuBar(true);
+		
+		final MenuItem createModelMenuItem = new MenuItem("Create new Model",
+				(Command)null);
+		final MenuItem saveModelMenuItem = new MenuItem("Save current model",
+				(Command)null);
+		
+		editMenu.addItem(createModelMenuItem);
+		editMenu.addItem(saveModelMenuItem);
+		
+		MenuBar helpMenu = new MenuBar(true);
+		
 		final MenuItem projectNameMenuItem = new MenuItem(projectName,
 				(Command) null);
-
+		
+		mainMenu.addItem(projectNameMenuItem);
+		mainMenu.addItem("File", fileMenu);
+		mainMenu.addItem("Edit", editMenu);
+		mainMenu.addItem("Help", helpMenu);
+		
 		Command editProjectName = new Command() {
 			public void execute() {
 				if (currentProject != null) {
@@ -248,74 +259,6 @@ public class SzarHF_umlweb implements EntryPoint {
 				}
 			}
 		};
-		projectNameMenuItem.setScheduledCommand(editProjectName);
-		projectNameMenuItem
-				.setWidth(Integer.toString(leftMenuWidt - 25) + "px");
-
-		final MenuItem saveProjectMenuItem = new MenuItem(
-				"Save current project", cmd);
-
-		Command createModel = new Command() {
-			public void execute() {
-				if (diagramElementsButton.isEnabled() == false) {
-					diagramElementsButton.setEnabled(true);
-				}
-
-				// loadASelectedDiagram()
-
-				if (currentProject != null) {
-
-					AbsolutePanel boundaryPanel = new AbsolutePanel();
-					boundaryPanel.setSize("800px", "450px");
-					String newModelName = "New Model";
-					// System.out.println("New model letrehozva");
-
-					modelsTreeMap_String_Diagram.put(newModelName, new Diagram(
-							boundaryPanel));
-					testModels_String_AbsolutePanel.put(newModelName,
-							boundaryPanel);
-					activeModelName = newModelName;
-					refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
-					stackLayouPanel.forceLayout();
-
-					loadASelectedDiagram(newModelName, modelsVerticalPanel);
-				}
-
-			}
-		};
-		Command saveModel = new Command() {
-			public void execute() {
-				modelsTreeMap_String_Diagram.put(activeModelName, diagram);
-				for (Shape s : diagram.shapes) {
-					DiagramWidgetInterface interf = (DiagramWidgetInterface) s.connectedWidget;
-					interf.setLeft(s.getConnectedWidgetLeft());
-					interf.setTop(s.getConnectedWidgetTop());
-				}
-				testModels_String_AbsolutePanel.put(activeModelName,
-						diagramAbsolutePanel);
-				// GWT.log(activeModelName + " saved: " + diagram.saveXML());
-			}
-		};
-
-		MenuBar editMenu = new MenuBar(true);
-		final MenuItem createModelMenuItem = new MenuItem("Create new Model",
-				createModel);
-		if (currentProject != null) {
-			createModelMenuItem.setEnabled(true);
-		}
-		editMenu.addItem(createModelMenuItem);
-
-		final MenuItem saveModelMenuItem = new MenuItem("Save current model",
-				saveModel);
-		if (currentProject != null) {
-			saveModelMenuItem.setEnabled(true);
-		}
-
-		editMenu.addItem(saveModelMenuItem);
-
-		if (currentProject != null) {
-			saveProjectMenuItem.setEnabled(true);
-		}
 
 		Command createProject = new Command() {
 			public void execute() {
@@ -357,21 +300,96 @@ public class SzarHF_umlweb implements EntryPoint {
 				refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
 			}
 		};
-		MenuItem createProjectMenuItem = new MenuItem("Create new project",
-				createProject);
-		MenuItem loadProjectMenuItem = new MenuItem("Load existing project",
-				cmd);
+		
+		Command loadProject = new Command() {
+			public void execute() {
+			
+			}
+		};
+		
+		Command saveProject = new Command() {
+			public void execute() {
+				Set<String> names = modelsTreeMap_String_Diagram.keySet();
+				String XML = "";
+				XML += "<project>";
+				XML += "<projectname>" + currentProject.getProjectName()
+						+ "</projectname>";
+				for (String d : names) {
+					Diagram current = modelsTreeMap_String_Diagram.get(d);
+					XML += "<modelname>" + d + "</modelname>";
+					XML += current.toXML();
+					XML += '\n';
+				}
+				XML += "</project>";
+				GWT.log(XML);
+			}
+		};
+		
+		createProjectMenuItem.setScheduledCommand(createProject);
+		loadProjectMenuItem.setScheduledCommand(loadProject);
+		saveModelMenuItem.setScheduledCommand(saveProject);
+		projectNameMenuItem.setScheduledCommand(editProjectName);
+		projectNameMenuItem
+				.setWidth(Integer.toString(leftMenuWidt - 25) + "px");
+		
+		if (currentProject != null) {
+			createModelMenuItem.setEnabled(true);
+		}
+		
+		Command createModel = new Command() {
+			public void execute() {
+				if (diagramElementsButton.isEnabled() == false) {
+					diagramElementsButton.setEnabled(true);
+				}
 
-		fileMenu.addItem(createProjectMenuItem);
-		fileMenu.addItem(loadProjectMenuItem);
-		fileMenu.addItem(saveProjectMenuItem);
+				// loadASelectedDiagram()
 
-		MenuBar helpMenu = new MenuBar(true);
+				if (currentProject != null) {
 
-		mainMenu.addItem(projectNameMenuItem);
-		mainMenu.addItem("File", fileMenu);
-		mainMenu.addItem("Edit", editMenu);
-		mainMenu.addItem("Help", helpMenu);
+					AbsolutePanel boundaryPanel = new AbsolutePanel();
+					boundaryPanel.setSize("800px", "450px");
+					String newModelName = "New Model";
+					// System.out.println("New model letrehozva");
+
+					modelsTreeMap_String_Diagram.put(newModelName, new Diagram(
+							boundaryPanel));
+					testModels_String_AbsolutePanel.put(newModelName,
+							boundaryPanel);
+					activeModelName = newModelName;
+					refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
+					stackLayouPanel.forceLayout();
+
+					loadASelectedDiagram(newModelName, modelsVerticalPanel);
+				}
+
+			}
+		};
+		
+		Command saveModel = new Command() {
+			public void execute() {
+				modelsTreeMap_String_Diagram.put(activeModelName, diagram);
+				for (Shape s : diagram.shapes) {
+					DiagramWidgetInterface interf = (DiagramWidgetInterface) s.connectedWidget;
+					interf.setLeft(s.getConnectedWidgetLeft());
+					interf.setTop(s.getConnectedWidgetTop());
+				}
+				testModels_String_AbsolutePanel.put(activeModelName,
+						diagramAbsolutePanel);
+				// GWT.log(activeModelName + " saved: " + diagram.saveXML());
+			}
+		};
+
+		createModelMenuItem.setScheduledCommand(createModel);
+		saveModelMenuItem.setScheduledCommand(saveModel);
+		if (currentProject != null) {
+			saveModelMenuItem.setEnabled(true);
+		}
+
+		editMenu.addItem(saveModelMenuItem);
+
+		if (currentProject != null) {
+			saveProjectMenuItem.setEnabled(true);
+		}
 	}
 
 	public void createLeftMenu(StackLayoutPanel stackPanel) {
