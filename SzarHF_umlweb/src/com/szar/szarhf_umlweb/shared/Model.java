@@ -318,11 +318,11 @@ public class Model implements Serializable {
 	}
 	protected boolean isGlued(ConnectionPoint point, int left, int top)
 	{
-		if(myAbs(point.getCenterLeft(),left)>10)
+		if(myAbs(point.getCenterLeft(),left)>2)
 		{			
 			return false;
 		}
-		else if(myAbs(point.getCenterTop(),top)>10)
+		else if(myAbs(point.getCenterTop(),top)>2)
 		{
 			return false;
 		}
@@ -333,13 +333,13 @@ public class Model implements Serializable {
 		if(a>b)
 		{
 			Integer val1 = a-b;
-			GWT.log(val1.toString());
+			//GWT.log(val1.toString());
 			return a-b;
 		}
 		else
 		{			
 			Integer val2 = b-a;
-			GWT.log(val2.toString());
+			//GWT.log(val2.toString());
 			return b-a;
 		}
 	}
