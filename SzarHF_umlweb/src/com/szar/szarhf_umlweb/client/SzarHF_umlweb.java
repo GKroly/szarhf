@@ -78,6 +78,7 @@ public class SzarHF_umlweb implements EntryPoint {
 	VerticalPanel rightVerticalPanel;
 	Diagram diagram;
 	MenuBar mainMenu;
+	MenuItem projectNameMenuItem;
 	StackLayoutPanel stackLayouPanel;
 	String activeModelName;
 	Button diagramElementsButton;
@@ -85,8 +86,8 @@ public class SzarHF_umlweb implements EntryPoint {
 	VerticalPanel modelsVerticalPanel = null;
 	String actualModelName = null;
 
-	
-	PopupDialogWindow popup=new PopupDialogWindow(this);
+	PopupDialogWindow popup = new PopupDialogWindow(this);
+
 	/**
 	 * This is the entry point method.
 	 */
@@ -245,8 +246,7 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		MenuBar helpMenu = new MenuBar(true);
 
-		final MenuItem projectNameMenuItem = new MenuItem(projectName,
-				(Command) null);
+		projectNameMenuItem = new MenuItem(projectName, (Command) null);
 
 		mainMenu.addItem(projectNameMenuItem);
 		mainMenu.addItem("File", fileMenu);
@@ -314,11 +314,10 @@ public class SzarHF_umlweb implements EntryPoint {
 				// PopupDialogWindow.loadXMLDialogWindow("Copy the saved XML to the area",modelsTreeMap_String_Model,currentProject);
 				// String XML = Window
 				// .prompt("Copy the saved XML to the area", "");
-//				StringBuffer XML = new StringBuffer();
-				PopupDialogWindow.makeTextAreaForXMLLoad(
-						"Copy the saved XML to the area");
+				// StringBuffer XML = new StringBuffer();
+				PopupDialogWindow
+						.makeTextAreaForXMLLoad("Copy the saved XML to the area");
 
-				
 			}
 		};
 
@@ -421,9 +420,8 @@ public class SzarHF_umlweb implements EntryPoint {
 			saveProjectMenuItem.setEnabled(true);
 		}
 	}
-	
-	public void loadXML(String XML){
 
+	public void loadXML(String XML) {
 
 		try {
 			// parse the XML document into a DOM
@@ -432,10 +430,12 @@ public class SzarHF_umlweb implements EntryPoint {
 			if (currentProject == null) {
 				currentProject = new Project();
 			}
-			Node projectNode = messageDom.getElementsByTagName(
-					"project").item(0);
+			Node projectNode = messageDom.getElementsByTagName("project").item(
+					0);
 			Node projectNameNode = ((Element) projectNode)
 					.getElementsByTagName("projectname").item(0);
+			// System.out.println(projectNameNode.toString());
+
 			NodeList models = ((Element) projectNode)
 					.getElementsByTagName("model");
 			if (modelsTreeMap_String_Model == null) {
@@ -444,16 +444,17 @@ public class SzarHF_umlweb implements EntryPoint {
 			}
 			modelsTreeMap_String_Model.clear();
 			Model currentModel = null;
-			currentProject.setProjectName(projectNameNode
-					.getFirstChild().getNodeValue());
+			currentProject.setProjectName(projectNameNode.getFirstChild()
+					.getNodeValue());
+
+			projectNameMenuItem.setText(currentProject.getProjectName());
 			for (int i = 0; i < models.getLength(); i++) {
 				Node currentModelXMLNode = models.item(i);
 				currentModel = new Model();
-				currentModel = currentModel
-						.fromXML(currentModelXMLNode);
+				currentModel = currentModel.fromXML(currentModelXMLNode);
 				GWT.log(currentModel.getModelName());
-				modelsTreeMap_String_Model.put(
-						currentModel.getModelName(), currentModel);
+				modelsTreeMap_String_Model.put(currentModel.getModelName(),
+						currentModel);
 			}
 
 			Set<String> keySet = modelsTreeMap_String_Model.keySet();
@@ -469,8 +470,7 @@ public class SzarHF_umlweb implements EntryPoint {
 				rightVerticalPanel.add(diagramAbsolutePanel);
 				rightVerticalPanel.setVisible(true);
 
-				loadASelectedDiagram(model.getModelName(),
-						modelsVerticalPanel);
+				loadASelectedDiagram(model.getModelName(), modelsVerticalPanel);
 				stackLayouPanel.forceLayout();
 
 				for (DiagramWidgetInterface dwi : model.dwiList) {
