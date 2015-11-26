@@ -318,7 +318,7 @@ public class Model implements Serializable {
 		newShape.top=((DiagramWidgetInterface) currentImage).getTop();
 		newShape.left=((DiagramWidgetInterface) currentImage).getLeft();
 //		currentImage.set
-		System.out.println("left: "+newShape.left+" top: "+newShape.top);
+//		System.out.println("left: "+newShape.left+" top: "+newShape.top);
 		
 		newShape.enableConnectionCreate(true);
 		

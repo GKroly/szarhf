@@ -33,6 +33,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -84,6 +85,8 @@ public class SzarHF_umlweb implements EntryPoint {
 	VerticalPanel modelsVerticalPanel = null;
 	String actualModelName = null;
 
+	
+	PopupDialogWindow popup=new PopupDialogWindow(this);
 	/**
 	 * This is the entry point method.
 	 */
@@ -309,82 +312,13 @@ public class SzarHF_umlweb implements EntryPoint {
 			public void execute() {
 
 				// PopupDialogWindow.loadXMLDialogWindow("Copy the saved XML to the area",modelsTreeMap_String_Model,currentProject);
-				String XML = Window
-						.prompt("Copy the saved XML to the area", "");
-				try {
-					// parse the XML document into a DOM
-					Document messageDom = XMLParser.parse(XML);
+				// String XML = Window
+				// .prompt("Copy the saved XML to the area", "");
+//				StringBuffer XML = new StringBuffer();
+				PopupDialogWindow.makeTextAreaForXMLLoad(
+						"Copy the saved XML to the area");
 
-					if (currentProject == null) {
-						currentProject = new Project();
-					}
-					Node projectNode = messageDom.getElementsByTagName(
-							"project").item(0);
-					Node projectNameNode = ((Element) projectNode)
-							.getElementsByTagName("projectname").item(0);
-					NodeList models = ((Element) projectNode)
-							.getElementsByTagName("model");
-					if (modelsTreeMap_String_Model == null) {
-						modelsTreeMap_String_Model = new TreeMap<String, Model>();
-						GWT.log("Tree was null");
-					}
-					modelsTreeMap_String_Model.clear();
-					Model currentModel = null;
-					currentProject.setProjectName(projectNameNode
-							.getFirstChild().getNodeValue());
-					for (int i = 0; i < models.getLength(); i++) {
-						Node currentModelXMLNode = models.item(i);
-						currentModel = new Model();
-						currentModel = currentModel
-								.fromXML(currentModelXMLNode);
-						GWT.log(currentModel.getModelName());
-						modelsTreeMap_String_Model.put(
-								currentModel.getModelName(), currentModel);
-					}
-
-					Set<String> keySet = modelsTreeMap_String_Model.keySet();
-
-					for (String s : keySet) {
-						Model model = modelsTreeMap_String_Model.get(s);
-
-						rightVerticalPanel.remove(diagramAbsolutePanel);
-
-						diagramAbsolutePanel = model.getPanel();
-						diagram = model.getDiagram();
-
-						rightVerticalPanel.add(diagramAbsolutePanel);
-						rightVerticalPanel.setVisible(true);
-
-						loadASelectedDiagram(model.getModelName(),
-								modelsVerticalPanel);
-						stackLayouPanel.forceLayout();
-
-						for (DiagramWidgetInterface dwi : model.dwiList) {
-							model.ShapeDrawer((Widget) dwi);
-
-						}
-
-						for (Connector con : model.conList) {
-							model.ConnectionsDrawer(con);
-						}
-						
-//						try {
-//							wait(500);
-//						} catch (InterruptedException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-
-					}
-
-					// Engedelyezzuk a Diagram elements menut
-					diagramElementsButton.setEnabled(true);
-
-					refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
-
-				} catch (DOMException e) {
-					Window.alert("Could not parse XML document.");
-				}
+				
 			}
 		};
 
@@ -403,10 +337,11 @@ public class SzarHF_umlweb implements EntryPoint {
 					XML += "<modelname>" + d + "</modelname>";
 					XML += current.toXML();
 					XML += "</model>";
-					XML += '\n';
+					// XML += '\n';
 				}
 				XML += "</project>";
-				GWT.log(XML);
+				PopupDialogWindow.makeTextAreaForXMLSave(XML);
+				// GWT.log(XML);
 			}
 		};
 
@@ -484,6 +419,85 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		if (currentProject != null) {
 			saveProjectMenuItem.setEnabled(true);
+		}
+	}
+	
+	public void loadXML(String XML){
+
+
+		try {
+			// parse the XML document into a DOM
+			Document messageDom = XMLParser.parse(XML);
+
+			if (currentProject == null) {
+				currentProject = new Project();
+			}
+			Node projectNode = messageDom.getElementsByTagName(
+					"project").item(0);
+			Node projectNameNode = ((Element) projectNode)
+					.getElementsByTagName("projectname").item(0);
+			NodeList models = ((Element) projectNode)
+					.getElementsByTagName("model");
+			if (modelsTreeMap_String_Model == null) {
+				modelsTreeMap_String_Model = new TreeMap<String, Model>();
+				GWT.log("Tree was null");
+			}
+			modelsTreeMap_String_Model.clear();
+			Model currentModel = null;
+			currentProject.setProjectName(projectNameNode
+					.getFirstChild().getNodeValue());
+			for (int i = 0; i < models.getLength(); i++) {
+				Node currentModelXMLNode = models.item(i);
+				currentModel = new Model();
+				currentModel = currentModel
+						.fromXML(currentModelXMLNode);
+				GWT.log(currentModel.getModelName());
+				modelsTreeMap_String_Model.put(
+						currentModel.getModelName(), currentModel);
+			}
+
+			Set<String> keySet = modelsTreeMap_String_Model.keySet();
+
+			for (String s : keySet) {
+				Model model = modelsTreeMap_String_Model.get(s);
+
+				rightVerticalPanel.remove(diagramAbsolutePanel);
+
+				diagramAbsolutePanel = model.getPanel();
+				diagram = model.getDiagram();
+
+				rightVerticalPanel.add(diagramAbsolutePanel);
+				rightVerticalPanel.setVisible(true);
+
+				loadASelectedDiagram(model.getModelName(),
+						modelsVerticalPanel);
+				stackLayouPanel.forceLayout();
+
+				for (DiagramWidgetInterface dwi : model.dwiList) {
+					model.ShapeDrawer((Widget) dwi);
+
+				}
+
+				for (Connector con : model.conList) {
+					model.ConnectionsDrawer(con);
+				}
+
+				// try {
+				// wait(500);
+				// } catch (InterruptedException e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
+
+			}
+
+			// Engedelyezzuk a Diagram elements menut
+			diagramElementsButton.setEnabled(true);
+
+			refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
+
+		} catch (DOMException e) {
+			Window.alert("Could not parse XML document.");
 		}
 	}
 
