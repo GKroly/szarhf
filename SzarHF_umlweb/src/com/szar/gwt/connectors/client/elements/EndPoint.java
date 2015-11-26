@@ -18,7 +18,8 @@ public class EndPoint extends Point {
   public ConnectionPoint gluedConnectionPoint;
   public Connector connector;
   boolean gluedToConnectionPoint;
-
+  public int top;
+  public int left;
   // Defines size of connection point
   public static final int CP_MARGIN = 13;
 
@@ -31,6 +32,9 @@ public class EndPoint extends Point {
    */
   public EndPoint(Integer left, Integer top, Connector connector) {
     super(left, top);
+    
+    this.left=left;
+    this.top=top;
 
     this.connector = connector;
     this.setGluedToConnectionPoint(false);
@@ -43,6 +47,10 @@ public class EndPoint extends Point {
 
   public EndPoint(Integer left, Integer top) {
     super(left, top);
+    
+    this.left=left;
+    this.top=top;
+    
     this.setGluedToConnectionPoint(false);
     Widget img = createImage();
     if (img != null) {
