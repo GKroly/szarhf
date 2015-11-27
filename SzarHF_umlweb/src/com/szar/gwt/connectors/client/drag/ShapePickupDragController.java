@@ -50,7 +50,8 @@ public class ShapePickupDragController extends PickupDragController {
   private int startY = 0;
 
   // @override changes deselect style
-  public void clearSelection() {
+  @Override
+public void clearSelection() {
 
     diagram.deselectAllSections();
     for (Iterator<Widget> iterator = context.selectedWidgets.iterator(); iterator.hasNext();) {
@@ -67,7 +68,8 @@ public class ShapePickupDragController extends PickupDragController {
   }
 
   // @override, changes selection style
-  public void toggleSelection(com.google.gwt.user.client.ui.Widget draggable) {
+  @Override
+public void toggleSelection(com.google.gwt.user.client.ui.Widget draggable) {
 
     if (!diagram.ctrlPressed) {
       diagram.deselectAllSections();
@@ -92,7 +94,8 @@ public class ShapePickupDragController extends PickupDragController {
 
   };
 
-  public void previewDragStart() throws VetoDragException {
+  @Override
+public void previewDragStart() throws VetoDragException {
 
     startX = diagram.boundaryPanel.getWidgetLeft(context.draggable) - diagram.boundaryPanel.getAbsoluteLeft();
     startY = diagram.boundaryPanel.getWidgetTop(context.draggable) - diagram.boundaryPanel.getAbsoluteTop();

@@ -1,6 +1,4 @@
-package com.szar.szarhf_umlweb.shared;
-
-import java.io.Serializable;
+package com.szar.umlweb.shared;
 
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Image;
@@ -61,18 +59,22 @@ public class DiagramImage extends Image implements DiagramWidgetInterface {
 	{
 		return this.imageType;
 	}
+	@Override
 	public int getLeft()
 	{
 		return left;
 	}
+	@Override
 	public void setLeft(int left)
 	{
 		this.left = left;
 	}
+	@Override
 	public int getTop()
 	{
 		return top;
 	}
+	@Override
 	public void setTop(int top)
 	{
 		this.top = top;

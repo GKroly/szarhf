@@ -1,16 +1,15 @@
-package com.szar.szarhf_umlweb.client;
+package com.szar.umlweb.client;
 
 import java.util.TreeMap;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.thirdparty.javascript.rhino.head.tools.debugger.Main;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -22,14 +21,14 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
-import com.szar.szarhf_umlweb.shared.Model;
-import com.szar.szarhf_umlweb.shared.Project;
+import com.szar.umlweb.shared.Model;
+import com.szar.umlweb.shared.Project;
 
 public class PopupDialogWindow {
 
-	static SzarHF_umlweb mainProgram=null;
-	public PopupDialogWindow(SzarHF_umlweb mainProgram){
-		this.mainProgram=mainProgram;
+	static UMLWeb mainProgram=null;
+	public PopupDialogWindow(UMLWeb mainProgram){
+		PopupDialogWindow.mainProgram=mainProgram;
 	}
 	
 	// Ez a Window.alert() hivashoz hasonlo. Csak szerintem szebben nez ki
@@ -48,12 +47,13 @@ public class PopupDialogWindow {
 		dialogVPanel.addStyleName("dialogVPanel");
 		dialogVPanel.add(new Label(text));
 		// dialogVPanel.add(serverResponseLabel);
-		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+		dialogVPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		dialogVPanel.add(closeButton);
 		dialogBox.setWidget(dialogVPanel);
 
 		// Add a handler to close the DialogBox
 		closeButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				dialogBox.hide();
 			}
@@ -89,6 +89,7 @@ public class PopupDialogWindow {
 		dialogBox.setWidget(dialogVPanel);
 
 		loadButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				String XML = textArea.getText();
 				try {
@@ -117,6 +118,7 @@ public class PopupDialogWindow {
 		});
 		// Add a handler to close the DialogBox
 		closeButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				dialogBox.hide();
 			}
@@ -144,12 +146,13 @@ public class PopupDialogWindow {
 		final TextBox textBox = new TextBox();
 		textBox.setText(defaultPreferedName);
 		dialogVPanel.add(textBox);
-		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+		dialogVPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		dialogVPanel.add(closeButton);
 		dialogBox.setWidget(dialogVPanel);
 
 		// Add a handler to close the DialogBox
 		closeButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				// System.out.println(tb.getValue());
 				project.setProjectName(textBox.getValue());
@@ -188,13 +191,14 @@ public class PopupDialogWindow {
 		// textArea.setHeight("");
 		textArea.setText(xML);
 		dialogVPanel.add(textArea);
-		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+		dialogVPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		dialogVPanel.add(closeButton);
 
 		dialogBox.setWidget(dialogVPanel);
 
 		// Add a handler to close the DialogBox
 		closeButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				// System.out.println(tb.getValue());
 				// project.setProjectName(textBox.getValue());
@@ -232,13 +236,14 @@ public class PopupDialogWindow {
 		// textArea.setHeight("");
 		textArea.setText("Copy XML Text here");
 		dialogVPanel.add(textArea);
-		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+		dialogVPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		dialogVPanel.add(closeButton);
 
 		dialogBox.setWidget(dialogVPanel);
 
 		// Add a handler to close the DialogBox
 		closeButton.addClickHandler(new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				// System.out.println(tb.getValue());
 				// project.setProjectName(textBox.getValue());

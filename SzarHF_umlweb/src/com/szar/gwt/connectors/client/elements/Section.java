@@ -86,7 +86,8 @@ public class Section extends HTML {
 
     addDoubleClickHandler(new DoubleClickHandler() {
 
-      public void onDoubleClick(DoubleClickEvent event) {
+      @Override
+	public void onDoubleClick(DoubleClickEvent event) {
         Section.this.connector.onConnectorDoubleClick(new ConnectorDoubleClickEvent(Section.this.connector,
             Section.this));
       }
@@ -94,7 +95,8 @@ public class Section extends HTML {
 
     addClickHandler(new ClickHandler() {
 
-      public void onClick(ClickEvent event) {
+      @Override
+	public void onClick(ClickEvent event) {
         if (!Section.this.connector.diagram.ctrlPressed) {
           Section.this.connector.diagram.deselectAllSections();
           Section.this.connector.diagram.shapeDragController.clearSelection();

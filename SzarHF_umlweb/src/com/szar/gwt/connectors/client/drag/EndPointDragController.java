@@ -130,13 +130,13 @@ public class EndPointDragController extends PickupDragController {
   }
 
   private int getDraggableCenterLeft(EndPoint w) {
-    return (w.getAbsoluteLeft() - context.boundaryPanel.getAbsoluteLeft() + (int) Math.floor((double) ((double) w
-        .getOffsetWidth() / (double) 2)));
+    return (w.getAbsoluteLeft() - context.boundaryPanel.getAbsoluteLeft() + (int) Math.floor((double) w
+        .getOffsetWidth() / (double) 2));
   }
 
   private int getDraggableCenterTop(EndPoint w) {
-    return (w.getAbsoluteTop() - context.boundaryPanel.getAbsoluteTop() + (int) Math.floor((double) ((double) w
-        .getOffsetHeight() / (double) 2)));
+    return (w.getAbsoluteTop() - context.boundaryPanel.getAbsoluteTop() + (int) Math.floor((double) w
+        .getOffsetHeight() / (double) 2));
   }
 
 }

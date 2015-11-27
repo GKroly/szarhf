@@ -25,14 +25,9 @@ import com.szar.gwt.connectors.client.listeners.event.DiagramRemoveEvent;
 import com.szar.gwt.connectors.client.listeners.event.ElementConnectEvent;
 import com.szar.gwt.connectors.client.listeners.event.ElementDragEvent;
 import com.szar.gwt.connectors.client.util.ConnectorStyle;
-import com.szar.szarhf_umlweb.shared.DiagramImage;
-import com.szar.szarhf_umlweb.shared.DiagramState;
-import com.szar.szarhf_umlweb.shared.DiagramWidgetInterface;
-import com.szar.szarhf_umlweb.shared.DiagramWidgetInterface.WidgetType;
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandlerAdapter;
 import com.allen_sauer.gwt.dnd.client.DragStartEvent;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -112,7 +107,8 @@ public class Diagram {
 
     this.boundaryPanel.addDomHandler(new MouseUpHandler() {
 
-      public void onMouseUp(MouseUpEvent event) {
+      @Override
+	public void onMouseUp(MouseUpEvent event) {
         Point endSelectionPoint = new Point(event.getX(), event.getY());
         if (startSelectionPoint != null) {
 
@@ -136,7 +132,8 @@ public class Diagram {
 
     this.boundaryPanel.addDomHandler(new MouseMoveHandler() {
 
-      public void onMouseMove(MouseMoveEvent event) {
+      @Override
+	public void onMouseMove(MouseMoveEvent event) {
         Point actualPosition = new Point(event.getX(), event.getY());
         if (startSelectionPoint != null) {
           if (((Math.abs(startSelectionPoint.getLeft() - actualPosition.getLeft())) > MIN_SELECTION_SIZE)
@@ -644,7 +641,8 @@ public class Diagram {
 
     boundarySelectionHandler = this.boundaryPanel.addDomHandler(new MouseDownHandler() {
 
-      public void onMouseDown(MouseDownEvent event) {
+      @Override
+	public void onMouseDown(MouseDownEvent event) {
 
         int mouseLeft = event.getX();
         int mouseTop = event.getY();
@@ -751,7 +749,8 @@ public class Diagram {
           altPressed = e.getAltKey();
         }
 
-        public void onKeyUp(int key, Event e) {
+        @Override
+		public void onKeyUp(int key, Event e) {
           if (keyboardEnabled) {
             if (e.getKeyCode() == KeyCodes.KEY_DELETE && e.getCtrlKey()) {
               // Delete selected elements

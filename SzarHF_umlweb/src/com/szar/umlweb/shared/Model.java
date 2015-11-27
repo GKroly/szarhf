@@ -1,13 +1,11 @@
-package com.szar.szarhf_umlweb.shared;
+package com.szar.umlweb.shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Display;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -15,7 +13,6 @@ import com.google.gwt.xml.client.DOMException;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
-import com.google.gwt.xml.client.Text;
 import com.szar.gwt.connectors.client.ConnectionPoint;
 import com.szar.gwt.connectors.client.Diagram;
 import com.szar.gwt.connectors.client.elements.Connector;
@@ -24,8 +21,8 @@ import com.szar.gwt.connectors.client.elements.SectionDecoration;
 import com.szar.gwt.connectors.client.elements.SectionDecoration.DecorationType;
 import com.szar.gwt.connectors.client.elements.Shape;
 import com.szar.gwt.connectors.client.elements.Shape.CPShapeType;
-import com.szar.szarhf_umlweb.shared.DiagramImage.ImageType;
-import com.szar.szarhf_umlweb.shared.DiagramWidgetInterface.WidgetType;
+import com.szar.umlweb.shared.DiagramImage.ImageType;
+import com.szar.umlweb.shared.DiagramWidgetInterface.WidgetType;
 
 public class Model implements Serializable {
 
@@ -344,8 +341,8 @@ public class Model implements Serializable {
 
 		Shape newShape = new Shape((Widget) currentImage, CPShapeType.DIAMOND);
 		newShape.showOnDiagram(diagram);
-		newShape.top = ((DiagramWidgetInterface) currentImage).getTop();
-		newShape.left = ((DiagramWidgetInterface) currentImage).getLeft();
+		newShape.top = currentImage.getTop();
+		newShape.left = currentImage.getLeft();
 		// currentImage.set
 		// System.out.println("left: "+newShape.left+" top: "+newShape.top);
 

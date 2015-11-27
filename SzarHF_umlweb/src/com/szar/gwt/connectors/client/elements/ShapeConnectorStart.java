@@ -46,14 +46,16 @@ public class ShapeConnectorStart extends EndPoint {
 
     MouseOverHandler mouseOverHandler = new MouseOverHandler() {
 
-      public void onMouseOver(MouseOverEvent event) {
+      @Override
+	public void onMouseOver(MouseOverEvent event) {
         endPointsTimer.cancel();
       }
     };
 
     MouseOutHandler mouseOutHandler = new MouseOutHandler() {
 
-      public void onMouseOut(MouseOutEvent event) {
+      @Override
+	public void onMouseOut(MouseOutEvent event) {
         endPointsTimer.schedule(Shape.END_POINTS_VIS_DELAY);
       }
     };

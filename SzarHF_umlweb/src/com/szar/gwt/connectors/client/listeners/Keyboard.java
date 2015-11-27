@@ -39,7 +39,8 @@ public final class Keyboard {
 			}
     }-*/;
 
-    public void onWindowClosing(ClosingEvent event) {
+    @Override
+	public void onWindowClosing(ClosingEvent event) {
 
     }
   }

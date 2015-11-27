@@ -42,7 +42,8 @@ public class Point extends FocusPanel implements Comparable<Point> {
    * If values are equal 0 is returned. If values are not eqal, sumary of absolute differences
    * between points is returned.
    */
-  public int compareTo(Point o) {
+  @Override
+public int compareTo(Point o) {
     int leftCompare = o.getLeft().compareTo(this.getLeft());
     int topCompare = o.getTop().compareTo(this.getTop());
     if (leftCompare == 0 && topCompare == 0) {

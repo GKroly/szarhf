@@ -1,6 +1,4 @@
-package com.szar.szarhf_umlweb.shared;
-
-import java.io.Serializable;
+package com.szar.umlweb.shared;
 
 import com.google.gwt.user.client.ui.Label;
 
@@ -33,18 +31,22 @@ public class DiagramState extends Label implements DiagramWidgetInterface {
 	{
 		return this.name;
 	}
+	@Override
 	public int getLeft()
 	{
 		return left;
 	}
+	@Override
 	public void setLeft(int left)
 	{
 		this.left = left;
 	}
+	@Override
 	public int getTop()
 	{
 		return top;
 	}
+	@Override
 	public void setTop(int top)
 	{
 		this.top = top;

@@ -1,4 +1,4 @@
-package com.szar.szarhf_umlweb.client;
+package com.szar.umlweb.client;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,18 +12,9 @@ import com.szar.gwt.connectors.client.elements.SectionDecoration;
 import com.szar.gwt.connectors.client.elements.SectionDecoration.DecorationType;
 import com.szar.gwt.connectors.client.elements.Shape;
 import com.szar.gwt.connectors.client.elements.Shape.CPShapeType;
-import com.szar.gwt.connectors.client.images.ConnectorsBundle;
 import com.szar.gwt.connectors.client.util.ConnectorStyle;
-import com.szar.szarhf_umlweb.shared.DiagramAction;
-import com.szar.szarhf_umlweb.shared.DiagramImage;
-import com.szar.szarhf_umlweb.shared.DiagramImage.ImageType;
-import com.szar.szarhf_umlweb.shared.DiagramState;
-import com.szar.szarhf_umlweb.shared.Model;
-import com.szar.szarhf_umlweb.shared.Project;
-import com.google.cloud.sql.jdbc.Connection;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -34,12 +25,10 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -51,19 +40,24 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.xml.client.DOMException;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
-import com.szar.szarhf_umlweb.shared.DiagramWidgetInterface;
+import com.szar.umlweb.shared.DiagramAction;
+import com.szar.umlweb.shared.DiagramImage;
+import com.szar.umlweb.shared.DiagramState;
+import com.szar.umlweb.shared.DiagramWidgetInterface;
+import com.szar.umlweb.shared.Model;
+import com.szar.umlweb.shared.Project;
+import com.szar.umlweb.shared.DiagramImage.ImageType;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class SzarHF_umlweb implements EntryPoint {
+public class UMLWeb implements EntryPoint {
 
 	/**
 	 * Global Values
@@ -98,6 +92,7 @@ public class SzarHF_umlweb implements EntryPoint {
 	 * This is the entry point method.
 	 */
 
+	@Override
 	public void onModuleLoad() {
 
 		modelsTreeMap_String_Model = new TreeMap<String, Model>();
@@ -265,6 +260,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		mainMenu.addItem("Help", helpMenu);
 
 		Command editProjectName = new Command() {
+			@Override
 			public void execute() {
 				if (currentProject != null) {
 
@@ -278,6 +274,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		};
 
 		Command createProject = new Command() {
+			@Override
 			public void execute() {
 				diagramElementsButton.setEnabled(false);
 				currentProject = new Project();
@@ -324,6 +321,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		};
 
 		Command loadProject = new Command() {
+			@Override
 			public void execute() {
 
 				// PopupDialogWindow.loadXMLDialogWindow("Copy the saved XML to the area",modelsTreeMap_String_Model,currentProject);
@@ -337,6 +335,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		};
 
 		Command saveProject = new Command() {
+			@Override
 			public void execute() {
 				// Set<String> names = modelsTreeMap_String_Diagram.keySet();
 				Set<String> names = modelsTreeMap_String_Model.keySet();
@@ -360,6 +359,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		};
 
 		Command deleteModelCommand = new Command() {
+			@Override
 			public void execute() {
 				if (currentProject != null) {
 					// System.out.println("Delete Model");
@@ -388,6 +388,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		}
 
 		Command createModelCommand = new Command() {
+			@Override
 			public void execute() {
 				if (diagramElementsButton.isEnabled() == false) {
 					diagramElementsButton.setEnabled(true);
@@ -422,6 +423,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		};
 
 		Command saveModelCommand = new Command() {
+			@Override
 			public void execute() {
 				Model currentModel = new Model(activeModelName, diagram,
 						diagramAbsolutePanel);
@@ -570,6 +572,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		Grid g = new Grid(2, 3);
 
 		ClickHandler addInitial = new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				// FocusPanel initial = new FocusPanel();
 				ImageType currentType = ImageType.Initial;
@@ -596,6 +599,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		initial.addClickHandler(addInitial);
 
 		ClickHandler addDecision = new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				// FocusPanel decision = new FocusPanel();
 				ImageType currentType = ImageType.decision;
@@ -620,6 +624,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		decision.addClickHandler(addDecision);
 
 		ClickHandler addFinal = new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				// FocusPanel finalImage = new FocusPanel();
 				ImageType currentType = ImageType.Final;
@@ -644,6 +649,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		finalImage.addClickHandler(addFinal);
 
 		ClickHandler addMerge = new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				// FocusPanel merge = new FocusPanel();
 				ImageType currentType = ImageType.merge;
@@ -680,6 +686,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		 */
 
 		ClickHandler addState = new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				String newTitle = Window.prompt("Name of the state:",
 						"New State");
@@ -704,6 +711,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		state.addClickHandler(addState);
 
 		ClickHandler addAction = new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				String newTitle = Window.prompt("Name of the action:",
 						"New Action");
@@ -759,6 +767,7 @@ public class SzarHF_umlweb implements EntryPoint {
 		};
 
 		ClickHandler loadDiagram = new ClickHandler() {
+			@Override
 			public void onClick(ClickEvent event) {
 				Button btn = (Button) event.getSource();
 

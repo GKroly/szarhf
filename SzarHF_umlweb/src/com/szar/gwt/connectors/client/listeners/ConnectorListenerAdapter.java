@@ -5,10 +5,12 @@ import com.szar.gwt.connectors.client.listeners.event.ConnectorDoubleClickEvent;
 
 public class ConnectorListenerAdapter implements ConnectorListener {
 
-  public void onConnectorClick(ConnectorClickEvent event) {
+  @Override
+public void onConnectorClick(ConnectorClickEvent event) {
   }
 
-  public void onConnectorDoubleClick(ConnectorDoubleClickEvent event) {
+  @Override
+public void onConnectorDoubleClick(ConnectorDoubleClickEvent event) {
   }
 
 }

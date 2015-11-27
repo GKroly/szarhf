@@ -816,14 +816,16 @@ public class Shape extends FocusPanel implements Element {
 
 	      MouseOverHandler showConnStartMouseOver = new MouseOverHandler() {
 
-	        public void onMouseOver(MouseOverEvent event) {
+	        @Override
+			public void onMouseOver(MouseOverEvent event) {
 	          showShapeConnectorStartPoints();
 	        }
 	      };
 
 	      MouseOutHandler hideConnStartMouseOut = new MouseOutHandler() {
 
-	        public void onMouseOut(MouseOutEvent event) {
+	        @Override
+			public void onMouseOut(MouseOutEvent event) {
 	          endPointsShowTimer.schedule(END_POINTS_VIS_DELAY);
 	        }
 	      };

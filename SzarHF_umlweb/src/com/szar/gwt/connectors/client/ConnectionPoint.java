@@ -160,7 +160,7 @@ public class ConnectionPoint extends FocusPanel {
 		int left;
 		if (this.getParentShape().diagram != null) {
 			left = (this.getAbsoluteLeft() - this.getParentShape().diagram.boundaryPanel.getAbsoluteLeft() + 
-			    (int)Math.round((double)((double)this.getOffsetWidth() / (double)2)));
+			    (int)Math.round((double)this.getOffsetWidth() / (double)2));
 			if (connectionDirection == DIRECTION_TOP || connectionDirection == DIRECTION_BOTTOM) {
 			  left -= 2;
 			} else 
@@ -182,7 +182,7 @@ public class ConnectionPoint extends FocusPanel {
 		int top;
 		if (this.getParentShape().diagram != null) {
 			top = (this.getAbsoluteTop() - this.getParentShape().diagram.boundaryPanel.getAbsoluteTop() + 
-			    (int)Math.round((double)((double)this.getOffsetHeight() / (double)2)));
+			    (int)Math.round((double)this.getOffsetHeight() / (double)2));
 			if (connectionDirection == DIRECTION_TOP || connectionDirection == DIRECTION_LEFT || connectionDirection == DIRECTION_RIGHT) {
 			  top -= 2;
 			}

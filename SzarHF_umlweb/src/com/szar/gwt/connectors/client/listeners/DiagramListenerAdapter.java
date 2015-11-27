@@ -9,22 +9,28 @@ import com.szar.gwt.connectors.client.listeners.event.ElementDragEvent;
 
 public class DiagramListenerAdapter implements DiagramListener {
 
-  public void onConnectorClick(ConnectorClickEvent event) {
+  @Override
+public void onConnectorClick(ConnectorClickEvent event) {
   }
 
-  public void onDiagramAdd(DiagramAddEvent event) {
+  @Override
+public void onDiagramAdd(DiagramAddEvent event) {
   }
 
-  public void onDiagramRemove(DiagramRemoveEvent event) {
+  @Override
+public void onDiagramRemove(DiagramRemoveEvent event) {
   }
 
-  public void onElementConnect(ElementConnectEvent event) {
+  @Override
+public void onElementConnect(ElementConnectEvent event) {
   }
 
-  public void onElementDrag(ElementDragEvent event) {
+  @Override
+public void onElementDrag(ElementDragEvent event) {
   }
 
-  public void onConnectorDoubleClick(ConnectorDoubleClickEvent event) {
+  @Override
+public void onConnectorDoubleClick(ConnectorDoubleClickEvent event) {
   }
 
 }

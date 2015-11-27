@@ -5,7 +5,8 @@ import com.google.gwt.dom.client.StyleInjector;
 
 public class ConnectorsEntryPoint implements EntryPoint {
 
-  public void onModuleLoad() {
+  @Override
+public void onModuleLoad() {
     StyleInjector.injectAtStart(ConnectorsClientBundle.INSTANCE.css().getText());
   }
 }

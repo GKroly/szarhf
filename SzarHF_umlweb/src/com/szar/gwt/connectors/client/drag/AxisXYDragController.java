@@ -54,7 +54,8 @@ public class AxisXYDragController extends AbstractDragController {
         targetArea = new WidgetArea(target, null);
       }
 
-      public int compareTo(Candidate other) {
+      @Override
+	public int compareTo(Candidate other) {
         Element myElement = getDropTarget().getElement();
         Element otherElement = other.getDropTarget().getElement();
         if (myElement == otherElement) {
@@ -162,12 +163,14 @@ public class AxisXYDragController extends AbstractDragController {
   /**
    * @deprecated Instead selectively use your own CSS classes.
    */
-  protected static final String CSS_MOVABLE_PANEL;
+  @Deprecated
+protected static final String CSS_MOVABLE_PANEL;
 
   /**
    * @deprecated Instead selectively use your own CSS classes.
    */
-  protected static final String CSS_PROXY;
+  @Deprecated
+protected static final String CSS_PROXY;
   private static final String PRIVATE_CSS_MOVABLE_PANEL = "dragdrop-movable-panel";
   private static final String PRIVATE_CSS_PROXY = "dragdrop-proxy";
 
@@ -258,7 +261,8 @@ public class AxisXYDragController extends AbstractDragController {
 
   // To provide XY drag feature (END)
 
-  public void dragEnd() {
+  @Override
+public void dragEnd() {
     assert context.finalDropController == null == (context.vetoException != null);
     if (context.vetoException != null) {
       if (!getBehaviorDragProxy()) {
@@ -278,7 +282,8 @@ public class AxisXYDragController extends AbstractDragController {
     super.dragEnd();
   }
 
-  public void dragMove() {
+  @Override
+public void dragMove() {
 
     // To provide XY drag feature (BEGIN)
     if (allowHorizontalDragging == false) {
@@ -315,7 +320,8 @@ public class AxisXYDragController extends AbstractDragController {
     }
   }
 
-  @SuppressWarnings("rawtypes")
+  @Override
+@SuppressWarnings("rawtypes")
   public void dragStart() {
     super.dragStart();
 
@@ -383,11 +389,13 @@ public class AxisXYDragController extends AbstractDragController {
   /**
    * @deprecated Use {@link #getBehaviorDragProxy()} instead.
    */
-  public boolean isDragProxyEnabled() {
+  @Deprecated
+public boolean isDragProxyEnabled() {
     return getBehaviorDragProxy();
   }
 
-  public void previewDragEnd() throws VetoDragException {
+  @Override
+public void previewDragEnd() throws VetoDragException {
     assert context.finalDropController == null;
     assert context.vetoException == null;
     // Does the DropController allow the drop?
@@ -414,7 +422,8 @@ public class AxisXYDragController extends AbstractDragController {
     dropControllerList.add(dropController);
   }
 
-  public void resetCache() {
+  @Override
+public void resetCache() {
     super.resetCache();
     dropControllerCollection.resetCache(context.boundaryPanel, context);
   }
@@ -444,7 +453,8 @@ public class AxisXYDragController extends AbstractDragController {
   /**
    * @deprecated Use {@link #setBehaviorDragProxy(boolean)} instead.
    */
-  public void setDragProxyEnabled(boolean dragProxyEnabled) {
+  @Deprecated
+public void setDragProxyEnabled(boolean dragProxyEnabled) {
     setBehaviorDragProxy(dragProxyEnabled);
   }
 
@@ -463,7 +473,8 @@ public class AxisXYDragController extends AbstractDragController {
    * @deprecated Use {@link #newDragProxy(DragContext)} and {@link #setBehaviorDragProxy(boolean)}
    *             instead.
    */
-  protected final Widget maybeNewDraggableProxy(Widget draggable) {
+  @Deprecated
+protected final Widget maybeNewDraggableProxy(Widget draggable) {
     throw new UnsupportedOperationException();
   }
 
