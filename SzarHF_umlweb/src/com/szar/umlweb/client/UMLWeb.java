@@ -88,13 +88,26 @@ public class UMLWeb implements EntryPoint {
 
 	PopupDialogWindow popup = new PopupDialogWindow(this);
 
+	
 	/**
 	 * This is the entry point method.
 	 */
 
+	//Csak HTML frissitesehez, utana ki kell szedni
+//	boolean reloaded=false;
+//	public UMLWeb() {
+//		if(reloaded==false){
+//			reloaded=true;
+//			Window.Location.reload();
+//			
+//		}
+//	}
+	
 	@Override
 	public void onModuleLoad() {
-
+		
+		
+		
 		modelsTreeMap_String_Model = new TreeMap<String, Model>();
 		// modelsTreeMap_String_Diagram = new TreeMap<String, Diagram>();
 		// testModels_String_AbsolutePanel = new TreeMap<String,
