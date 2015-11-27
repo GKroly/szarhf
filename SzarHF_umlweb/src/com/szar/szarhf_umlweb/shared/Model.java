@@ -33,8 +33,8 @@ public class Model implements Serializable {
 	Diagram diagram = null;
 	AbsolutePanel panel = null;
 	public List<DiagramWidgetInterface> dwiList = new ArrayList<DiagramWidgetInterface>();
-	public List<Connector> conList=new ArrayList<Connector>();
-	
+	public List<Connector> conList = new ArrayList<Connector>();
+
 	public Model() {
 
 	}
@@ -88,13 +88,20 @@ public class Model implements Serializable {
 							+ "</imageType>";
 					outXML += "</Image>";
 
-				} else {
+				} else if (interf.getWidgetType() == WidgetType.LABEL) {
 					DiagramState state = (DiagramState) shape.connectedWidget;
 					outXML += "<State>";
 					outXML += "<left>" + state.getLeft() + "</left>";
 					outXML += "<top>" + state.getTop() + "</top>";
 					outXML += "<Name>" + state.getName() + "</Name>";
 					outXML += "</State>";
+				} else {
+					DiagramAction action = (DiagramAction) shape.connectedWidget;
+					outXML += "<Action>";
+					outXML += "<left>" + action.getLeft() + "</left>";
+					outXML += "<top>" + action.getTop() + "</top>";
+					outXML += "<Name>" + action.getName() + "</Name>";
+					outXML += "</Action>";
 				}
 			} catch (Exception e) {
 			}
@@ -139,6 +146,8 @@ public class Model implements Serializable {
 					.getElementsByTagName("Image");
 			NodeList states = ((Element) shapesNode)
 					.getElementsByTagName("State");
+			NodeList actions = ((Element) shapesNode)
+					.getElementsByTagName("Action");
 			this.modelName = modelNameNode.getFirstChild().getNodeValue();
 			for (int i = 0; i < images.getLength(); i++) {
 				Node imagesNode = images.item(i);
@@ -192,6 +201,25 @@ public class Model implements Serializable {
 				currentState.setTop(top);
 				currentState.setLeft(left);
 				dwiList.add(currentState);
+			}
+			for (int i = 0; i < actions.getLength(); i++) {
+				Node actionNode = actions.item(i);
+				Node leftNode = ((Element) actionNode).getElementsByTagName(
+						"left").item(0);
+				Node topNode = ((Element) actionNode).getElementsByTagName(
+						"top").item(0);
+				int left = Integer.parseInt(leftNode.getFirstChild()
+						.getNodeValue());
+				int top = Integer.parseInt(topNode.getFirstChild()
+						.getNodeValue());
+				Node nameNode = ((Element) actionNode).getElementsByTagName(
+						"Name").item(0);
+				String name = nameNode.getFirstChild().getNodeValue();
+				final DiagramAction currentAction = new DiagramAction(name);
+				this.panel.add(currentAction, left, top);
+				currentAction.setTop(top);
+				currentAction.setLeft(left);
+				dwiList.add(currentAction);
 			}
 			Node connectorsNode = ((Element) ModelXMLNode)
 					.getElementsByTagName("connectors").item(0);
@@ -278,7 +306,7 @@ public class Model implements Serializable {
 				currentConnector.diagram = diagram;
 				startPoint.connector = currentConnector;
 				endPoint.connector = currentConnector;
-				
+
 				conList.add(currentConnector);
 
 			}
@@ -312,16 +340,21 @@ public class Model implements Serializable {
 		}
 	}
 
-	public void ShapeDrawer(Widget currentImage) {
-		Shape newShape = new Shape(currentImage, CPShapeType.DIAMOND);
+	public void ShapeDrawer(DiagramWidgetInterface currentImage) {
+
+		Shape newShape = new Shape((Widget) currentImage, CPShapeType.DIAMOND);
 		newShape.showOnDiagram(diagram);
-		newShape.top=((DiagramWidgetInterface) currentImage).getTop();
-		newShape.left=((DiagramWidgetInterface) currentImage).getLeft();
-//		currentImage.set
-//		System.out.println("left: "+newShape.left+" top: "+newShape.top);
-		
+		newShape.top = ((DiagramWidgetInterface) currentImage).getTop();
+		newShape.left = ((DiagramWidgetInterface) currentImage).getLeft();
+		// currentImage.set
+		// System.out.println("left: "+newShape.left+" top: "+newShape.top);
+
+		if (currentImage.getWidgetType() == WidgetType.ACTION) {
+			newShape.addStyleName("Action");
+		}
+
 		newShape.enableConnectionCreate(true);
-		
+
 	}
 
 	public void ConnectionsDrawer(Connector currentConnector) {
@@ -360,7 +393,7 @@ public class Model implements Serializable {
 				break;
 			}
 		}
-		
+
 		currentConnector.showOnDiagram(diagram);
 
 	}

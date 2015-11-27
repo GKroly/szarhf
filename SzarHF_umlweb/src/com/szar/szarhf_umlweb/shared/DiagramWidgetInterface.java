@@ -4,7 +4,8 @@ public interface DiagramWidgetInterface{
 	enum WidgetType
 	{
 		LABEL,
-		IMAGE
+		IMAGE,
+		ACTION
 	}		
 	WidgetType getWidgetType();
 	public int getLeft();

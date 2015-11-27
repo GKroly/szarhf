@@ -14,6 +14,7 @@ import com.szar.gwt.connectors.client.elements.Shape;
 import com.szar.gwt.connectors.client.elements.Shape.CPShapeType;
 import com.szar.gwt.connectors.client.images.ConnectorsBundle;
 import com.szar.gwt.connectors.client.util.ConnectorStyle;
+import com.szar.szarhf_umlweb.shared.DiagramAction;
 import com.szar.szarhf_umlweb.shared.DiagramImage;
 import com.szar.szarhf_umlweb.shared.DiagramImage.ImageType;
 import com.szar.szarhf_umlweb.shared.DiagramState;
@@ -83,11 +84,10 @@ public class SzarHF_umlweb implements EntryPoint {
 	String activeModelName;
 	Button diagramElementsButton;
 	Project currentProject = null;
-	Model currentModel=null;
+	Model currentModel = null;
 	VerticalPanel modelsVerticalPanel = null;
-//	String actualModelName = null;
-	
-	
+	// String actualModelName = null;
+
 	MenuItem createModelMenuItem;
 	MenuItem saveModelMenuItem;
 	MenuItem deleteModelMenuItem;
@@ -229,10 +229,10 @@ public class SzarHF_umlweb implements EntryPoint {
 	public void createMainMenu(MenuBar mainMenu) {
 		MenuBar fileMenu = new MenuBar(true);
 
-		final MenuItem createProjectMenuItem = new MenuItem("Create new project",
-				(Command) null);
-		final MenuItem loadProjectMenuItem = new MenuItem("Load existing project",
-				(Command) null);
+		final MenuItem createProjectMenuItem = new MenuItem(
+				"Create new project", (Command) null);
+		final MenuItem loadProjectMenuItem = new MenuItem(
+				"Load existing project", (Command) null);
 		final MenuItem saveProjectMenuItem = new MenuItem(
 				"Save current project", (Command) null);
 
@@ -242,17 +242,15 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		MenuBar editMenu = new MenuBar(true);
 
-		createModelMenuItem = new MenuItem("Create new Model",
+		createModelMenuItem = new MenuItem("Create new Model", (Command) null);
+		saveModelMenuItem = new MenuItem("Save current model", (Command) null);
+		deleteModelMenuItem = new MenuItem("Delete current model",
 				(Command) null);
-		saveModelMenuItem = new MenuItem("Save current model",
-				(Command) null);
-		deleteModelMenuItem = new MenuItem(
-				"Delete current model", (Command) null);
 
 		createModelMenuItem.setEnabled(false);
 		saveModelMenuItem.setEnabled(false);
 		deleteModelMenuItem.setEnabled(false);
-		
+
 		editMenu.addItem(createModelMenuItem);
 		editMenu.addItem(saveModelMenuItem);
 		editMenu.addItem(deleteModelMenuItem);
@@ -284,7 +282,7 @@ public class SzarHF_umlweb implements EntryPoint {
 				diagramElementsButton.setEnabled(false);
 				currentProject = new Project();
 				diagramAbsolutePanel.clear();
-				
+
 				createModelMenuItem.setEnabled(true);
 				saveModelMenuItem.setEnabled(true);
 				deleteModelMenuItem.setEnabled(true);
@@ -334,7 +332,6 @@ public class SzarHF_umlweb implements EntryPoint {
 				// StringBuffer XML = new StringBuffer();
 				PopupDialogWindow
 						.makeTextAreaForXMLLoad("Copy the saved XML to the area");
-				
 
 			}
 		};
@@ -361,18 +358,19 @@ public class SzarHF_umlweb implements EntryPoint {
 				// GWT.log(XML);
 			}
 		};
-		
-		Command deleteModelCommand =new Command(){
-			public void execute(){
-				if(currentProject!=null){
-//					System.out.println("Delete Model");
+
+		Command deleteModelCommand = new Command() {
+			public void execute() {
+				if (currentProject != null) {
+					// System.out.println("Delete Model");
 					System.out.println(activeModelName);
-					Model remove = modelsTreeMap_String_Model.remove(activeModelName);
-					
-					if(modelsTreeMap_String_Model.size()>0){
-						activeModelName=modelsTreeMap_String_Model.firstKey();
+					Model remove = modelsTreeMap_String_Model
+							.remove(activeModelName);
+
+					if (modelsTreeMap_String_Model.size() > 0) {
+						activeModelName = modelsTreeMap_String_Model.firstKey();
 					}
-					
+
 					refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
 				}
 			}
@@ -454,10 +452,10 @@ public class SzarHF_umlweb implements EntryPoint {
 		if (currentProject != null) {
 			saveProjectMenuItem.setEnabled(true);
 		}
-		if(currentProject!=null){
+		if (currentProject != null) {
 			deleteModelMenuItem.setEnabled(true);
 		}
-		
+
 	}
 
 	public void loadXML(String XML) {
@@ -513,7 +511,7 @@ public class SzarHF_umlweb implements EntryPoint {
 				stackLayouPanel.forceLayout();
 
 				for (DiagramWidgetInterface dwi : model.dwiList) {
-					model.ShapeDrawer((Widget) dwi);
+					model.ShapeDrawer(dwi);
 
 				}
 
@@ -534,7 +532,7 @@ public class SzarHF_umlweb implements EntryPoint {
 			diagramElementsButton.setEnabled(true);
 
 			refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
-			
+
 			createModelMenuItem.setEnabled(true);
 			saveModelMenuItem.setEnabled(true);
 			deleteModelMenuItem.setEnabled(true);
@@ -688,25 +686,54 @@ public class SzarHF_umlweb implements EntryPoint {
 				if (newTitle != null) {
 					DiagramState StateLabel = new DiagramState(newTitle);
 					diagramAbsolutePanel.add(StateLabel, 10, 10);
-
+					// StateLabel.addStyleName("Activity");
 					Shape shapeForState = new Shape(StateLabel,
 							CPShapeType.DIAMOND);
 					shapeForState.showOnDiagram(diagram);
 					shapeForState.enableConnectionCreate(true);
 					shapeForState.setTitle("State");
+
+					// shapeForState.addStyleName("Activity");
 				}
 
 			}
 		};
 
 		DiagramState state = new DiagramState("New State");
+		// state.addStyleName("Activity");
 		state.addClickHandler(addState);
+
+		ClickHandler addAction = new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				String newTitle = Window.prompt("Name of the action:",
+						"New Action");
+				if (newTitle != null) {
+					DiagramAction ActionLabel = new DiagramAction(newTitle);
+					ActionLabel.addStyleName("Action");
+					diagramAbsolutePanel.add(ActionLabel, 10, 10);
+					// StateLabel.addStyleName("Activity");
+					Shape shapeForState = new Shape(ActionLabel,
+							CPShapeType.DIAMOND);
+					shapeForState.showOnDiagram(diagram);
+					shapeForState.enableConnectionCreate(true);
+					shapeForState.setTitle("State");
+
+					// shapeForState.addStyleName("Activity");
+				}
+
+			}
+		};
+
+		DiagramAction action = new DiagramAction("New Action");
+		action.addClickHandler(addAction);
+		action.addStyleName("Action");
 
 		g.setWidget(0, 0, initial);
 		g.setWidget(0, 1, finalImage);
 		g.setWidget(0, 2, decision);
 		g.setWidget(1, 0, merge);
 		g.setWidget(1, 1, state);
+		g.setWidget(1, 2, action);
 
 		verticalPanel.add(g);
 		stackPanel.add(verticalPanel, diagramElementsButton, 2);
@@ -749,7 +776,7 @@ public class SzarHF_umlweb implements EntryPoint {
 			modelsPanel.add(lb12);
 
 		}
-		
+
 		int widgetCount = modelsPanel.getWidgetCount();
 		for (int i = 0; i < widgetCount; i++) {
 			modelsPanel.getWidget(i).removeStyleName("LoudText");
@@ -767,10 +794,10 @@ public class SzarHF_umlweb implements EntryPoint {
 
 	public void loadASelectedDiagram(String newModelName,
 			VerticalPanel modelsPanel) {
-		
-		System.out.println("newModelName: "+newModelName);
-		activeModelName=newModelName;
-		
+
+		System.out.println("newModelName: " + newModelName);
+		activeModelName = newModelName;
+
 		if (activeModelName != null) {
 			// currentProject.get
 			// testModels_String_AbsolutePanel
