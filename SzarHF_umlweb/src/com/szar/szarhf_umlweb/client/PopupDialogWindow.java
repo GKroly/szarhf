@@ -245,6 +245,7 @@ public class PopupDialogWindow {
 				// projectNameMenuItem.setText((project.getProjectName()));
 				mainProgram.loadXML(textArea.getText());
 //				xML2.append(textArea.getText());
+				
 				dialogBox.hide();
 			}
 		});

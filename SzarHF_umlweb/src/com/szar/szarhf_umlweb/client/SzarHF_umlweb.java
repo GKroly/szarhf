@@ -83,8 +83,14 @@ public class SzarHF_umlweb implements EntryPoint {
 	String activeModelName;
 	Button diagramElementsButton;
 	Project currentProject = null;
+	Model currentModel=null;
 	VerticalPanel modelsVerticalPanel = null;
-	String actualModelName = null;
+//	String actualModelName = null;
+	
+	
+	MenuItem createModelMenuItem;
+	MenuItem saveModelMenuItem;
+	MenuItem deleteModelMenuItem;
 
 	PopupDialogWindow popup = new PopupDialogWindow(this);
 
@@ -223,9 +229,9 @@ public class SzarHF_umlweb implements EntryPoint {
 	public void createMainMenu(MenuBar mainMenu) {
 		MenuBar fileMenu = new MenuBar(true);
 
-		MenuItem createProjectMenuItem = new MenuItem("Create new project",
+		final MenuItem createProjectMenuItem = new MenuItem("Create new project",
 				(Command) null);
-		MenuItem loadProjectMenuItem = new MenuItem("Load existing project",
+		final MenuItem loadProjectMenuItem = new MenuItem("Load existing project",
 				(Command) null);
 		final MenuItem saveProjectMenuItem = new MenuItem(
 				"Save current project", (Command) null);
@@ -236,13 +242,20 @@ public class SzarHF_umlweb implements EntryPoint {
 
 		MenuBar editMenu = new MenuBar(true);
 
-		final MenuItem createModelMenuItem = new MenuItem("Create new Model",
+		createModelMenuItem = new MenuItem("Create new Model",
 				(Command) null);
-		final MenuItem saveModelMenuItem = new MenuItem("Save current model",
+		saveModelMenuItem = new MenuItem("Save current model",
 				(Command) null);
+		deleteModelMenuItem = new MenuItem(
+				"Delete current model", (Command) null);
 
+		createModelMenuItem.setEnabled(false);
+		saveModelMenuItem.setEnabled(false);
+		deleteModelMenuItem.setEnabled(false);
+		
 		editMenu.addItem(createModelMenuItem);
 		editMenu.addItem(saveModelMenuItem);
+		editMenu.addItem(deleteModelMenuItem);
 
 		MenuBar helpMenu = new MenuBar(true);
 
@@ -271,6 +284,10 @@ public class SzarHF_umlweb implements EntryPoint {
 				diagramElementsButton.setEnabled(false);
 				currentProject = new Project();
 				diagramAbsolutePanel.clear();
+				
+				createModelMenuItem.setEnabled(true);
+				saveModelMenuItem.setEnabled(true);
+				deleteModelMenuItem.setEnabled(true);
 
 				if (currentProject != null) {
 					// Ha van betoltott projekt, akkor figyelmeztessen
@@ -317,6 +334,7 @@ public class SzarHF_umlweb implements EntryPoint {
 				// StringBuffer XML = new StringBuffer();
 				PopupDialogWindow
 						.makeTextAreaForXMLLoad("Copy the saved XML to the area");
+				
 
 			}
 		};
@@ -343,6 +361,22 @@ public class SzarHF_umlweb implements EntryPoint {
 				// GWT.log(XML);
 			}
 		};
+		
+		Command deleteModelCommand =new Command(){
+			public void execute(){
+				if(currentProject!=null){
+//					System.out.println("Delete Model");
+					System.out.println(activeModelName);
+					Model remove = modelsTreeMap_String_Model.remove(activeModelName);
+					
+					if(modelsTreeMap_String_Model.size()>0){
+						activeModelName=modelsTreeMap_String_Model.firstKey();
+					}
+					
+					refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
+				}
+			}
+		};
 
 		createProjectMenuItem.setScheduledCommand(createProject);
 		loadProjectMenuItem.setScheduledCommand(loadProject);
@@ -355,7 +389,7 @@ public class SzarHF_umlweb implements EntryPoint {
 			createModelMenuItem.setEnabled(true);
 		}
 
-		Command createModel = new Command() {
+		Command createModelCommand = new Command() {
 			public void execute() {
 				if (diagramElementsButton.isEnabled() == false) {
 					diagramElementsButton.setEnabled(true);
@@ -389,7 +423,7 @@ public class SzarHF_umlweb implements EntryPoint {
 			}
 		};
 
-		Command saveModel = new Command() {
+		Command saveModelCommand = new Command() {
 			public void execute() {
 				Model currentModel = new Model(activeModelName, diagram,
 						diagramAbsolutePanel);
@@ -408,8 +442,9 @@ public class SzarHF_umlweb implements EntryPoint {
 			}
 		};
 
-		createModelMenuItem.setScheduledCommand(createModel);
-		saveModelMenuItem.setScheduledCommand(saveModel);
+		createModelMenuItem.setScheduledCommand(createModelCommand);
+		saveModelMenuItem.setScheduledCommand(saveModelCommand);
+		deleteModelMenuItem.setScheduledCommand(deleteModelCommand);
 		if (currentProject != null) {
 			saveModelMenuItem.setEnabled(true);
 		}
@@ -419,6 +454,10 @@ public class SzarHF_umlweb implements EntryPoint {
 		if (currentProject != null) {
 			saveProjectMenuItem.setEnabled(true);
 		}
+		if(currentProject!=null){
+			deleteModelMenuItem.setEnabled(true);
+		}
+		
 	}
 
 	public void loadXML(String XML) {
@@ -495,7 +534,10 @@ public class SzarHF_umlweb implements EntryPoint {
 			diagramElementsButton.setEnabled(true);
 
 			refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
-
+			
+			createModelMenuItem.setEnabled(true);
+			saveModelMenuItem.setEnabled(true);
+			deleteModelMenuItem.setEnabled(true);
 		} catch (DOMException e) {
 			Window.alert("Could not parse XML document.");
 		}
@@ -707,11 +749,28 @@ public class SzarHF_umlweb implements EntryPoint {
 			modelsPanel.add(lb12);
 
 		}
+		
+		int widgetCount = modelsPanel.getWidgetCount();
+		for (int i = 0; i < widgetCount; i++) {
+			modelsPanel.getWidget(i).removeStyleName("LoudText");
+		}
+
+		for (int i = 0; i < widgetCount; i++) {
+			Button widget = (Button) modelsPanel.getWidget(i);
+
+			if (widget.getText().equals(activeModelName)) {
+				// loadASelectedDiagram(newModelName, modelsPanel);
+				widget.addStyleName("LoudText");
+			}
+		}
 	}
 
 	public void loadASelectedDiagram(String newModelName,
 			VerticalPanel modelsPanel) {
-
+		
+		System.out.println("newModelName: "+newModelName);
+		activeModelName=newModelName;
+		
 		if (activeModelName != null) {
 			// currentProject.get
 			// testModels_String_AbsolutePanel
