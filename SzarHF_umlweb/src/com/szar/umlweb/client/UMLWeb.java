@@ -376,12 +376,15 @@ public class UMLWeb implements EntryPoint {
 			public void execute() {
 				if (currentProject != null) {
 					// System.out.println("Delete Model");
-					System.out.println(activeModelName);
+//					System.out.println(activeModelName);
 					Model remove = modelsTreeMap_String_Model
 							.remove(activeModelName);
 
 					if (modelsTreeMap_String_Model.size() > 0) {
 						activeModelName = modelsTreeMap_String_Model.firstKey();
+					} else{
+						diagramElementsButton.setEnabled(false);
+						diagramAbsolutePanel.clear();
 					}
 
 					refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
@@ -817,7 +820,7 @@ public class UMLWeb implements EntryPoint {
 	public void loadASelectedDiagram(String newModelName,
 			VerticalPanel modelsPanel) {
 
-		System.out.println("newModelName: " + newModelName);
+//		System.out.println("newModelName: " + newModelName);
 		activeModelName = newModelName;
 
 		if (activeModelName != null) {
