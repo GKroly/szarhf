@@ -89,6 +89,9 @@ public class UMLWeb implements EntryPoint {
 	PopupDialogWindow popup = new PopupDialogWindow(this);
 
 	
+	VerticalPanel diagramElementsPanel;
+	Grid g;
+	
 	/**
 	 * This is the entry point method.
 	 */
@@ -385,6 +388,7 @@ public class UMLWeb implements EntryPoint {
 					} else{
 						diagramElementsButton.setEnabled(false);
 						diagramAbsolutePanel.clear();
+						diagramElementsPanel.remove(g);
 					}
 
 					refreshModelsOrder(stackLayouPanel, modelsVerticalPanel);
@@ -406,6 +410,14 @@ public class UMLWeb implements EntryPoint {
 		Command createModelCommand = new Command() {
 			@Override
 			public void execute() {
+				
+				int widgetIndex = diagramElementsPanel.getWidgetIndex(g);
+
+				//Ha lekapcsoltuk a diagram elementeket valamiert, itt visszakapcsoljuk
+				if(widgetIndex<=0){
+					diagramElementsPanel.add(g);
+				}
+				
 				if (diagramElementsButton.isEnabled() == false) {
 					diagramElementsButton.setEnabled(true);
 				}
@@ -578,15 +590,16 @@ public class UMLWeb implements EntryPoint {
 
 		stackPanel.add(modelsScrollPanel, modelsButton, 2);
 
-		VerticalPanel verticalPanel = new VerticalPanel();
+		diagramElementsPanel = new VerticalPanel();
 		diagramElementsButton = new Button("Diagram elements");
 		diagramElementsButton.setWidth(Integer.toString(leftMenuWidt) + "px");
 		diagramElementsButton.setEnabled(false); // Alapbol ne lehessen
 													// rakattintani a diagram
 													// elementsre
 
-		Grid g = new Grid(2, 3);
-
+		g = new Grid(2, 3);
+		
+		
 		ClickHandler addInitial = new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -748,9 +761,11 @@ public class UMLWeb implements EntryPoint {
 			}
 		};
 
+//		addAction.setE
 		DiagramAction action = new DiagramAction("New Action");
 		action.addClickHandler(addAction);
 		action.addStyleName("Action");
+//		action.set
 
 		g.setWidget(0, 0, initial);
 		g.setWidget(0, 1, finalImage);
@@ -759,8 +774,9 @@ public class UMLWeb implements EntryPoint {
 		g.setWidget(1, 1, state);
 		g.setWidget(1, 2, action);
 
-		verticalPanel.add(g);
-		stackPanel.add(verticalPanel, diagramElementsButton, 2);
+		diagramElementsPanel.add(g);
+//		verticalPanel.set
+		stackPanel.add(diagramElementsPanel, diagramElementsButton, 2);
 	}
 
 	public void refreshModelsOrder(StackLayoutPanel stackPanel,
